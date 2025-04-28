@@ -5,7 +5,7 @@ const fetch = require("node-fetch");
 const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
   
-  global.icono = [ 
+  /*global.icono = [ 
     'https://files.catbox.moe/ztexr8.jpg',
     'https://files.catbox.moe/fd7x3t.jpg',
     'https://files.catbox.moe/nsfx7f.jpg',
@@ -30,7 +30,7 @@ const handler = async (msg, { conn }) => {
   const randomIcon = icono[Math.floor(Math.random() * icono.length)];
   
   // Descargamos esa imagen
-  const thumbnail = await (await fetch(randomIcon)).buffer();
+  const thumbnail = await (await fetch(randomIcon)).buffer();*/
   
   await conn.sendMessage(chatId, {
     text: 'test', 
@@ -49,7 +49,7 @@ const handler = async (msg, { conn }) => {
         title: 'hola',
         body: 'hola mosha',
         thumbnailUrl: 'https://www.instagram.com/edar504__', // Aquí ahora sí una imagen válida
-        thumbnail,
+        thumbnail: thumbnail,
         sourceUrl: 'https://www.instagram.com/edar504__' // Esto está bien aunque no sea imagen directa
       }
     }
