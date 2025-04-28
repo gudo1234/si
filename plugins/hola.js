@@ -21,14 +21,14 @@ const handler = async (msg, { conn }) => {
       externalAdReply: {
         title: 'hola',
         body: 'hola mosha',
-        thumbnailUrl: red,
-        thumbnail: im,
-        sourceUrl: red
+        thumbnailUrl: g,
+        thumbnail: imageBuffer,
+        sourceUrl: g
       }
     }
   }, { quoted: msg });
 
-await conn.sendMessage(chatId, { image: im, caption: '🪐xd' });
+await conn.sendMessage(chatId, { image: imageBuffer, caption: '🪐xd' });
 };
 
 handler.command = ['hola'];
