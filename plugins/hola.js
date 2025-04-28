@@ -12,7 +12,7 @@ const handler = async (msg, { conn }) => {
       groupMentions: [],
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
-        newsletterJid: ch,
+        newsletterJid: '120363285614743024@newsletter',
         newsletterName: wm,
         serverMessageId: 0
       },
