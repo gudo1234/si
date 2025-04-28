@@ -344,7 +344,7 @@ if (update.action === "add" && welcomeActivo) {
         caption: `👋 ${mention}\n\n${customMessage}`,
         mentions: [participant]
       });*/
-  await sock.sendMessage(update.id, {
+  await conn.sendMessage(update.id, {
   text: `👋 ${mention}\n\n${customMessage}`,
   contextInfo: {
     externalAdReply: {
@@ -358,7 +358,7 @@ if (update.action === "add" && welcomeActivo) {
     }
   }
 }, { quoted: null });
-  /*await sock.sendMessage(update.id, {
+  await conn.sendMessage(update.id, {
     text: `👋 ${mention}\n\n${customMessage}`, 
     contextInfo: {
       mentionedJid: [participant],
@@ -379,7 +379,7 @@ if (update.action === "add" && welcomeActivo) {
         sourceUrl: 'https://www.instagram.com/edar504__'
       }
     }
-  }, { quoted: null })*/
+  }, { quoted: null })
     } else {
       // Elegir mensaje aleatorio
       const mensajeTexto = welcomeTexts[Math.floor(Math.random() * welcomeTexts.length)];
