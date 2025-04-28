@@ -301,7 +301,7 @@ if (update.action === "add" && welcomeActivo) {
     const customMessage = customWelcomes[update.id];
 
     // Obtener foto de perfil (o grupo si falla)
-    const red = await global.getRandomRed();
+    /*const red = await global.getRandomRed();
 console.log(red);
   const im = await global.getRandomIcon();
 if (im) {
@@ -316,7 +316,7 @@ if (im) {
         profilePicUrl = im;
       }
     }
-}
+}*/
     if (customMessage) {
       // Enviar mensaje personalizado
      /*await sock.sendMessage(update.id, {
@@ -324,7 +324,21 @@ if (im) {
         caption: `👋 ${mention}\n\n${customMessage}`,
         mentions: [participant]
       });*/
-  
+  const red = await global.getRandomRed();
+console.log(red);
+  const im = await global.getRandomIcon();
+if (im) {
+
+    let profilePicUrl;
+    try {
+      profilePicUrl = await sock.profilePictureUrl(participant, "image");
+    } catch (err) {
+      try {
+        profilePicUrl = await sock.profilePictureUrl(update.id, "image");
+      } catch {
+        profilePicUrl = im;
+      }
+    }
   await sock.sendMessage(update.id, {
             text: `👋🏻 ¡Hola!${mention}\n\n${customMessage}᪲`,
             contextInfo: {
@@ -346,7 +360,7 @@ if (im) {
                 sourceUrl: red
               }
             }
-          }, { quoted: null });
+          }, { quoted: null })};
   
     } else {
       // Elegir mensaje aleatorio
@@ -354,6 +368,21 @@ if (im) {
       const option = Math.random();*/
 
       if (option < 0.33) {
+const red = await global.getRandomRed();
+console.log(red);
+  const im = await global.getRandomIcon();
+if (im) {
+
+    let profilePicUrl;
+    try {
+      profilePicUrl = await sock.profilePictureUrl(participant, "image");
+    } catch (err) {
+      try {
+        profilePicUrl = await sock.profilePictureUrl(update.id, "image");
+      } catch {
+        profilePicUrl = im;
+      }
+    }
         await sock.sendMessage(update.id, {
             text: `°   /)🎩/)
 (｡•ㅅ•｡) *𖹭︩︪𝚆꯭᪶۫۫͝𝙴꯭᪶͡𝙻᪶۫۫͝𝙲꯭᪶֟፟፝͡𝙾᪶۫۫͝𝙼꯭᪶͡𝙴᪶𖹭︩︪*
@@ -379,7 +408,7 @@ if (im) {
                 sourceUrl: red
               }
             }
-          }, { quoted: null });
+          }, { quoted: null })};
       } else if (option < 0.66) {
         let groupDesc = "";
         try {
@@ -425,6 +454,21 @@ if (im) {
         caption: `👋 ${mention}\n\n${mensajeTexto}`,
         mentions: [participant]
       });*/
+const red = await global.getRandomRed();
+console.log(red);
+  const im = await global.getRandomIcon();
+if (im) {
+
+    let profilePicUrl;
+    try {
+      profilePicUrl = await sock.profilePictureUrl(participant, "image");
+    } catch (err) {
+      try {
+        profilePicUrl = await sock.profilePictureUrl(update.id, "image");
+      } catch {
+        profilePicUrl = im;
+      }
+    }
   await sock.sendMessage(update.id, {
             text: `👋🏻 Adiós ${mention}`,
             contextInfo: {
@@ -446,7 +490,7 @@ if (im) {
                 sourceUrl: red
               }
             }
-          }, { quoted: null });
+          }, { quoted: null })};
       
     } else {
       await sock.sendMessage(update.id, {
