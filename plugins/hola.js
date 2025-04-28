@@ -1,10 +1,25 @@
-const axios = require('axios');
+const fs = require("fs");
+const chalk = require("chalk");
+const { isOwner, setPrefix, allowedPrefixes } = require("./config");
+const axios = require("axios");
 const fetch = require("node-fetch");
-
-const handler = async (msg, { conn, sock }) => {
+const FormData = require("form-data");
+const { downloadContentFromMessage } = require("@whiskeysockets/baileys");
+const os = require("os");
+const { execSync } = require("child_process");
+const path = require("path");
+const { imageToWebp, videoToWebp, writeExifImg, writeExifVid, writeExif, toAudio } = require('./libs/fuctions');
+const activeSessions = new Set();
+const stickersDir = "./stickers";
+const stickersFile = "./stickers.json";
+function isUrl(string) {
+  const regex = /^(https?:\/\/[^\s]+)/g;
+  return regex.test(string);
+}
+const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
   const thumbnail = await (await fetch(`https://files.catbox.moe/ztexr8.jpg`)).buffer();
-  sock.sendMessage(chatId, {
+  conn.sendMessage(chatId, {
         text: 'test', 
         contextInfo: {
             mentionedJid: [],
