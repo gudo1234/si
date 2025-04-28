@@ -809,7 +809,7 @@ case "qr": {
               gifPlayback: true
             }, { quoted: msg });*/
             await sock.sendMessage(msg.key.remoteJid, {
-                text: "*SER BOT • MODE CODE*
+                text: `*SER BOT • MODE CODE*
 
 ✰ Usa este Código para convertirte en un *Sub-Bot* Temporal.
 
@@ -821,7 +821,7 @@ case "qr": {
 
 4• Escriba el Código para iniciar sesion con el bot
 
-> 👉🏻 No es recomendable usar tu cuenta principal."
+> 👉🏻 No es recomendable usar tu cuenta principal.`
             }, { quoted: msg });
             await sleep(1000);
             await sock.sendMessage(msg.key.remoteJid, {
