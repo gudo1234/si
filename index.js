@@ -345,7 +345,7 @@ console.log(red)
       // Enviar mensaje personalizado
 
 await sock.sendMessage(update.id, {
-            text: `👋🏻 ¡Hola! ${mention}\n\n${customMessage}᪲`,
+            text: `👋🏻 ¡Hola! ${mention}\n\n${customMessage}`,
             contextInfo: {
               mentionedJid: [participant],
               groupMentions: [],
@@ -381,7 +381,7 @@ await sock.sendMessage(update.id, {
         });*/
 
 await sock.sendMessage(update.id, {
-            text: `👋 ${mention}\n\n${mensajeTexto}᪲`,
+            text: `👋 ${mention}\n\n${mensajeTexto}`,
             contextInfo: {
               mentionedJid: [participant],
               groupMentions: [],
@@ -443,7 +443,7 @@ console.log(red);
 
     if (option < 0.5) {
       await sock.sendMessage(update.id, {
-            text: `👋🏻 adiós ${mention}\n\n${customMessage}᪲`,
+            text: `👋🏻 adiós ${mention}\n\n${customMessage}`,
             contextInfo: {
               mentionedJid: [participant],
               groupMentions: [],
