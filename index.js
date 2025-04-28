@@ -2,7 +2,7 @@
 let canalId = ["120363285614743024@newsletter"];  
 let canalNombre = ["🤖⃧►iʑυвöτ◃2.0▹"]
   function setupConnection(conn) {
-  conn.sendMessage2 = async (chat, content, m, msg, options = {}) => {
+  conn.sendMessage2 = async (chat, content, m, options = {}) => {
     const firstChannel = { 
       id: canalId[0], 
       nombre: canalNombre[0] 
@@ -322,7 +322,6 @@ if (update.action === "add" && welcomeActivo) {
   for (const participant of update.participants) {
     const mention = `@${participant.split("@")[0]}`;
     const customMessage = customWelcomes[update.id];
-const chatId = msg.key.remoteJid;
     // Obtener foto de perfil (o grupo si falla)
     let profilePicUrl;
     try {
@@ -342,7 +341,7 @@ const chatId = msg.key.remoteJid;
         caption: `👋 ${mention}\n\n${customMessage}`,
         mentions: [participant]
       });*/
-  await sock.sendMessage(chatId, {
+  await sock.sendMessage2(update.id, {
     text: `👋 ${mention}\n\n${customMessage}`, 
     contextInfo: {
       mentionedJid: [participant],
