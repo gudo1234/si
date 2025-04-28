@@ -442,7 +442,7 @@ console.log(red);
       profilePicUrl = im;
     }
 
-    if (option < 0.5)
+    if (option < 0.5) {
     if (im) {
 
       await sock.sendMessage(update.id, {
