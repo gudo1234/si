@@ -474,7 +474,7 @@ console.log(red);
       });
     }*/
   }
-}
+
 // **************** FIN LÓGICA BIENVENIDA/DESPEDIDA ****************
     // **************** FIN LÓGICA BIENVENIDA/DESPEDIDA ****************
 
