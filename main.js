@@ -4288,8 +4288,8 @@ await sock.sendMessage2(
       msg
     );
   }
-  break;*/
-}
+  break;
+}*/
 case 'menugrupo': {
   try {
     await sock.sendMessage(msg.key.remoteJid, {
