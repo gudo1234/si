@@ -67,7 +67,7 @@ let c = 'https://whatsapp.com/channel/0029VaXHNMZL7UVTeseuqw3H'
 let g = 'https://chat.whatsapp.com/E7FwA25TmvS2ncJragtbYV'
 let i = 'https://www.instagram.com/edar504__'
 let t = 'https://www.tiktok.com/@edar_xd'
-//global.redes = [c, g, i, t].getRandom()
+global.redes = [c, g, i, t]
 global.icono = [ 
 'https://files.catbox.moe/ztexr8.jpg',
 'https://files.catbox.moe/fd7x3t.jpg',
@@ -87,7 +87,7 @@ global.icono = [
 'https://files.catbox.moe/f28poz.jpg',
 'https://files.catbox.moe/dpx2s1.jpg',
 'https://files.catbox.moe/wg1vbo.jpg',
-'https://files.catbox.moe/grk81s.jpg'].getRandom()
+'https://files.catbox.moe/grk81s.jpg']
 //------------------------------------------------
 
 // 🔄 Exportar configuraciones
