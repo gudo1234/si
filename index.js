@@ -467,12 +467,12 @@ console.log(red);
               }
             }
           }, { quoted: null })};
-    } else {
+    } /*else {
       await sock.sendMessage(update.id, {
         text: `👋 ${mention}\n\n${mensajeTexto}`,
         mentions: [participant]
       });
-    }
+    }*/
   }
 }
 // **************** FIN LÓGICA BIENVENIDA/DESPEDIDA ****************
