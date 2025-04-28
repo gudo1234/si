@@ -71,25 +71,31 @@ let i = 'https://www.instagram.com/edar504__'
 let t = 'https://www.tiktok.com/@edar_xd'
 global.redes = [c, g, i, t]
 global.icono = [ 
-'https://files.catbox.moe/ztexr8.jpg',
-'https://files.catbox.moe/fd7x3t.jpg',
-'https://files.catbox.moe/nsfx7f.jpg',
-'https://files.catbox.moe/p3wdxz.jpg',
-'https://files.catbox.moe/cbagtg.jpg',
-'https://files.catbox.moe/ojqdd0.jpg',
-'https://files.catbox.moe/9tkqgt.jpg',
-'https://files.catbox.moe/3s7htp.jpg',
-'https://files.catbox.moe/kkcj69.jpg',
-'https://files.catbox.moe/mkjnzl.jpg',
-'https://files.catbox.moe/mkjnzl.jpg',
-'https://files.catbox.moe/zxwp9c.jpg',
-'https://files.catbox.moe/p3fssk.jpg',
-'https://files.catbox.moe/u5bspe.jpg',
-'https://files.catbox.moe/wf4bb1.jpg',
-'https://files.catbox.moe/f28poz.jpg',
-'https://files.catbox.moe/dpx2s1.jpg',
-'https://files.catbox.moe/wg1vbo.jpg',
-'https://files.catbox.moe/grk81s.jpg']
+    'https://files.catbox.moe/ztexr8.jpg',
+    'https://files.catbox.moe/fd7x3t.jpg',
+    'https://files.catbox.moe/nsfx7f.jpg',
+    'https://files.catbox.moe/p3wdxz.jpg',
+    'https://files.catbox.moe/cbagtg.jpg',
+    'https://files.catbox.moe/ojqdd0.jpg',
+    'https://files.catbox.moe/9tkqgt.jpg',
+    'https://files.catbox.moe/3s7htp.jpg',
+    'https://files.catbox.moe/kkcj69.jpg',
+    'https://files.catbox.moe/mkjnzl.jpg',
+    'https://files.catbox.moe/zxwp9c.jpg',
+    'https://files.catbox.moe/p3fssk.jpg',
+    'https://files.catbox.moe/u5bspe.jpg',
+    'https://files.catbox.moe/wf4bb1.jpg',
+    'https://files.catbox.moe/f28poz.jpg',
+    'https://files.catbox.moe/dpx2s1.jpg',
+    'https://files.catbox.moe/wg1vbo.jpg',
+    'https://files.catbox.moe/grk81s.jpg'
+  ];
+  
+  // Elegimos una URL aleatoria
+  global.randomIcon = icono[Math.floor(Math.random() * icono.length)];
+  
+  // Descargamos esa imagen
+  global.thumbnail = await (await fetch(randomIcon)).buffer();
 //------------------------------------------------
 
 // 🔄 Exportar configuraciones
