@@ -43,7 +43,7 @@ const handler = async (msg, { conn }) => {
     }, { quoted: chatId });*/
 await conn.sendMessage2(msg.key.remoteJid,
   {
-    image: { url: "https://files.catbox.moe/ztexr8.jpg" }, 
+    image: { url: icono }, 
     caption: `${msg.pushName}`
   },
   msg
