@@ -2,7 +2,7 @@ const fs = require("fs");
 const axios = require("axios");
 const fetch = require("node-fetch");
 
-const handler = async (msg, { conn, update, sock, activos, wm }) => {
+const handler = async (msg, { conn, update, activos }) => {
   const chatId = update.id;
   const welcomeActivo = activos.welcome?.[chatId];
   const despedidasActivo = activos.despedidas?.[chatId];
@@ -40,9 +40,7 @@ const handler = async (msg, { conn, update, sock, activos, wm }) => {
       });
 
       await conn.sendMessage(chatId, {
-        text: customMessage
-          ? `👋🏻 ¡Bienvenido ${mention}!\n\n${customMessage}`
-          : `👋🏻 ¡Bienvenido al grupo, ${mention}!`,
+        text: `👋🏻 ¡Bienvenido ${mention}!`,
         contextInfo: {
           mentionedJid: [participant],
           groupMentions: [],
@@ -65,11 +63,6 @@ const handler = async (msg, { conn, update, sock, activos, wm }) => {
       }, { quoted: null });
 
     } else if (update.action === "remove" && despedidasActivo) {
-
-      await conn.sendMessage(chatId, {
-        react: { text: "👋", key: msg.key } // Reacción emoji de despedida
-      });
-
       await conn.sendMessage(chatId, {
         text: `👋🏻 Adiós ${mention}`,
         contextInfo: {
