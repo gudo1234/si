@@ -74,24 +74,16 @@ global.redes = [
     'https://www.tiktok.com/@edar_xd'
 ];
 
-// Crear una copia para ir sacando las usadas
-global.redesDisponibles = [...global.redes];
-
-// Función para elegir una red diferente cada vez
-global.getRandomRed = () => {
-    if (global.redesDisponibles.length === 0) {
-        // Si ya usamos todas, reiniciamos la lista
-        global.redesDisponibles = [...global.redes];
+// Función global para obtener una red aleatoriamente
+global.getRandomRed = async () => {
+    const randomUrl = global.redes[Math.floor(Math.random() * global.redes.length)];
+    try {
+        return randomUrl;
+    } catch (error) {
+        console.error("Error obteniendo red social:", error);
+        return null;
     }
-    const randomIndex = Math.floor(Math.random() * global.redesDisponibles.length);
-    const selectedRed = global.redesDisponibles.splice(randomIndex, 1)[0]; // Eliminar y obtener
-    global.red = selectedRed; // Guardar la elegida en global.red
-    return selectedRed;
 };
-
-// Inicializar con una red aleatoria
-global.getRandomRed();
-
 
 // --- ICONOS ---
 global.icono = [
