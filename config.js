@@ -65,8 +65,6 @@ ch6: '120363285614743024@newsletter', //𝐊𝐮𝐫𝐨𝐭𝐚𝐤𝐚-𝐌�
 ch7: '120363285614743024@newsletter', //🪼 FRASES, MEMES Y CONSEJOS PARA TUS ESTADOS 🪼
 ch8: '120363285614743024@newsletter', //🐼 Evolution App
 }
-const axios = require('axios');
-
 // --- REDES ---
 
 const c = 'https://whatsapp.com/channel/0029VaXHNMZL7UVTeseuqw3H';
