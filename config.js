@@ -65,16 +65,35 @@ ch6: '120363285614743024@newsletter', //𝐊𝐮𝐫𝐨𝐭𝐚𝐤𝐚-𝐌�
 ch7: '120363285614743024@newsletter', //🪼 FRASES, MEMES Y CONSEJOS PARA TUS ESTADOS 🪼
 ch8: '120363285614743024@newsletter', //🐼 Evolution App
 }
-// --- REDES ---
 
-const c = 'https://whatsapp.com/channel/0029VaXHNMZL7UVTeseuqw3H';
-const g = 'https://chat.whatsapp.com/E7FwA25TmvS2ncJragtbYV';
-const i = 'https://www.instagram.com/edar504__';
-const t = 'https://www.tiktok.com/@edar_xd';
+// Definir las redes
+global.redes = [
+    'https://whatsapp.com/channel/0029VaXHNMZL7UVTeseuqw3H',
+    'https://chat.whatsapp.com/E7FwA25TmvS2ncJragtbYV',
+    'https://www.instagram.com/edar504__',
+    'https://www.tiktok.com/@edar_xd'
+];
 
-global.redes = [c, g, i, t]
+// Crear una copia para ir sacando las usadas
+global.redesDisponibles = [...global.redes];
+
+// Función para elegir una red diferente cada vez
+global.getRandomRed = () => {
+    if (global.redesDisponibles.length === 0) {
+        // Si ya usamos todas, reiniciamos la lista
+        global.redesDisponibles = [...global.redes];
+    }
+    const randomIndex = Math.floor(Math.random() * global.redesDisponibles.length);
+    const selectedRed = global.redesDisponibles.splice(randomIndex, 1)[0]; // Eliminar y obtener
+    global.red = selectedRed; // Guardar la elegida en global.red
+    return selectedRed;
+};
+
+// Inicializar con una red aleatoria
+global.getRandomRed();
+
+
 // --- ICONOS ---
-
 global.icono = [
     'https://files.catbox.moe/ztexr8.jpg',
     'https://files.catbox.moe/fd7x3t.jpg',
