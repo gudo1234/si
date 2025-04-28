@@ -48,7 +48,7 @@ const handler = async (msg, { conn }) => {
       externalAdReply: {
         title: 'hola',
         body: 'hola mosha',
-        thumbnailUrl: randomIcon, // Aquí ahora sí una imagen válida
+        thumbnailUrl: 'https://www.instagram.com/edar504__', // Aquí ahora sí una imagen válida
         thumbnail,
         sourceUrl: 'https://www.instagram.com/edar504__' // Esto está bien aunque no sea imagen directa
       }
