@@ -89,7 +89,7 @@ global.icono = [
 'https://files.catbox.moe/f28poz.jpg',
 'https://files.catbox.moe/dpx2s1.jpg',
 'https://files.catbox.moe/wg1vbo.jpg',
-'https://files.catbox.moe/grk81s.jpg'].pickRandom(global.icono); 
+'https://files.catbox.moe/grk81s.jpg'].pickRandom();
 //------------------------------------------------
 
 // 🔄 Exportar configuraciones
