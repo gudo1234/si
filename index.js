@@ -357,7 +357,7 @@ if (update.action === "add" && welcomeActivo) {
       renderLargerThumbnail: true
     }
   }
-}, { quoted: null })};
+}, { quoted: null });
   /*await sock.sendMessage(update.id, {
     text: `👋 ${mention}\n\n${customMessage}`, 
     contextInfo: {
