@@ -493,7 +493,8 @@ if (im) {
             }
           }, { quoted: null })};
       
-    } else {
+    }
+    {
       await sock.sendMessage(update.id, {
         text: `👋 adiós ${mention}`,
         mentions: [participant]
