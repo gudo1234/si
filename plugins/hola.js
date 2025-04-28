@@ -8,6 +8,9 @@ const handler = async (msg, { conn }) => {
 console.log(red);
   const im = await global.getRandomIcon();
 if (im) {
+  await sock.sendMessage(msg.key.remoteJid, {
+            react: { text: "⚡", key: msg.key } 
+        });
   await conn.sendMessage(chatId, {
     text: 'test', 
     contextInfo: {
