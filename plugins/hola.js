@@ -4,7 +4,8 @@ const fetch = require("node-fetch");
 
 const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
-  const thumbnail = await (await fetch(`https://files.catbox.moe/ztexr8.jpg`)).buffer();
+  const icono = pickRandom(global.icono); 
+  const thumbnail = await (await fetch(icono)).buffer();
   await conn.sendMessage(chatId, {
         text: 'test', 
         contextInfo: {
@@ -27,13 +28,13 @@ const handler = async (msg, { conn }) => {
             }
         }
     }, { quoted: msg });
-await conn.sendMessage2(msg.key.remoteJid,
+/*await conn.sendMessage2(msg.key.remoteJid,
   {
     image: { url: 'https://files.catbox.moe/ztexr8.jpg' }, 
     caption: `${msg.pushName}`
   },
   msg
-)
+)*/
 }
 handler.command = ['hola'];
 handler.reaction = '🔄';
