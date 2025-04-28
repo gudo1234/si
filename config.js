@@ -90,9 +90,17 @@ global.icono = [
     'https://files.catbox.moe/wg1vbo.jpg',
     'https://files.catbox.moe/grk81s.jpg'
   ];
-  
-  // Elegimos una URL aleatoria
-  
+
+global.getRandomIcon = async () => {
+    const randomUrl = global.icono[Math.floor(Math.random() * global.icono.length)];
+    try {
+        const response = await axios.get(randomUrl, { responseType: 'arraybuffer' });
+        return Buffer.from(response.data);
+    } catch (error) {
+        console.error("Error descargando icono:", error);
+        return null;
+    }
+};
 //------------------------------------------------
 
 // 🔄 Exportar configuraciones
