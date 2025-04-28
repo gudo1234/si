@@ -26,7 +26,7 @@ const handler = async (msg, { conn }) => {
                 sourceUrl: 'https://www.instagram.com/edar504__'
             }
         }
-    }, { quoted: chatId });*/
+    }, { quoted: msg });*/
 await conn.sendMessage2(msg.key.remoteJid,
   {
     image: { url: 'https://files.catbox.moe/ztexr8.jpg' }, 
