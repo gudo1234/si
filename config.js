@@ -72,9 +72,11 @@ const t = 'https://www.tiktok.com/@edar_xd';
 
 global.redes = [c, g, i, t];
 
-global.red = () => {
+global.getRandomRed = () => {
     return global.redes[Math.floor(Math.random() * global.redes.length)];
 };
+
+global.red = global.getRandomRed();
 global.icono = [ 
     'https://files.catbox.moe/ztexr8.jpg',
     'https://files.catbox.moe/fd7x3t.jpg',
