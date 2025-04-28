@@ -1,3 +1,6 @@
+const fs = require("fs");
+const axios = require("axios");
+const fetch = require("node-fetch");
 (async () => {
 let canalId = ["120363285614743024@newsletter"];  
 let canalNombre = ["🤖⃧►iʑυвöτ◃2.0▹"]
