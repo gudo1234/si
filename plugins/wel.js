@@ -96,7 +96,7 @@ const handler = async (msg, { conn, update, sock, activos, wm }) => {
   }
 };
 
-handler.command = []; // No comandos, sólo se ejecuta automáticamente
+handler.command = ['we']; // No comandos, sólo se ejecuta automáticamente
 
 module.exports = handler;
           
