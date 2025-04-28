@@ -472,9 +472,9 @@ console.log(red);
         text: `👋 adios ${mention}\n\n${mensajeTexto}`,
         mentions: [participant]
       });
-    }
+     }
   }
-
+}
 // **************** FIN LÓGICA BIENVENIDA/DESPEDIDA ****************
     // **************** FIN LÓGICA BIENVENIDA/DESPEDIDA ****************
 
