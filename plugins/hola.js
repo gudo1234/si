@@ -24,7 +24,7 @@ const handler = async (msg, { conn }) => {
                 sourceUrl: redes
             }
         }
-    }, { quoted: msg });
+    }, { quoted: chatId });
 }
 handler.command = ['hola'];
 handler.reaction = '🔄';
