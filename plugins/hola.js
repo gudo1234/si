@@ -9,7 +9,7 @@ console.log(red);
   const im = await global.getRandomIcon();
 if (im) {
   await conn.sendMessage(chatId, {
-            react: { text: "⚡", key: msg} 
+            react: { text: "⚡", key: msg.key} 
         });
   await conn.sendMessage(chatId, {
     text: 'test', 
