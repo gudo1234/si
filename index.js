@@ -2,7 +2,7 @@
 let canalId = ["120363285614743024@newsletter"];  
 let canalNombre = ["🤖⃧►iʑυвöτ◃2.0▹"]
   function setupConnection(conn) {
-  conn.sendMessage2 = async (chat, content, m, options = {}) => {
+  conn.sendMessage2 = async (chat, content, m, msg, options = {}) => {
     const firstChannel = { 
       id: canalId[0], 
       nombre: canalNombre[0] 
