@@ -21,8 +21,8 @@ const handler = async (msg, { conn }) => {
             externalAdReply: {
                 title: 'hola',
                 body: 'hola mosha',
-                thumbnailUrl: 'https://files.catbox.moe/ztexr8.jpg',
-                //thumbnail,
+                thumbnailUrl: 'https://www.instagram.com/edar504__',
+                thumbnail,
                 sourceUrl: 'https://www.instagram.com/edar504__'
             }
         }
