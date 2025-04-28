@@ -4,38 +4,58 @@ const fetch = require("node-fetch");
 
 const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
-  const icon = pickRandom(global.icono); 
-  const thumbnail = await (await fetch(icon)).buffer();
+  
+  global.icono = [ 
+    'https://files.catbox.moe/ztexr8.jpg',
+    'https://files.catbox.moe/fd7x3t.jpg',
+    'https://files.catbox.moe/nsfx7f.jpg',
+    'https://files.catbox.moe/p3wdxz.jpg',
+    'https://files.catbox.moe/cbagtg.jpg',
+    'https://files.catbox.moe/ojqdd0.jpg',
+    'https://files.catbox.moe/9tkqgt.jpg',
+    'https://files.catbox.moe/3s7htp.jpg',
+    'https://files.catbox.moe/kkcj69.jpg',
+    'https://files.catbox.moe/mkjnzl.jpg',
+    'https://files.catbox.moe/zxwp9c.jpg',
+    'https://files.catbox.moe/p3fssk.jpg',
+    'https://files.catbox.moe/u5bspe.jpg',
+    'https://files.catbox.moe/wf4bb1.jpg',
+    'https://files.catbox.moe/f28poz.jpg',
+    'https://files.catbox.moe/dpx2s1.jpg',
+    'https://files.catbox.moe/wg1vbo.jpg',
+    'https://files.catbox.moe/grk81s.jpg'
+  ];
+  
+  // Elegimos una URL aleatoria
+  const randomIcon = icono[Math.floor(Math.random() * icono.length)];
+  
+  // Descargamos esa imagen
+  const thumbnail = await (await fetch(randomIcon)).buffer();
+  
   await conn.sendMessage(chatId, {
-        text: 'test', 
-        contextInfo: {
-            mentionedJid: [],
-            groupMentions: [],
-            isForwarded: true,
-            forwardedNewsletterMessageInfo: {
-                newsletterJid: '120363285614743024@newsletter',
-                newsletterName: '🤖⃧►iʑυвöτ◃2.0▹',
-                serverMessageId: 0
-            },
-            businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
-            forwardingScore: false,
-            externalAdReply: {
-                title: 'hola',
-                body: 'hola mosha',
-                thumbnailUrl: 'https://www.instagram.com/edar504__',
-                thumbnail,
-                sourceUrl: 'https://www.instagram.com/edar504__'
-            }
-        }
-    }, { quoted: msg });
-/*await conn.sendMessage2(msg.key.remoteJid,
-  {
-    image: { url: 'https://files.catbox.moe/ztexr8.jpg' }, 
-    caption: `${msg.pushName}`
-  },
-  msg
-)*/
-}
+    text: 'test', 
+    contextInfo: {
+      mentionedJid: [],
+      groupMentions: [],
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: '120363285614743024@newsletter',
+        newsletterName: '🤖⃧►iʑυвöτ◃2.0▹',
+        serverMessageId: 0
+      },
+      businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
+      forwardingScore: 0,
+      externalAdReply: {
+        title: 'hola',
+        body: 'hola mosha',
+        thumbnailUrl: randomIcon, // Aquí ahora sí una imagen válida
+        thumbnail,
+        sourceUrl: 'https://www.instagram.com/edar504__' // Esto está bien aunque no sea imagen directa
+      }
+    }
+  }, { quoted: msg });
+};
+
 handler.command = ['hola'];
 handler.reaction = '🔄';
 
