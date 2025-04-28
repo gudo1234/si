@@ -386,7 +386,7 @@ if (im) {
             text: `°   /)🎩/)
 (｡•ㅅ•｡) *𖹭︩︪𝚆꯭᪶۫۫͝𝙴꯭᪶͡𝙻᪶۫۫͝𝙲꯭᪶֟፟፝͡𝙾᪶۫۫͝𝙼꯭᪶͡𝙴᪶𖹭︩︪*
 ╭∪─∪─────────❤︎₊᪲
-¡Hola!🍷 *${mention}* buenos días/tardes/noches.\n🎉¡Bienvenido a *${metadata.subject}*!\n\n> 🐢Disfruta del grupo, diviértete, no olvides en leer las reglas...
+¡Hola!🍷 *${mention}* buenos días/tardes/noches.\n🎉 \`¡Bienvenido!\`\n\n> 🐢Disfruta del grupo, diviértete, no olvides en leer las reglas...
 ╰────────────❤︎₊᪲`,
             contextInfo: {
               mentionedJid: [participant],
