@@ -322,7 +322,7 @@ if (update.action === "add" && welcomeActivo) {
   for (const participant of update.participants) {
     const mention = `@${participant.split("@")[0]}`;
     const customMessage = customWelcomes[update.id];
-
+const chatId = msg.key.remoteJid;
     // Obtener foto de perfil (o grupo si falla)
     let profilePicUrl;
     try {
@@ -342,7 +342,7 @@ if (update.action === "add" && welcomeActivo) {
         caption: `👋 ${mention}\n\n${customMessage}`,
         mentions: [participant]
       });*/
-  await sock.sendMessage(update.id, {
+  await sock.sendMessage(chatId, {
     text: `👋 ${mention}\n\n${customMessage}`, 
     contextInfo: {
       mentionedJid: [participant],
