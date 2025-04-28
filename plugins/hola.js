@@ -22,9 +22,9 @@ if (imageBuffer) {
       externalAdReply: {
         title: 'hola',
         body: 'hola mosha',
-        thumbnailUrl: 'https://chat.whatsapp.com/HHDvYPActKSDNgMB8bBJ9G',
+        thumbnailUrl: getRandomRed,
         thumbnail: imageBuffer,
-        sourceUrl: 'https://chat.whatsapp.com/HHDvYPActKSDNgMB8bBJ9G'
+        sourceUrl: getRandomRed
       }
     }
   }, { quoted: msg })};
