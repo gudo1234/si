@@ -374,11 +374,11 @@ await sock.sendMessage(update.id, {
       if (option < 0.33) {
 if (im) {
 
-        await sock.sendMessage(update.id, {
+        /*await sock.sendMessage(update.id, {
           image: { url: profilePicUrl },
           caption: `👋 ${mention}\n\n${mensajeTexto}`,
           mentions: [participant]
-        });
+        });*/
 
 await sock.sendMessage(update.id, {
             text: `👋 ${mention}\n\n${mensajeTexto}᪲`,
@@ -467,12 +467,12 @@ console.log(red);
               }
             }
           }, { quoted: null })};
-    } /*else {
+    } else {
       await sock.sendMessage(update.id, {
-        text: `👋 ${mention}\n\n${mensajeTexto}`,
+        text: `👋 adios ${mention}\n\n${mensajeTexto}`,
         mentions: [participant]
       });
-    }*/
+    }
   }
 
 // **************** FIN LÓGICA BIENVENIDA/DESPEDIDA ****************
