@@ -4,7 +4,8 @@ const fetch = require("node-fetch");
 
 const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
-  
+  const imageBuffer = await global.getRandomIcon();
+if (imageBuffer) {
   await conn.sendMessage(chatId, {
     text: 'test', 
     contextInfo: {
@@ -26,7 +27,7 @@ const handler = async (msg, { conn }) => {
         sourceUrl: 'https://chat.whatsapp.com/HHDvYPActKSDNgMB8bBJ9G'
       }
     }
-  }, { quoted: msg });
+  }, { quoted: msg })};
 
 await conn.sendMessage(chatId, { image: imageBuffer, caption: '🪐xd' });
 };
