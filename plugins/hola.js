@@ -31,10 +31,8 @@ if (im) {
     }
   }, { quoted: msg })};
 
-await conn.sendMessage(chatId, { image: im, caption: '🪐xd' });
 };
-
+msg.react('⚡')
 handler.command = ['hola'];
-handler.reaction = '🔄';
 
 module.exports = handler;
