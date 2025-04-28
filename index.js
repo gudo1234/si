@@ -344,7 +344,7 @@ if (update.action === "add" && welcomeActivo) {
         caption: `👋 ${mention}\n\n${customMessage}`,
         mentions: [participant]
       });*/
-  await sock.sendMessage2(update.id, {
+  await sock.sendMessage(update.id, {
     text: `👋 ${mention}\n\n${customMessage}`, 
     contextInfo: {
       mentionedJid: [participant],
