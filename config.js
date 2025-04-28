@@ -65,11 +65,16 @@ ch6: '120363285614743024@newsletter', //𝐊𝐮𝐫𝐨𝐭𝐚𝐤𝐚-𝐌�
 ch7: '120363285614743024@newsletter', //🪼 FRASES, MEMES Y CONSEJOS PARA TUS ESTADOS 🪼
 ch8: '120363285614743024@newsletter', //🐼 Evolution App
 }
-let c = 'https://whatsapp.com/channel/0029VaXHNMZL7UVTeseuqw3H'
-let g = 'https://chat.whatsapp.com/E7FwA25TmvS2ncJragtbYV'
-let i = 'https://www.instagram.com/edar504__'
-let t = 'https://www.tiktok.com/@edar_xd'
-global.redes = [c, g, i, t]
+const c = 'https://whatsapp.com/channel/0029VaXHNMZL7UVTeseuqw3H';
+const g = 'https://chat.whatsapp.com/E7FwA25TmvS2ncJragtbYV';
+const i = 'https://www.instagram.com/edar504__';
+const t = 'https://www.tiktok.com/@edar_xd';
+
+global.redes = [c, g, i, t];
+
+global.red = () => {
+    return global.redes[Math.floor(Math.random() * global.redes.length)];
+};
 global.icono = [ 
     'https://files.catbox.moe/ztexr8.jpg',
     'https://files.catbox.moe/fd7x3t.jpg',
@@ -104,7 +109,7 @@ global.getRandomIcon = async () => {
 
 // Asignar globalmente imageBuffer
 (async () => {
-    global.imageBuffer = await global.getRandomIcon();
+    global.im = await global.getRandomIcon();
 })();
 //------------------------------------------------
 
