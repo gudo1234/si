@@ -339,12 +339,12 @@ if (update.action === "add" && welcomeActivo) {
 
     if (customMessage) {
       // Enviar mensaje personalizado
-      /*await sock.sendMessage(update.id, {
+      await sock.sendMessage(update.id, {
         image: { url: profilePicUrl },
         caption: `👋 ${mention}\n\n${customMessage}`,
         mentions: [participant]
-      });*/
-  await conn.sendMessage(update.id, {
+      });
+  /*await conn.sendMessage(update.id, {
   text: `👋 ${mention}\n\n${customMessage}`,
   contextInfo: {
     externalAdReply: {
@@ -379,7 +379,7 @@ if (update.action === "add" && welcomeActivo) {
         sourceUrl: 'https://www.instagram.com/edar504__'
       }
     }
-  }, { quoted: null })
+  }, { quoted: null })*/
     } else {
       // Elegir mensaje aleatorio
       const mensajeTexto = welcomeTexts[Math.floor(Math.random() * welcomeTexts.length)];
