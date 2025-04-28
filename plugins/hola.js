@@ -54,6 +54,12 @@ const handler = async (msg, { conn }) => {
       }
     }
   }, { quoted: msg });
+
+const imageBuffer = await global.getRandomIcon();
+if (imageBuffer) {
+    await conn.sendMessage(chatId, { image: imageBuffer, caption: '🪐' });
+}
+
 };
 
 handler.command = ['hola'];
