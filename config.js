@@ -1,5 +1,7 @@
 const fs = require("fs");
 const chalk = require("chalk");
+const axios = require("axios");
+const fetch = require("node-fetch");
 
 // 📂 Ruta del archivo de configuración
 const configFilePath = "./config.json";
@@ -87,7 +89,7 @@ global.icono = [
 'https://files.catbox.moe/f28poz.jpg',
 'https://files.catbox.moe/dpx2s1.jpg',
 'https://files.catbox.moe/wg1vbo.jpg',
-'https://files.catbox.moe/grk81s.jpg']
+'https://files.catbox.moe/grk81s.jpg'].pickRandom(global.icono); 
 //------------------------------------------------
 
 // 🔄 Exportar configuraciones
