@@ -4,8 +4,8 @@ const fetch = require("node-fetch");
 const { isOwner, setPrefix, allowedPrefixes } = require("./config");
 const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
-  const icono = pickRandom(global.icono); 
-  const thumbnail = await (await fetch(icono)).buffer();
+  const icon = pickRandom(global.icono); 
+  const thumbnail = await (await fetch(icon)).buffer();
   await conn.sendMessage(chatId, {
         text: 'test', 
         contextInfo: {
