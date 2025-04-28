@@ -291,29 +291,6 @@ let customWelcomes = {};
 if (fs.existsSync(welcomePath)) {
   customWelcomes = JSON.parse(fs.readFileSync(welcomePath, "utf-8"));
 }
-    // Textos integrados para bienvenida y despedida
-    const welcomeTexts = [
-      "¡Bienvenido(a)! el Bot te recibe con los brazos abiertos 🤗✨. ¡Disfruta y comparte!",
-      "¡Hola! el Bot te abraza con alegría 🎉🤖. ¡Prepárate para grandes aventuras!",
-      "¡Saludos! el Bot te da la bienvenida para que descubras ideas brillantes 🚀🌟.",
-      "¡Bienvenido(a) al grupo! el Bot te invita a explorar un mundo de posibilidades 🤩💡.",
-      "¡Qué alegría verte! el Bot te recibe y te hace sentir en casa 🏠💖.",
-      "¡Hola! Gracias por unirte; el Bot te saluda con entusiasmo 🎊😊.",
-      "¡Bienvenido(a)! Cada nuevo miembro es una chispa de inspiración en el Bot 🔥✨.",
-      "¡Saludos cordiales! el Bot te envía un abrazo virtual 🤗💙.",
-      "¡Bienvenido(a)! Únete a la experiencia el Bot y comparte grandes ideas 🎉🌈.",
-      "¡Hola! el Bot te da la bienvenida para vivir experiencias inolvidables 🚀✨!"
-    ];
-    const farewellTexts = [
-      "¡Adiós! el Bot te despide con gratitud y te desea éxitos en tus nuevos caminos 👋💫.",
-      "Hasta pronto, desde el Bot te deseamos lo mejor y esperamos verte de nuevo 🌟🙏.",
-      "¡Chao! el Bot te despide, pero siempre tendrás un lugar si decides regresar 🤗💔.",
-      "Nos despedimos con cariño; gracias por compartir momentos en con el Bot 🏠❤️.",
-      "¡Adiós, amigo(a)! el Bot te manda un abrazo y te desea mucha suerte 🤝🌟.",
-      "Hasta luego, y gracias por haber sido parte de nuestra comunidad 🚀💙.",
-      "Chao, que tus futuros proyectos sean tan brillantes como tú 🌟✨. el Bot te recuerda siempre.",
-      "¡Nos vemos! el Bot te dice adiós con un corazón lleno de gratitud 🤗❤️.",
-      "¡Adiós! Que tu camino esté lleno de éxitos, te lo desea el Bot 🚀🌟."];
 
 // Procesar según la acción: "add" (entrada) o "remove" (salida)
 
@@ -324,6 +301,11 @@ if (update.action === "add" && welcomeActivo) {
     const customMessage = customWelcomes[update.id];
 
     // Obtener foto de perfil (o grupo si falla)
+    const red = await global.getRandomRed();
+console.log(red);
+  const im = await global.getRandomIcon();
+if (im) {
+
     let profilePicUrl;
     try {
       profilePicUrl = await sock.profilePictureUrl(participant, "image");
@@ -331,29 +313,74 @@ if (update.action === "add" && welcomeActivo) {
       try {
         profilePicUrl = await sock.profilePictureUrl(update.id, "image");
       } catch {
-        profilePicUrl = "https://files.catbox.moe/mkjnzl.jpg";
+        profilePicUrl = im;
       }
     }
-
+}
     if (customMessage) {
       // Enviar mensaje personalizado
-      await sock.sendMessage(update.id, {
+     /*await sock.sendMessage(update.id, {
         image: { url: profilePicUrl },
         caption: `👋 ${mention}\n\n${customMessage}`,
         mentions: [participant]
-      });
+      });*/
+  
+  await sock.sendMessage(update.id, {
+            text: `👋🏻 ¡Hola! ${mention}\n\n${customMessage}᪲`,
+            contextInfo: {
+              mentionedJid: [participant],
+              groupMentions: [],
+              isForwarded: true,
+              forwardedNewsletterMessageInfo: {
+                newsletterJid: '120363285614743024@newsletter',
+                newsletterName: wm,
+                serverMessageId: 0
+              },
+              businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
+              forwardingScore: 0,
+              externalAdReply: {
+                title: wm,
+                body: 'izuBot te da la bienvenida',
+                thumbnailUrl: red,
+                thumbnail: im,
+                sourceUrl: red
+              }
+            }
+          }, { quoted: null });
+  
     } else {
       // Elegir mensaje aleatorio
-      const mensajeTexto = welcomeTexts[Math.floor(Math.random() * welcomeTexts.length)];
-      const option = Math.random();
+      /*const mensajeTexto = welcomeTexts[Math.floor(Math.random() * welcomeTexts.length)];
+      const option = Math.random();*/
 
       if (option < 0.33) {
         await sock.sendMessage(update.id, {
-          image: { url: profilePicUrl },
-          caption: `👋 ${mention}\n\n${mensajeTexto}`,
-          mentions: [participant]
-        });
-      } else if (option < 0.66) {
+            text: `°   /)🎩/)
+(｡•ㅅ•｡) *𖹭︩︪𝚆꯭᪶۫۫͝𝙴꯭᪶͡𝙻᪶۫۫͝𝙲꯭᪶֟፟፝͡𝙾᪶۫۫͝𝙼꯭᪶͡𝙴᪶𖹭︩︪*
+╭∪─∪─────────❤︎₊᪲
+¡Hola!🍷 *${mention}* buenos días/tardes/noches.\n🎉¡Bienvenido a *${metadata.subject}*!\n\n> 🐢Disfruta del grupo, diviértete, no olvides en leer las reglas...
+╰────────────❤︎₊᪲`,
+            contextInfo: {
+              mentionedJid: [participant],
+              groupMentions: [],
+              isForwarded: true,
+              forwardedNewsletterMessageInfo: {
+                newsletterJid: '120363285614743024@newsletter',
+                newsletterName: wm,
+                serverMessageId: 0
+              },
+              businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
+              forwardingScore: 0,
+              externalAdReply: {
+                title: wm,
+                body: 'izuBot te da la bienvenida',
+                thumbnailUrl: red,
+                thumbnail: im,
+                sourceUrl: red
+              }
+            }
+          }, { quoted: null });
+      } /*else if (option < 0.66) {
         let groupDesc = "";
         try {
           const metadata = await sock.groupMetadata(update.id);
@@ -371,7 +398,7 @@ if (update.action === "add" && welcomeActivo) {
           text: `👋 ${mention}\n\n${mensajeTexto}`,
           mentions: [participant]
         });
-      }
+      }*/
     }
   }
 } else if (update.action === "remove" && despedidasActivo) {
@@ -381,25 +408,52 @@ if (update.action === "add" && welcomeActivo) {
     const mensajeTexto = farewellTexts[Math.floor(Math.random() * farewellTexts.length)];
     const option = Math.random();
 
+const red = await global.getRandomRed();
+console.log(red);
+  const im = await global.getRandomIcon();
+if (im) {
     let profilePicUrl;
     try {
       profilePicUrl = await sock.profilePictureUrl(participant, "image");
     } catch (err) {
-      profilePicUrl = "https://files.catbox.moe/mkjnzl.jpg";
+      profilePicUrl = im;
     }
-
+}
     if (option < 0.5) {
-      await sock.sendMessage(update.id, {
+      /*await sock.sendMessage(update.id, {
         image: { url: profilePicUrl },
         caption: `👋 ${mention}\n\n${mensajeTexto}`,
         mentions: [participant]
-      });
-    } else {
+      });*/
+  await sock.sendMessage(update.id, {
+            text: `👋🏻 ¡Hola! ${mention}`,
+            contextInfo: {
+              mentionedJid: [participant],
+              groupMentions: [],
+              isForwarded: true,
+              forwardedNewsletterMessageInfo: {
+                newsletterJid: '120363285614743024@newsletter',
+                newsletterName: wm,
+                serverMessageId: 0
+              },
+              businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
+              forwardingScore: 0,
+              externalAdReply: {
+                title: wm,
+                body: 'izuBot te da la bienvenida',
+                thumbnailUrl: red,
+                thumbnail: im,
+                sourceUrl: red
+              }
+            }
+          }, { quoted: null });
+      
+    } /*else {
       await sock.sendMessage(update.id, {
         text: `👋 ${mention}\n\n${mensajeTexto}`,
         mentions: [participant]
       });
-    }
+    }*/
   }
 }
 // **************** FIN LÓGICA BIENVENIDA/DESPEDIDA ****************
