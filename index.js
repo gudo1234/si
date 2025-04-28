@@ -422,7 +422,8 @@ if (im) {
           text: `👋 ${mention}\n\n${mensajeTexto}${groupDesc}`,
           mentions: [participant]
         });
-      } else {
+      } 
+      {
         await sock.sendMessage(update.id, {
           text: `👋 ${mention}\n\n${mensajeTexto}`,
           mentions: [participant]
