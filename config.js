@@ -105,10 +105,5 @@ global.getRandomIcon = async () => {
         return null;
     }
 };
-
-// Asignar globalmente imageBuffer
-(async () => {
-    global.imageBuffer = await global.getRandomIcon();
-})();
 // 🔄 Exportar configuraciones
 module.exports = { isOwner: global.isOwner, setPrefix: global.setPrefix, allowedPrefixes: global.allowedPrefixes };
