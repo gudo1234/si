@@ -35,7 +35,7 @@ if (im) {
   }, { quoted: msg })};
 
 };
-chatId.react('⚡')
+
 handler.command = ['hola'];
 
 module.exports = handler;
