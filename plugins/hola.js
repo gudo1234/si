@@ -4,9 +4,9 @@ const fetch = require("node-fetch");
 
 const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
-  /*const red = await global.getRandomRed();
-console.log(red);*/
-  const imageBuffer = await global.getRandomIcon();
+  const red = await global.getRandomRed();
+console.log(red);
+  const im = await global.getRandomIcon();
 if (imageBuffer) {
   await conn.sendMessage(chatId, {
     text: 'test', 
@@ -25,7 +25,7 @@ if (imageBuffer) {
         title: 'hola',
         body: 'hola mosha',
         thumbnailUrl: red,
-        thumbnail: imageBuffer,
+        thumbnail: im,
         sourceUrl: red
       }
     }
