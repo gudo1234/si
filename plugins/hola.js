@@ -19,7 +19,7 @@ function isUrl(string) {
 const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
   const thumbnail = await (await fetch(`https://files.catbox.moe/ztexr8.jpg`)).buffer();
-  conn.sendMessage(chatId, {
+  /*conn.sendMessage(chatId, {
         text: 'test', 
         contextInfo: {
             mentionedJid: [],
@@ -40,7 +40,14 @@ const handler = async (msg, { conn }) => {
                 sourceUrl: 'https://www.instagram.com/edar504__'
             }
         }
-    }, { quoted: chatId });
+    }, { quoted: chatId });*/
+await sock.sendMessage2(msg.key.remoteJid,
+  {
+    image: { url: "https://files.catbox.moe/ztexr8.jpg" }, 
+    caption: `${msg.pushName}`
+  },
+  msg
+)
 }
 handler.command = ['hola'];
 handler.reaction = '🔄';
