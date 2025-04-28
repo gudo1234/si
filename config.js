@@ -65,18 +65,38 @@ ch6: '120363285614743024@newsletter', //𝐊𝐮𝐫𝐨𝐭𝐚𝐤𝐚-𝐌�
 ch7: '120363285614743024@newsletter', //🪼 FRASES, MEMES Y CONSEJOS PARA TUS ESTADOS 🪼
 ch8: '120363285614743024@newsletter', //🐼 Evolution App
 }
+// config.js
+
+// Declarar los enlaces individuales
 const c = 'https://whatsapp.com/channel/0029VaXHNMZL7UVTeseuqw3H';
 const g = 'https://chat.whatsapp.com/E7FwA25TmvS2ncJragtbYV';
 const i = 'https://www.instagram.com/edar504__';
 const t = 'https://www.tiktok.com/@edar_xd';
 
+// Guardar en una lista global
 global.redes = [c, g, i, t];
 
+// Última red usada para evitar repetir
+global.lastRed = null;
+
+// Función global para elegir aleatoriamente sin repetir la misma
 global.getRandomRed = () => {
-    return global.redes[Math.floor(Math.random() * global.redes.length)];
+    if (global.redes.length === 0) return null;
+
+    let nuevaRed;
+    do {
+        nuevaRed = global.redes[Math.floor(Math.random() * global.redes.length)];
+    } while (nuevaRed === global.lastRed && global.redes.length > 1);
+
+    global.lastRed = nuevaRed;
+    return nuevaRed;
 };
 
+// Al iniciar, elegimos una red aleatoria
 global.red = global.getRandomRed();
+
+// --- ICONOS ---
+
 global.icono = [ 
     'https://files.catbox.moe/ztexr8.jpg',
     'https://files.catbox.moe/fd7x3t.jpg',
@@ -96,8 +116,9 @@ global.icono = [
     'https://files.catbox.moe/dpx2s1.jpg',
     'https://files.catbox.moe/wg1vbo.jpg',
     'https://files.catbox.moe/grk81s.jpg'
-  ];
+];
 
+// Función para obtener ícono aleatorio
 global.getRandomIcon = async () => {
     const randomUrl = global.icono[Math.floor(Math.random() * global.icono.length)];
     try {
@@ -109,7 +130,7 @@ global.getRandomIcon = async () => {
     }
 };
 
-// Asignar globalmente imageBuffer
+// Asignar el primer icono globalmente
 (async () => {
     global.im = await global.getRandomIcon();
 })();
