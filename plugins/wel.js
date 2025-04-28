@@ -4,10 +4,10 @@ const fetch = require("node-fetch");
 
 const handler = async (msg, { conn, update, activos }) => {
   const chatId = msg.key.remoteJid;
-  const welcomeActivo = activos.welcome?.[chatId];
-  const despedidasActivo = activos.despedidas?.[chatId];
+  //const welcomeActivo = activos.welcome?.[chatId];
+  //const despedidasActivo = activos.despedidas?.[chatId];
 
-  if (!welcomeActivo && !despedidasActivo) return;
+ // if (!welcomeActivo && !despedidasActivo) return;
 
   const welcomePath = "./welcome.json";
   let customWelcomes = {};
