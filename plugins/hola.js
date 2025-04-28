@@ -1,7 +1,7 @@
 const fs = require("fs");
 const axios = require("axios");
 const fetch = require("node-fetch");
-const config = require("./config");
+
 const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
   const icon = pickRandom(global.icono); 
