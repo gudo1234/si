@@ -2,7 +2,6 @@ const axios = require('axios');
 
 const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
-  const thumbnail = await (await fetch(icono)).buffer();
   conn.sendMessage(chatId, {
         text: wm, 
         contextInfo: {
@@ -20,7 +19,7 @@ const handler = async (msg, { conn }) => {
                 title: 'hola',
                 body: 'IzuBot te da la bienvenida',
                 thumbnailUrl: redes,
-                thumbnail,
+                thumbnail 'https://files.catbox.moe/ztexr8.jpg',
                 sourceUrl: redes
             }
         }
