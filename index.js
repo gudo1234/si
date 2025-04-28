@@ -345,6 +345,20 @@ if (update.action === "add" && welcomeActivo) {
         mentions: [participant]
       });*/
   await sock.sendMessage(update.id, {
+  text: `👋 ${mention}\n\n${customMessage}`,
+  contextInfo: {
+    externalAdReply: {
+      title: wm,
+      body: 'izuBot te da la bienvenida',
+      thumbnailUrl: 'https://www.instagram.com/edar504__',
+      thumbnail: profilePicUrl,
+      sourceUrl: 'https://www.instagram.com/edar504__',
+      mediaType: 1,
+      renderLargerThumbnail: true
+    }
+  }
+}, { quoted: null })};
+  /*await sock.sendMessage(update.id, {
     text: `👋 ${mention}\n\n${customMessage}`, 
     contextInfo: {
       mentionedJid: [participant],
@@ -365,7 +379,7 @@ if (update.action === "add" && welcomeActivo) {
         sourceUrl: 'https://www.instagram.com/edar504__'
       }
     }
-  }, { quoted: null })
+  }, { quoted: null })*/
     } else {
       // Elegir mensaje aleatorio
       const mensajeTexto = welcomeTexts[Math.floor(Math.random() * welcomeTexts.length)];
