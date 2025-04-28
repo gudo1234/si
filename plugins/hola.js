@@ -21,15 +21,22 @@ const handler = async (msg, { conn }) => {
       externalAdReply: {
         title: 'hola',
         body: 'hola mosha',
-        thumbnailUrl: 'https://www.instagram.com/edar504__', // Aquí ahora sí una imagen válida
-        thumbnail: imageBuffer,
-        sourceUrl: 'https://www.instagram.com/edar504__' // Esto está bien aunque no sea imagen directa
+        thumbnailUrl: red,
+        thumbnail: im,
+        sourceUrl: red
       }
     }
   }, { quoted: msg });
 
-    await conn.sendMessage(chatId, { image: imageBuffer, caption: '🪐' });
-
+//await conn.sendMessage(chatId, { image: im, caption: '🪐xd' });
+await conn.sendMessage(
+  chatId,
+  {
+    image: { url: im }, 
+    caption: '💀'
+  },
+  msg 
+)
 };
 
 handler.command = ['hola'];
