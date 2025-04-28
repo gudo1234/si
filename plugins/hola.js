@@ -21,9 +21,9 @@ const handler = async (msg, { conn }) => {
       externalAdReply: {
         title: 'hola',
         body: 'hola mosha',
-        thumbnailUrl: g,
+        thumbnailUrl: 'https://chat.whatsapp.com/HHDvYPActKSDNgMB8bBJ9G',
         thumbnail: imageBuffer,
-        sourceUrl: g
+        sourceUrl: 'https://chat.whatsapp.com/HHDvYPActKSDNgMB8bBJ9G'
       }
     }
   }, { quoted: msg });
