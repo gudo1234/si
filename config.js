@@ -92,10 +92,7 @@ global.icono = [
   ];
   
   // Elegimos una URL aleatoria
-  global.randomIcon = icono[Math.floor(Math.random() * icono.length)];
   
-  // Descargamos esa imagen
-  global.thumbnail = await (await fetch(randomIcon)).buffer();
 //------------------------------------------------
 
 // 🔄 Exportar configuraciones
