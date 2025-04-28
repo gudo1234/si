@@ -32,7 +32,7 @@ if (im) {
   }, { quoted: msg })};
 
 };
-msg.react('⚡')
+chatId.react('⚡')
 handler.command = ['hola'];
 
 module.exports = handler;
