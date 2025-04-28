@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 const handler = async (msg, { conn, sock }) => {
   const chatId = msg.key.remoteJid;
   const thumbnail = await (await fetch(`https://files.catbox.moe/ztexr8.jpg`)).buffer();
-  sock.sendMessage2(chatId, {
+  sock.sendMessage(chatId, {
         text: 'test', 
         contextInfo: {
             mentionedJid: [],
