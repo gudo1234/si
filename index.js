@@ -366,8 +366,7 @@ if (im) {
       // Elegir mensaje aleatorio
       /*const mensajeTexto = welcomeTexts[Math.floor(Math.random() * welcomeTexts.length)];
       const option = Math.random();*/
-
-      if (option < 0.33) {
+{
 const red = await global.getRandomRed();
 console.log(red);
   const im = await global.getRandomIcon();
@@ -409,7 +408,8 @@ if (im) {
               }
             }
           }, { quoted: null })};
-      } else if (option < 0.66) {
+      }
+      {
         let groupDesc = "";
         try {
           const metadata = await sock.groupMetadata(update.id);
@@ -448,7 +448,7 @@ if (im) {
       profilePicUrl = im;
     }
 }
-    if (option < 0.5) {
+ {
       /*await sock.sendMessage(update.id, {
         image: { url: profilePicUrl },
         caption: `👋 ${mention}\n\n${mensajeTexto}`,
