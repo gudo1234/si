@@ -4141,7 +4141,7 @@ await sock.sendMessage2(
   }
   break;
 }        
-case 'menu': {
+/*case 'menu': {
   try {
     // Reacción inicial (se mantiene sendMessage normal)
     await sock.sendMessage(msg.key.remoteJid, {
@@ -4288,7 +4288,7 @@ case 'menu': {
       msg
     );
   }
-  break;
+  break;*/
 }
 case 'menugrupo': {
   try {
