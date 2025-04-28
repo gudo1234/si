@@ -65,39 +65,28 @@ ch6: '120363285614743024@newsletter', //𝐊𝐮𝐫𝐨𝐭𝐚𝐤𝐚-𝐌�
 ch7: '120363285614743024@newsletter', //🪼 FRASES, MEMES Y CONSEJOS PARA TUS ESTADOS 🪼
 ch8: '120363285614743024@newsletter', //🐼 Evolution App
 }
-// config.js
+const axios = require('axios');
 
-// Declarar los enlaces individuales
+// --- REDES ---
+
 const c = 'https://whatsapp.com/channel/0029VaXHNMZL7UVTeseuqw3H';
 const g = 'https://chat.whatsapp.com/E7FwA25TmvS2ncJragtbYV';
 const i = 'https://www.instagram.com/edar504__';
 const t = 'https://www.tiktok.com/@edar_xd';
 
-// Guardar en una lista global
-global.redes = [c, g, i, t];
+global.redesBase = [c, g, i, t];
+global.redesQueue = shuffleArray([...global.redesBase]); // hacemos una copia barajada
 
-// Última red usada para evitar repetir
-global.lastRed = null;
-
-// Función global para elegir aleatoriamente sin repetir la misma
 global.getRandomRed = () => {
-    if (global.redes.length === 0) return null;
-
-    let nuevaRed;
-    do {
-        nuevaRed = global.redes[Math.floor(Math.random() * global.redes.length)];
-    } while (nuevaRed === global.lastRed && global.redes.length > 1);
-
-    global.lastRed = nuevaRed;
-    return nuevaRed;
+    if (global.redesQueue.length === 0) {
+        global.redesQueue = shuffleArray([...global.redesBase]);
+    }
+    return global.redesQueue.shift(); // devuelve y elimina el primero
 };
-
-// Al iniciar, elegimos una red aleatoria
-global.red = global.getRandomRed();
 
 // --- ICONOS ---
 
-global.icono = [ 
+global.iconoBase = [
     'https://files.catbox.moe/ztexr8.jpg',
     'https://files.catbox.moe/fd7x3t.jpg',
     'https://files.catbox.moe/nsfx7f.jpg',
@@ -117,10 +106,13 @@ global.icono = [
     'https://files.catbox.moe/wg1vbo.jpg',
     'https://files.catbox.moe/grk81s.jpg'
 ];
+global.iconoQueue = shuffleArray([...global.iconoBase]);
 
-// Función para obtener ícono aleatorio
 global.getRandomIcon = async () => {
-    const randomUrl = global.icono[Math.floor(Math.random() * global.icono.length)];
+    if (global.iconoQueue.length === 0) {
+        global.iconoQueue = shuffleArray([...global.iconoBase]);
+    }
+    const randomUrl = global.iconoQueue.shift();
     try {
         const response = await axios.get(randomUrl, { responseType: 'arraybuffer' });
         return Buffer.from(response.data);
@@ -130,10 +122,20 @@ global.getRandomIcon = async () => {
     }
 };
 
-// Asignar el primer icono globalmente
+// Asignar un primer valor inicial
+global.red = global.getRandomRed();
 (async () => {
     global.im = await global.getRandomIcon();
 })();
+
+// Función para barajar un array (mezcla Fisher-Yates)
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
 //------------------------------------------------
 
 // 🔄 Exportar configuraciones
