@@ -325,8 +325,7 @@ if (update.action === "add" && welcomeActivo) {
 
     // Obtener foto de perfil (o grupo si falla)
     const red = await global.getRandomRed();
-console.log(red);
-  const im = await global.getRandomIcon();
+console.log(red)
 
     let profilePicUrl;
     try {
@@ -335,16 +334,15 @@ console.log(red);
       try {
         profilePicUrl = await sock.profilePictureUrl(update.id, "image");
       } catch {
-        profilePicUrl = im;
+        profilePicUrl = `https://files.catbox.moe/ztexr8.jpg`;
       }
     }
 
     if (customMessage) {
       // Enviar mensaje personalizado
-if (im) {
 
 await sock.sendMessage(update.id, {
-            text: `👋🏻 ¡Hola!${mention}\n\n${customMessage}᪲`,
+            text: `👋🏻 ¡Hola! ${mention}\n\n${customMessage}᪲`,
             contextInfo: {
               mentionedJid: [participant],
               groupMentions: [],
@@ -364,7 +362,7 @@ await sock.sendMessage(update.id, {
                 sourceUrl: red
               }
             }
-          }, { quoted: null })};
+          }, { quoted: null });
 
     } else {
       // Elegir mensaje aleatorio
@@ -372,7 +370,6 @@ await sock.sendMessage(update.id, {
       const option = Math.random();
 
       if (option < 0.33) {
-if (im) {
 
         /*await sock.sendMessage(update.id, {
           image: { url: profilePicUrl },
@@ -401,7 +398,7 @@ await sock.sendMessage(update.id, {
                 sourceUrl: red
               }
             }
-          }, { quoted: null })};
+          }, { quoted: null });
 
       } else if (option < 0.66) {
         let groupDesc = "";
@@ -433,18 +430,15 @@ await sock.sendMessage(update.id, {
 
 const red = await global.getRandomRed();
 console.log(red);
-  const im = await global.getRandomIcon();
 
     let profilePicUrl;
     try {
       profilePicUrl = await sock.profilePictureUrl(participant, "image");
     } catch (err) {
-      profilePicUrl = im;
+      profilePicUrl = `https://files.catbox.moe/ztexr8.jpg`;
     }
 
     if (option < 0.5) {
-    if (im) {
-
       await sock.sendMessage(update.id, {
             text: `👋🏻 adiós ${mention}\n\n${customMessage}᪲`,
             contextInfo: {
@@ -466,7 +460,7 @@ console.log(red);
                 sourceUrl: red
               }
             }
-          }, { quoted: null })};
+          }, { quoted: null });
     } else {
       await sock.sendMessage(update.id, {
         text: `👋 adios ${mention}\n\n${mensajeTexto}`,
