@@ -7,7 +7,7 @@ const handler = async (msg, { conn }) => {
   const red = await global.getRandomRed();
 console.log(red);
   const im = await global.getRandomIcon();
-if (imageBuffer) {
+if (im) {
   await conn.sendMessage(chatId, {
     text: 'test', 
     contextInfo: {
@@ -31,7 +31,7 @@ if (imageBuffer) {
     }
   }, { quoted: msg })};
 
-await conn.sendMessage(chatId, { image: imageBuffer, caption: '🪐xd' });
+await conn.sendMessage(chatId, { image: im, caption: '🪐xd' });
 };
 
 handler.command = ['hola'];
