@@ -72,19 +72,10 @@ const g = 'https://chat.whatsapp.com/E7FwA25TmvS2ncJragtbYV';
 const i = 'https://www.instagram.com/edar504__';
 const t = 'https://www.tiktok.com/@edar_xd';
 
-global.redesBase = [c, g, i, t];
-global.redesQueue = shuffleArray([...global.redesBase]); // hacemos una copia barajada
-
-global.getRandomRed = () => {
-    if (global.redesQueue.length === 0) {
-        global.redesQueue = shuffleArray([...global.redesBase]);
-    }
-    return global.redesQueue.shift(); // devuelve y elimina el primero
-};
-
+global.redes = [c, g, i, t]
 // --- ICONOS ---
 
-global.iconoBase = [
+global.icono = [
     'https://files.catbox.moe/ztexr8.jpg',
     'https://files.catbox.moe/fd7x3t.jpg',
     'https://files.catbox.moe/nsfx7f.jpg',
@@ -104,13 +95,8 @@ global.iconoBase = [
     'https://files.catbox.moe/wg1vbo.jpg',
     'https://files.catbox.moe/grk81s.jpg'
 ];
-global.iconoQueue = shuffleArray([...global.iconoBase]);
-
 global.getRandomIcon = async () => {
-    if (global.iconoQueue.length === 0) {
-        global.iconoQueue = shuffleArray([...global.iconoBase]);
-    }
-    const randomUrl = global.iconoQueue.shift();
+    const randomUrl = global.icono[Math.floor(Math.random() * global.icono.length)];
     try {
         const response = await axios.get(randomUrl, { responseType: 'arraybuffer' });
         return Buffer.from(response.data);
@@ -120,21 +106,9 @@ global.getRandomIcon = async () => {
     }
 };
 
-// Asignar un primer valor inicial
-global.red = global.getRandomRed();
+// Asignar globalmente imageBuffer
 (async () => {
-    global.im = await global.getRandomIcon();
+    global.imageBuffer = await global.getRandomIcon();
 })();
-
-// Función para barajar un array (mezcla Fisher-Yates)
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-//------------------------------------------------
-
 // 🔄 Exportar configuraciones
 module.exports = { isOwner: global.isOwner, setPrefix: global.setPrefix, allowedPrefixes: global.allowedPrefixes };
