@@ -84,7 +84,7 @@ global.getRandomRed = async () => {
         return null;
     }
 };
-global.red = await global.getRandomRed();
+global.red = global.getRandomRed();
 console.log(red);
 
 // --- ICONOS ---
