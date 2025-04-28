@@ -326,7 +326,7 @@ if (im) {
       });*/
   
   await sock.sendMessage(update.id, {
-            text: `👋🏻 ¡Hola! ${mention}\n\n${customMessage}᪲`,
+            text: `👋🏻 ¡Hola!${mention}\n\n${customMessage}᪲`,
             contextInfo: {
               mentionedJid: [participant],
               groupMentions: [],
@@ -342,7 +342,7 @@ if (im) {
                 title: wm,
                 body: 'izuBot te da la bienvenida',
                 thumbnailUrl: red,
-                thumbnail: im,
+                thumbnail: profilePicUrl,
                 sourceUrl: red
               }
             }
@@ -375,12 +375,12 @@ if (im) {
                 title: wm,
                 body: 'izuBot te da la bienvenida',
                 thumbnailUrl: red,
-                thumbnail: im,
+                thumbnail: profilePicUrl,
                 sourceUrl: red
               }
             }
           }, { quoted: null });
-      } /*else if (option < 0.66) {
+      } else if (option < 0.66) {
         let groupDesc = "";
         try {
           const metadata = await sock.groupMetadata(update.id);
@@ -398,7 +398,7 @@ if (im) {
           text: `👋 ${mention}\n\n${mensajeTexto}`,
           mentions: [participant]
         });
-      }*/
+      }
     }
   }
 } else if (update.action === "remove" && despedidasActivo) {
@@ -426,7 +426,7 @@ if (im) {
         mentions: [participant]
       });*/
   await sock.sendMessage(update.id, {
-            text: `👋🏻 ¡Hola! ${mention}`,
+            text: `👋🏻 Adiós ${mention}`,
             contextInfo: {
               mentionedJid: [participant],
               groupMentions: [],
@@ -440,20 +440,20 @@ if (im) {
               forwardingScore: 0,
               externalAdReply: {
                 title: wm,
-                body: 'izuBot te da la bienvenida',
+                body: 'Esperemos que no vuelva',
                 thumbnailUrl: red,
-                thumbnail: im,
+                thumbnail: profilePicUrl,
                 sourceUrl: red
               }
             }
           }, { quoted: null });
       
-    } /*else {
+    } else {
       await sock.sendMessage(update.id, {
-        text: `👋 ${mention}\n\n${mensajeTexto}`,
+        text: `👋 adiós ${mention}`,
         mentions: [participant]
       });
-    }*/
+    }
   }
 }
 // **************** FIN LÓGICA BIENVENIDA/DESPEDIDA ****************
