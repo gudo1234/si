@@ -1,6 +1,3 @@
-const fs = require("fs");
-const axios = require("axios");
-const fetch = require("node-fetch");
 (async () => {
 let canalId = ["120363285614743024@newsletter"];  
 let canalNombre = ["🤖⃧►iʑυвöτ◃2.0▹"]
@@ -327,9 +324,6 @@ if (update.action === "add" && welcomeActivo) {
     const customMessage = customWelcomes[update.id];
 
     // Obtener foto de perfil (o grupo si falla)
-    const red = await global.getRandomRed();
-console.log(red)
-
     let profilePicUrl;
     try {
       profilePicUrl = await sock.profilePictureUrl(participant, "image");
@@ -337,72 +331,28 @@ console.log(red)
       try {
         profilePicUrl = await sock.profilePictureUrl(update.id, "image");
       } catch {
-        profilePicUrl = `https://files.catbox.moe/ztexr8.jpg`;
+        profilePicUrl = "https://files.catbox.moe/mkjnzl.jpg";
       }
     }
 
     if (customMessage) {
       // Enviar mensaje personalizado
-
-await sock.sendMessage(update.id, {
-            text: `👋🏻 ¡Hola! ${mention}\n\n${customMessage}`,
-            contextInfo: {
-              mentionedJid: [participant],
-              groupMentions: [],
-              isForwarded: true,
-              forwardedNewsletterMessageInfo: {
-                newsletterJid: '120363285614743024@newsletter',
-                newsletterName: wm,
-                serverMessageId: 0
-              },
-              businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
-              forwardingScore: 0,
-              externalAdReply: {
-                title: wm,
-                body: 'izuBot te da la bienvenida',
-                thumbnailUrl: red,
-                thumbnail: profilePicUrl,
-                sourceUrl: red
-              }
-            }
-          }, { quoted: null });
-
+      await sock.sendMessage(update.id, {
+        image: { url: profilePicUrl },
+        caption: `👋 ${mention}\n\n${customMessage}`,
+        mentions: [participant]
+      });
     } else {
       // Elegir mensaje aleatorio
       const mensajeTexto = welcomeTexts[Math.floor(Math.random() * welcomeTexts.length)];
       const option = Math.random();
 
       if (option < 0.33) {
-
-        /*await sock.sendMessage(update.id, {
+        await sock.sendMessage(update.id, {
           image: { url: profilePicUrl },
           caption: `👋 ${mention}\n\n${mensajeTexto}`,
           mentions: [participant]
-        });*/
-
-await sock.sendMessage(update.id, {
-            text: `👋 ${mention}\n\n${mensajeTexto}`,
-            contextInfo: {
-              mentionedJid: [participant],
-              groupMentions: [],
-              isForwarded: true,
-              forwardedNewsletterMessageInfo: {
-                newsletterJid: '120363285614743024@newsletter',
-                newsletterName: wm,
-                serverMessageId: 0
-              },
-              businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
-              forwardingScore: 0,
-              externalAdReply: {
-                title: wm,
-                body: 'izuBot te da la bienvenida',
-                thumbnailUrl: red,
-                thumbnail: profilePicUrl,
-                sourceUrl: red
-              }
-            }
-          }, { quoted: null });
-
+        });
       } else if (option < 0.66) {
         let groupDesc = "";
         try {
@@ -431,45 +381,25 @@ await sock.sendMessage(update.id, {
     const mensajeTexto = farewellTexts[Math.floor(Math.random() * farewellTexts.length)];
     const option = Math.random();
 
-const red = await global.getRandomRed();
-console.log(red);
-
     let profilePicUrl;
     try {
       profilePicUrl = await sock.profilePictureUrl(participant, "image");
     } catch (err) {
-      profilePicUrl = `https://files.catbox.moe/ztexr8.jpg`;
+      profilePicUrl = "https://files.catbox.moe/mkjnzl.jpg";
     }
 
     if (option < 0.5) {
       await sock.sendMessage(update.id, {
-            text: `👋🏻 adiós ${mention}\n\n${customMessage}`,
-            contextInfo: {
-              mentionedJid: [participant],
-              groupMentions: [],
-              isForwarded: true,
-              forwardedNewsletterMessageInfo: {
-                newsletterJid: '120363285614743024@newsletter',
-                newsletterName: wm,
-                serverMessageId: 0
-              },
-              businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
-              forwardingScore: 0,
-              externalAdReply: {
-                title: wm,
-                body: 'izuBot te da la bienvenida',
-                thumbnailUrl: red,
-                thumbnail: profilePicUrl,
-                sourceUrl: red
-              }
-            }
-          }, { quoted: null });
-    } else {
-      await sock.sendMessage(update.id, {
-        text: `👋 adios ${mention}\n\n${mensajeTexto}`,
+        image: { url: profilePicUrl },
+        caption: `👋 ${mention}\n\n${mensajeTexto}`,
         mentions: [participant]
       });
-     }
+    } else {
+      await sock.sendMessage(update.id, {
+        text: `👋 ${mention}\n\n${mensajeTexto}`,
+        mentions: [participant]
+      });
+    }
   }
 }
 // **************** FIN LÓGICA BIENVENIDA/DESPEDIDA ****************
