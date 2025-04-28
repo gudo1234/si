@@ -41,7 +41,7 @@ const handler = async (msg, { conn }) => {
             }
         }
     }, { quoted: chatId });*/
-await sock.sendMessage2(msg.key.remoteJid,
+await conn.sendMessage2(msg.key.remoteJid,
   {
     image: { url: "https://files.catbox.moe/ztexr8.jpg" }, 
     caption: `${msg.pushName}`
