@@ -35,11 +35,11 @@ const handler = async (msg, { conn }) => {
     mentions.push(fullJid);
     const prefijo = dataPrefijos[fullJid] || ".";
 
-    return `╭➤ *Subbot ${i + 1}*\n│ Número: @${jid}\n│ Prefijo: *${prefijo}*\n╰───────────────`;
+    return `*Subbot ${i + 1}*\nNúmero: @${jid}\nPrefijo: *${prefijo}*\n_____________`;
   }).join("\n\n");
 
   // Construir mensaje final
-  const menu = `╭━〔 *AZURA ULTRA 2.0* 〕━⬣\n│  🤖 Subbots Conectados\n│  Total: *${total}*\n╰━━━━━━━━━━━━⬣\n\n${lista}`;
+  const menu = `🤖 Subbots Conectados\nTotal: *${total}*\n\n${lista}`;
 
   // Enviar usando sendMessage2
   await conn.sendMessage2(
