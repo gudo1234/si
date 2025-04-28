@@ -19,6 +19,7 @@ global.prefix = config.prefix || ".";
 global.owner = [
     ["50492280729", "―͟͞🍁͓̽𝆥⟅᮫ₑᵤ⟆𝇂𝇃𝇄͓⳻֟፝͜⳺𝇄𝇃𝇂͓", true]];
 global.e = '🪐'
+global.wm = '🤖⃧►iʑυвöτ◃2.0▹'
 
 // ✅ Lista de prefijos permitidos
 global.allowedPrefixes = [
