@@ -28,15 +28,7 @@ const handler = async (msg, { conn }) => {
     }
   }, { quoted: msg });
 
-//await conn.sendMessage(chatId, { image: im, caption: '🪐xd' });
-await conn.sendMessage(
-  chatId,
-  {
-    image: im, 
-    caption: '💀'
-  },
-  msg 
-)
+await conn.sendMessage(chatId, { image: im, caption: '🪐xd' });
 };
 
 handler.command = ['hola'];
