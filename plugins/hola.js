@@ -12,8 +12,8 @@ const handler = async (msg, { conn }) => {
       groupMentions: [],
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
-        newsletterJid: '120363285614743024@newsletter',
-        newsletterName: '🤖⃧►iʑυвöτ◃2.0▹',
+        newsletterJid: ch,
+        newsletterName: wm,
         serverMessageId: 0
       },
       businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
@@ -32,7 +32,7 @@ const handler = async (msg, { conn }) => {
 await conn.sendMessage(
   chatId,
   {
-    image: { url: im }, 
+    image: im, 
     caption: '💀'
   },
   msg 
