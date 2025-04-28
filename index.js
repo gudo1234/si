@@ -337,11 +337,33 @@ if (update.action === "add" && welcomeActivo) {
 
     if (customMessage) {
       // Enviar mensaje personalizado
-      await sock.sendMessage(update.id, {
+      /*await sock.sendMessage(update.id, {
         image: { url: profilePicUrl },
         caption: `👋 ${mention}\n\n${customMessage}`,
         mentions: [participant]
-      });
+      });*/
+  await sock.sendMessage(update.id, {
+    text: `👋 ${mention}\n\n${customMessage}`, 
+    contextInfo: {
+      mentionedJid: [participant],
+      groupMentions: [],
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: '120363285614743024@newsletter',
+        newsletterName: wm,
+        serverMessageId: 0
+      },
+      businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
+      forwardingScore: 0,
+      externalAdReply: {
+        title: 'hola',
+        body: 'hola mosha',
+        thumbnailUrl: 'https://www.instagram.com/edar504__',
+        thumbnail: profilePicUrl,
+        sourceUrl: 'https://www.instagram.com/edar504__'
+      }
+    }
+  }, { quoted: null })
     } else {
       // Elegir mensaje aleatorio
       const mensajeTexto = welcomeTexts[Math.floor(Math.random() * welcomeTexts.length)];
