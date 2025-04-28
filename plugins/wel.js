@@ -3,7 +3,7 @@ const axios = require("axios");
 const fetch = require("node-fetch");
 
 const handler = async (msg, { conn, update, activos }) => {
-  const chatId = update.id;
+  const chatId = msg.key.remoteJid;
   const welcomeActivo = activos.welcome?.[chatId];
   const despedidasActivo = activos.despedidas?.[chatId];
 
