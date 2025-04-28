@@ -1,4 +1,4 @@
-import { WAMessageStubType } from '@whiskeysockets/baileys'
+//import { WAMessageStubType } from '@whiskeysockets/baileys'
 //import fetch from 'node-fetch'
 const fs = require("fs");
 const axios = require("axios");
