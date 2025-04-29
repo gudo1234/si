@@ -4,46 +4,42 @@ const fetch = require("node-fetch");
 
 const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
-let jpg = 'https://files.catbox.moe/rdyj5q.mp4'
-let jpg2 = 'https://files.catbox.moe/693ws4.mp4'
+const jp = [
+  'https://files.catbox.moe/rdyj5q.mp4',
+  'https://files.catbox.moe/693ws4.mp4'
+];
+const jpg = jp[Math.floor(Math.random() * jp.length)];
   let or = ['grupo', 'gif', 'anu'];
   let media = or[Math.floor(Math.random() * 3)]
-let txt = `🗣️ Hola, *🥀Buenos días🌅tardes🌇noches🌆*\n\n⚡ \`izuBot:\` Es un sistema automático que responde a comandos para realizar ciertas acciones dentro del \`Chat\` como las descargas de videos de diferentes plataformas y búsquedas en la \`Web\`.
+let txt = `${e} ¡Hola! *${msg.pushName}*\n\n⚡ \`izuBot:\` Es un sistema automático que responde a comandos para realizar ciertas acciones dentro del \`Chat\` como las descargas de videos de diferentes plataformas y búsquedas en la \`Web\`.
 
-> ⁉ ᴄᴏɴᴛᴇxᴛ-ɪɴғᴏ☔
-╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
-*🚩]▸Nombre:* ${msg.pushName}
-*🔎]▸Prefijo actual:* 『${global.prefix}』
-╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
-
-╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
 > ⁉ ᴊᴀᴅɪʙᴛs-ʙᴏᴛs🤖 
-╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
+╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
 ⎔ ${global.prefix}serbot / ${global.prefix}jadibot
 ⎔ ${global.prefix}sercode / ${global.prefix}code
 ⎔ ${global.prefix}delbots
 ° mas comandos en el menu de subbots...
-
-╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
-> ⁉ ɪɴғᴏʀᴍᴀᴄɪóɴ 🪐
 ╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
+
+> ⁉ ɪɴғᴏʀᴍᴀᴄɪóɴ 🪐
+╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
 ⎔ ${global.prefix}speedtest  
 ⎔ ${global.prefix}ping  
-⎔ ${global.prefix}creador    
-
-╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
-> ⁉ ᴍᴇɴᴜs ᴅɪsᴘᴏɴɪʙʟᴇs📕
+⎔ ${global.prefix}creador
 ╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
+
+> ⁉ ᴍᴇɴᴜs ᴅɪsᴘᴏɴɪʙʟᴇs📕
+╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
 ⎔ ${global.prefix}allmenu  
 ⎔ ${global.prefix}menugrupo  
 ⎔ ${global.prefix}menuaudio  
 ⎔ ${global.prefix}menurpg  
 ⎔ ${global.prefix}info  
-⎔ ${global.prefix}menuowner  
-
-╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
-> ⁉ ɪᴀ ᴄʜᴀᴛ-ʙᴏᴛ🌐
+⎔ ${global.prefix}menuowner
 ╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
+
+> ⁉ ɪᴀ ᴄʜᴀᴛ-ʙᴏᴛ🌐
+╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
 ⎔ ${global.prefix}gemini  
 ⎔ ${global.prefix}chatgpt
 ⎔ ${global.prefix}dalle
@@ -53,10 +49,10 @@ let txt = `🗣️ Hola, *🥀Buenos días🌅tardes🌇noches🌆*\n\n⚡ \`izu
 ⎔ ${global.prefix}chat on o off
 ⎔ ${global.prefix}lumi on o off
 ⎔ ${global.prefix}luminai
-
-╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
-> ⁉ ᴅᴇsᴄᴀʀɢᴀs - ᴍᴜʟᴛɪᴍᴇᴅɪᴀ📁
 ╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
+
+> ⁉ ᴅᴇsᴄᴀʀɢᴀs - ᴍᴜʟᴛɪᴍᴇᴅɪᴀ📁
+╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
 ⎔ ${global.prefix}play → título  
 ⎔ ${global.prefix}play1 → título  
 ⎔ ${global.prefix}play2 → título  
@@ -74,18 +70,18 @@ let txt = `🗣️ Hola, *🥀Buenos días🌅tardes🌇noches🌆*\n\n⚡ \`izu
 ⎔ ${global.prefix}spotify → link
 ⎔ ${global.prefix}mediafire → link
 ⎔ ${global.prefix}apk → título
-
-╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
-> ⁉ ʙᴜsᴄᴀᴅᴏʀᴇs🔎
 ╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
+
+> ⁉ ʙᴜsᴄᴀᴅᴏʀᴇs🔎
+╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
 ⎔ ${global.prefix}pixai → titulo
 ⎔ ${global.prefix}Tiktoksearch → título
 ⎔ ${global.prefix}Yts → título
 ⎔ ${global.prefix}tiktokstalk → usuario
-
-╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
-> ⁉ ᴄᴏɴᴠᴇʀᴛɪᴅᴏʀᴇs🕹️ 
 ╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
+
+> ⁉ ᴄᴏɴᴠᴇʀᴛɪᴅᴏʀᴇs🕹️ 
+╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
 ⎔ ${global.prefix}tomp3  
 ⎔ ${global.prefix}tts  
 ⎔ ${global.prefix}tovideo
@@ -93,19 +89,19 @@ let txt = `🗣️ Hola, *🥀Buenos días🌅tardes🌇noches🌆*\n\n⚡ \`izu
 ⎔ ${global.prefix}gifvideo → responde a un video.
 ⎔ ${global.prefix}ff
 ⎔ ${global.prefix}ff2
-
-╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
-> ⁉ sᴛɪᴄᴋᴇʀs - ғғᴘᴇɢ🧩
 ╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
+
+> ⁉ sᴛɪᴄᴋᴇʀs - ғғᴘᴇɢ🧩
+╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
 ⎔ ${global.prefix}s
 ⎔ ${global.prefix}newpack
 ⎔ ${global.prefix}addsticker
 ⎔ ${global.prefix}listpacks
 ⎔ ${global.prefix}sendpack
-
-╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
-> ⁉ ʜᴇʀʀᴀᴍɪᴇɴᴛᴀs🛠️
 ╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
+
+> ⁉ ʜᴇʀʀᴀᴍɪᴇɴᴛᴀs🛠️
+╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
 ⎔ ${global.prefix}ver → responder a un mensaje  
 ⎔ ${global.prefix}tourl → responder a una imagen/video/musica
 ⎔ ${global.prefix}whatmusic → Responder a un audio(mp3)/video(mp4)
@@ -115,24 +111,69 @@ let txt = `🗣️ Hola, *🥀Buenos días🌅tardes🌇noches🌆*\n\n⚡ \`izu
 ⎔ ${global.prefix}carga
 ⎔ ${global.prefix}addco
 ⎔ ${global.prefix}delco
-
-╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
-> ⁉ ᴍɪɴɪ - ᴊᴜᴇɢᴏs🎮
 ╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
+
+> ⁉ ᴍɪɴɪ - ᴊᴜᴇɢᴏs🎮
+╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
 ⎔ ${global.prefix}verdad  
 ⎔ ${global.prefix}reto  
 ⎔ ${global.prefix}personalidad  
 ⎔ ${global.prefix}ship  
-⎔ ${global.prefix}parejas  
+⎔ ${global.prefix}parejas
+╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
 
 \`ʙᴏᴛ ᴇɴ ᴅᴇsᴀʀʀᴏʟʟᴏ, ᴘʀᴏɴᴛᴏ sᴇ ᴀɢʀᴇɢᴀʀᴀɴ ᴍᴀs ᴄᴏᴍᴀɴᴅᴏs.\``
+await conn.sendMessage(chatId, {
+            react: { text: "⚡", key: msg.key} 
+        });
   const red = await global.getRandomRed();
 console.log(red);
   const im = await global.getRandomIcon();
 if (im) {
-  await conn.sendMessage(chatId, {
-            react: { text: "⚡", key: msg.key} 
-        });
+if (media === 'grupo') {
+await conn.sendMessage(chatId, {
+  text: txt,
+  contextInfo: {
+    externalAdReply: {
+      title: `${msg.pushName}`,
+      body: textbot,
+      thumbnailUrl: red,
+      thumbnail: im,
+      sourceUrl: red,
+      mediaType: 1,
+      renderLargerThumbnail: true
+    }
+  }
+}, { quoted: msg })};
+  
+  if (media === 'gif') {
+await conn.sendMessage(chatId, {
+    video: { url: jpg },
+    gifPlayback: true,
+    caption: txt,
+    contextInfo: {
+          mentionedJid: [],
+          isForwarded: true,
+          forwardedNewsletterMessageInfo: {
+              newsletterJid: channel,
+              newsletterName: wm,
+              serverMessageId: -1,
+          },
+          forwardingScore: false,
+          externalAdReply: {
+              title: `${msg.pushName}`,
+              body: textbot,
+              thumbnailUrl: red,
+              thumbnail: im,
+              sourceUrl: red,
+              mediaType: 1,
+              showAdAttribution: true,
+              //renderLargerThumbnail: true,
+          },
+      },
+  }, { quoted: msg })};
+
+if (media === 'anu') {
   await conn.sendMessage(chatId, {
     text: txt, 
     contextInfo: {
@@ -140,21 +181,22 @@ if (im) {
       groupMentions: [],
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
-        newsletterJid: '120363285614743024@newsletter',
+        newsletterJid: channel,
         newsletterName: wm,
         serverMessageId: 0
       },
       businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
       forwardingScore: 0,
       externalAdReply: {
-        title: 'hola',
-        body: 'hola mosha',
+        title: `${msg.pushName}`,
+        body: textbot,
         thumbnailUrl: red,
         thumbnail: im,
         sourceUrl: red
       }
     }
-  }, { quoted: msg })
+  }, { quoted: msg })}
+  
   };
 
 //arriba
