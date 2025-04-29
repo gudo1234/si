@@ -23,6 +23,7 @@ global.owner = [
 global.e = '🪐'
 global.wm = '🤖⃧►iʑυвöτ◃2.0▹'
 global.textbot = 'sɪᴍᴘʟᴇ ʙᴏᴛ - ᴡʜᴀᴛsᴀᴘᴘ 2019-2025'
+global.channel = '120363285614743024@newsletter'
 
 // ✅ Lista de prefijos permitidos
 global.allowedPrefixes = [
