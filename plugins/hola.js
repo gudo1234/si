@@ -1,7 +1,7 @@
 const fs = require("fs");
 const axios = require("axios");
 const fetch = require("node-fetch");
-import PhoneNumber from 'awesome-phonenumber'
+
 const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
 let delirius = await axios.get(`https://delirius-apiofc.vercel.app/tools/country?text=${PhoneNumber('+' + m.sender.replace('@s.whatsapp.net', '')).getNumber('international')}`)
@@ -17,7 +17,6 @@ let txt = `🗣️ Hola, *🥀Buenos días🌅tardes🌇noches🌆*\n\n⚡ \`izu
 ╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
 *🚩]▸Nombre:* ${msg.pushName}
 🌎 *Pais:* ${mundo}
-*🗓]▸Fecha:* ${moment.tz('America/Bogota').format('DD/MM/YY')}
 *🔎]▸Prefijo actual:* 『${global.prefix}』
 ╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
 
