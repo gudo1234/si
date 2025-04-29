@@ -1,12 +1,9 @@
 const fs = require("fs");
 const axios = require("axios");
 const fetch = require("node-fetch");
-import PhoneNumber from 'awesome-phonenumber'
+
 const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
-let delirius = await axios.get(`https://delirius-apiofc.vercel.app/tools/country?text=${PhoneNumber('+' + m.sender.replace('@s.whatsapp.net', '')).getNumber('international')}`)
-  let paisdata = delirius.data.result
-  let mundo = paisdata ? `${paisdata.name} ${paisdata.emoji}` : 'Desconocido'
 let jpg = 'https://files.catbox.moe/rdyj5q.mp4'
 let jpg2 = 'https://files.catbox.moe/693ws4.mp4'
   let or = ['grupo', 'gif', 'anu'];
@@ -16,7 +13,6 @@ let txt = `🗣️ Hola, *🥀Buenos días🌅tardes🌇noches🌆*\n\n⚡ \`izu
 > ⁉ ᴄᴏɴᴛᴇxᴛ-ɪɴғᴏ☔
 ╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
 *🚩]▸Nombre:* ${msg.pushName}
-🌎 *Pais:* ${mundo}
 *🔎]▸Prefijo actual:* 『${global.prefix}』
 ╚ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╝
 
