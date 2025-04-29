@@ -22,6 +22,7 @@ global.owner = [
     ["50492280729", "―͟͞🍁͓̽𝆥⟅᮫ₑᵤ⟆𝇂𝇃𝇄͓⳻֟፝͜⳺𝇄𝇃𝇂͓", true]];
 global.e = '🪐'
 global.wm = '🤖⃧►iʑυвöτ◃2.0▹'
+global.textbot = 'sɪᴍᴘʟᴇ ʙᴏᴛ - ᴡʜᴀᴛsᴀᴘᴘ 2019-2025'
 
 // ✅ Lista de prefijos permitidos
 global.allowedPrefixes = [
