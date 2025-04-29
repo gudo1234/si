@@ -11,7 +11,7 @@ const jp = [
 const jpg = jp[Math.floor(Math.random() * jp.length)];
   let or = ['grupo', 'gif', 'anu'];
   let media = or[Math.floor(Math.random() * 3)]
-let txt = `${e} ¡Hola! *${msg.pushName}*\n\n⚡ \`izuBot:\` Es un sistema automático que responde a comandos para realizar ciertas acciones dentro del \`Chat\` como las descargas de videos de diferentes plataformas y búsquedas en la \`Web\`.
+let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches*\n\n⚡ \`izuBot:\` Es un sistema automático que responde a comandos para realizar ciertas acciones dentro del \`Chat\` como las descargas de videos de diferentes plataformas y búsquedas en la \`Web\`.
 
 > ⁉ ᴊᴀᴅɪʙᴛs-ʙᴏᴛs🤖 
 ╔ְֺ─┅፝֟─ׅ━⃜─╲╳⵿╲⵿݊╱⵿╳╱─━ׅ⃜─፝֟┅ְֺ╗
