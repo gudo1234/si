@@ -11169,13 +11169,14 @@ case 'gemini': {
 
     if (!args.length) {
         await sock.sendMessage(msg.key.remoteJid, { 
-            text: `⚠️ *Uso incorrecto.*\n📌 Ejemplo: \`${global.prefix}geminis ¿Cuál es la capital de Japón?\`` 
+            text: `${e} *Uso incorrecto.*\n📌 Ejemplo: \`${global.prefix}geminis ¿Cuál es la capital de Japón?\`` 
         }, { quoted: msg });
         return;
     }
 
     let pregunta = args.join(" ");
-    const geminiUrl = `https://api.dorratz.com/ai/gemini?prompt=${encodeURIComponent(pregunta)}`;
+    //const geminiUrl = `https://api.dorratz.com/ai/gemini?prompt=${encodeURIComponent(pregunta)}`;
+    const geminiUrl = `https://api.dorratz.com/ai/gpt?prompt=hola?country=${encodeURIComponent(pregunta)}`;
     let userId = msg.key.participant || msg.key.remoteJid; // Obtener ID del usuario
 
     await sock.sendMessage(msg.key.remoteJid, { 
