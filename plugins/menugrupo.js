@@ -126,5 +126,5 @@ await conn.sendMessage(chatId, {
 //arriba
 };
 
-handler.command = ['menugrupo''];
+handler.command = ['menugrupo'];
 module.exports = handler;
