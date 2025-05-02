@@ -164,5 +164,5 @@ async function perplexityQuery(q, prompt) {
     return data.response;
 }
 
-handler.command = ['luminai', 'ia', 'ai', 'ask', 'chatgpt', 'gpt'];
+handler.command = ['luminai'];
 module.exports = handler;
