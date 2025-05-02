@@ -1,3 +1,4 @@
+const fs = require("fs");
 const axios = require('axios');
 const fetch = require('node-fetch');
 
@@ -7,7 +8,7 @@ const handler = async (msg, { conn, args, usedPrefix, command }) => {
     
     if (!text) {
         return conn.sendMessage(chatId, { 
-            text: `✳️ Ingresa tu pregunta\nEjemplo: *${usedPrefix + command}* ¿quién inventó WhatsApp?` 
+            text: `${e} Ingresa tu pregunta\nEjemplo: *${usedPrefix + command}* ¿quién inventó WhatsApp?` 
         }, { quoted: msg });
     }
 
@@ -31,16 +32,7 @@ const handler = async (msg, { conn, args, usedPrefix, command }) => {
             }
         }
 
-        const responseMsg = `╭━〔 *RESPUESTA IA* 〕━⬣
-│  ✦ *Pregunta:* ${text}
-│  ✦ *Usuario:* ${name}
-╰━━━━━━━━━━━━⬣
-
-${result}
-
-╭━〔 *FUENTE* 〕━⬣
-│  ✦ *Powered by Luminai AI*
-╰━━━━━━━━━━━━⬣`;
+        const responseMsg = `${result}`;
 
         await conn.sendMessage(chatId, { 
             text: responseMsg 
@@ -96,7 +88,6 @@ async function perplexityQuery(q, prompt) {
     return data.response;
 }
 
-handler.help = ['luminai <pregunta>'];
 handler.command = ['luminai', 'ia', 'ai', 'ask'];
 handler.tags = ['ai'];
 handler.register = true;
