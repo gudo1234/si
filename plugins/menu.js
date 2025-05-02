@@ -14,32 +14,32 @@ const jpg = jp[Math.floor(Math.random() * jp.length)];
 let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBot:\` Es un sistema automático que responde a comandos para realizar ciertas acciones dentro del \`Chat\` como las descargas de videos de diferentes plataformas y búsquedas en la \`Web\`.
 
 > ⁉ ᴊᴀᴅɪʙᴛs-ʙᴏᴛs🤖 
-╭━━━━━━═❮◆❯═━━━━━━╮
+╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}serbot / ${global.prefix}jadibot
 ┃ ⎔ ${global.prefix}sercode / ${global.prefix}code
 ┃ ⎔ ${global.prefix}delbots
 ┃ ° mas comandos en el menu de subbots...
-╰━━━━━━═❮◆❯═━━━━━━╯
+╰━⊰══❖══⊱━╯
 
 > ⁉ ɪɴғᴏʀᴍᴀᴄɪóɴ 🪐
-╭━━━〔✦〕━━━╮
+╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}speedtest  
 ┃ ⎔ ${global.prefix}ping  
 ┃ ⎔ ${global.prefix}creador
-╰━━━〔✦〕━━━╯
+╰━⊰══❖══⊱━╯
 
 > ⁉ ᴍᴇɴᴜs ᴅɪsᴘᴏɴɪʙʟᴇs📕
-╭━⊰═❖═⊱━╮
+╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}allmenu  
 ┃ ⎔ ${global.prefix}menugrupo  
 ┃ ⎔ ${global.prefix}menuaudio  
 ┃ ⎔ ${global.prefix}menurpg  
 ┃ ⎔ ${global.prefix}info  
 ┃ ⎔ ${global.prefix}menuowner
-╰━⊰═❖═⊱━╯
+╰━⊰══❖══⊱━╯
 
 > ⁉ ɪᴀ ᴄʜᴀᴛ-ʙᴏᴛ🌐
-╭─━━━━༺༻━━━━─╮
+╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}gemini  
 ┃ ⎔ ${global.prefix}chatgpt
 ┃ ⎔ ${global.prefix}dalle
@@ -49,10 +49,10 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}chat on o off
 ┃ ⎔ ${global.prefix}lumi on o off
 ┃ ⎔ ${global.prefix}luminai
-╰─━━━━༺༻━━━━─╯
+╰━⊰══❖══⊱━╯
 
 > ⁉ ᴅᴇsᴄᴀʀɢᴀs - ᴍᴜʟᴛɪᴍᴇᴅɪᴀ📁
-╭─────๑۞๑─────╮
+╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}play → título  
 ┃ ⎔ ${global.prefix}play1 → título  
 ┃ ⎔ ${global.prefix}play2 → título  
@@ -70,18 +70,18 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}spotify → link
 ┃ ⎔ ${global.prefix}mediafire → link
 ┃ ⎔ ${global.prefix}apk → título
-╰─────๑۞๑─────╯
+╰━⊰══❖══⊱━╯
 
 > ⁉ ʙᴜsᴄᴀᴅᴏʀᴇs🔎
-╭─═[✰]═─╮
+╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}pixai → titulo
 ┃ ⎔ ${global.prefix}Tiktoksearch → título
 ┃ ⎔ ${global.prefix}Yts → título
 ┃ ⎔ ${global.prefix}tiktokstalk → usuario
-╰─═[✰]═─╯
+╰━⊰══❖══⊱━╯
 
 > ⁉ ᴄᴏɴᴠᴇʀᴛɪᴅᴏʀᴇs🕹️ 
-╭─≪◆≫─╮
+╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}tomp3  
 ┃ ⎔ ${global.prefix}tts  
 ┃ ⎔ ${global.prefix}tovideo
@@ -89,19 +89,19 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}gifvideo → responde a un video.
 ┃ ⎔ ${global.prefix}ff
 ┃ ⎔ ${global.prefix}ff2
-╰─≪◆≫─╯
+╰━⊰══❖══⊱━╯
 
 > ⁉ sᴛɪᴄᴋᴇʀs - ғғᴘᴇɢ🧩
-╭━━⊹⊱✿⊰⊹━━╮
+╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}s
 ┃ ⎔ ${global.prefix}newpack
 ┃ ⎔ ${global.prefix}addsticker
 ┃ ⎔ ${global.prefix}listpacks
 ┃ ⎔ ${global.prefix}sendpack
-╰━━⊹⊱✿⊰⊹━━╯
+╰━⊰══❖══⊱━╯
 
 > ⁉ ʜᴇʀʀᴀᴍɪᴇɴᴛᴀs🛠️
-╭━━━━━⊰✮⊱━━━━━╮
+╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}ver → responder a un mensaje  
 ┃ ⎔ ${global.prefix}tourl → responder a una imagen/video/musica
 ┃ ⎔ ${global.prefix}whatmusic → Responder a un audio(mp3)/video(mp4)
@@ -111,16 +111,16 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}carga
 ┃ ⎔ ${global.prefix}addco
 ┃ ⎔ ${global.prefix}delco
-╰━━━━━⊰✮⊱━━━━━╯
+╰━⊰══❖══⊱━╯
 
 > ⁉ ᴍɪɴɪ - ᴊᴜᴇɢᴏs🎮
-╭━〔★〕━╮
+╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}verdad  
 ┃ ⎔ ${global.prefix}reto  
 ┃ ⎔ ${global.prefix}personalidad  
 ┃ ⎔ ${global.prefix}ship  
 ┃ ⎔ ${global.prefix}parejas
-╰━〔★〕━╯
+╰━⊰══❖══⊱━╯
 
 \`ʙᴏᴛ ᴇɴ ᴅᴇsᴀʀʀᴏʟʟᴏ, ᴘʀᴏɴᴛᴏ sᴇ ᴀɢʀᴇɢᴀʀᴀɴ ᴍᴀs ᴄᴏᴍᴀɴᴅᴏs.\``
 await conn.sendMessage(chatId, {
