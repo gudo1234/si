@@ -1,5 +1,5 @@
-//import Starlights from '@StarlightsTeam/Scraper'
-const @StarlightsTeam/Scraper = requiere('@StarlightsTeam/Scraper')
+import Starlights from '@StarlightsTeam/Scraper'
+//const @StarlightsTeam/Scraper = requiere('@StarlightsTeam/Scraper')
 const handler = async (msg, { conn, text, usedPrefix }) => {
   if (!text) {
     return await conn.sendMessage(msg.key.remoteJid, {
