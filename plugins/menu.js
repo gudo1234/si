@@ -59,7 +59,8 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}ytmp3 → link  
 ┃ ⎔ ${global.prefix}get → responder a un estado.
 ┃ ⎔ ${global.prefix}ytmp4 → link
-┃ ⎔ ${global.prefix}tiktok → link  
+┃ ⎔ ${global.prefix}tiktok → link
+┃ ⎔ ${global.prefix}tiktokvid → título
 ┃ ⎔ ${global.prefix}fb → link  
 ┃ ⎔ ${global.prefix}ig → link  
 ┃ ⎔ ${global.prefix}spotify → título
