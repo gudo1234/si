@@ -8,7 +8,7 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
   }
 
   try {
-    await conn.sendMessage(chatId, {
+    await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "🕒", key: msg.key} 
         });
     let {
@@ -28,7 +28,7 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
     txt += `    ✩  *Publicado* : ${published}\n`;
     txt += `    ✩  *Descargas* : ${download_count}\n\n`;
     txt += `> ${wm}`;
-await conn.sendMessage(chatId, {
+await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "✅", key: msg.key} 
         });
     await conn.sendMessage(msg.key.remoteJid, {
