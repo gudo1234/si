@@ -13,8 +13,8 @@
   "author": "Russell",
   "license": "ISC",
   "dependencies": {
-    "@StarlightsTeam/Scraper": "github:StarlightsTeam/StarlightsTeam-Scraper",
     "@whiskeysockets/baileys": "github:ds6/meta",
+    "@StarlightsTeam/Scraper": "github:StarlightsTeam/StarlightsTeam-Scraper",
     "awesome-phonenumber": "^5.10.0",
     "axios": "^0.24.0",
     "cfonts": "^2.10.0",
@@ -47,8 +47,7 @@
     "qrcode": "^1.5.0",
     "qrcode-terminal": "^0.12.0",
     "util": "^0.12.4",
-    "yargs": "^17.3.1",
-    "@nechlophomeriaa/spotifydl": "^1.0.31"
+    "yargs": "^17.3.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.0"
