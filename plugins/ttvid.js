@@ -8,6 +8,9 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
   }
 
   try {
+    await conn.sendMessage(chatId, {
+            react: { text: "🕒", key: msg.key} 
+        });
     let {
       title, author, duration, views, likes,
       comments_count, share_count, download_count,
@@ -25,7 +28,9 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
     txt += `    ✩  *Publicado* : ${published}\n`;
     txt += `    ✩  *Descargas* : ${download_count}\n\n`;
     txt += `> ${wm}`;
-
+await conn.sendMessage(chatId, {
+            react: { text: "✅", key: msg.key} 
+        });
     await conn.sendMessage(msg.key.remoteJid, {
       video: { url: dl_url },
       caption: txt,
