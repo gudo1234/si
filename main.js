@@ -2096,14 +2096,14 @@ case 'play': {
         const { title, url, timestamp, views, author, thumbnail } = video;
 
         const infoMessage = `
-📀 *𝙄𝙣𝙛𝙤 𝙙𝙚𝙡 𝙫𝙞𝙙𝙚𝙤:*  
-╭───────────────╮  
+📀 \`info del audio\`
+╭──────────╮  
 ├ 🎼 *Título:* ${title}
 ├ ⏱️ *Duración:* ${timestamp}
 ├ 👁️ *Vistas:* ${views.toLocaleString()}
 ├ 👤 *Autor:* ${author.name}
 └ 🔗 *Enlace:* ${url}
-╰───────────────╯`;
+╰──────────╯`;
 
         await sock.sendMessage(msg.key.remoteJid, {
             image: { url: thumbnail },
@@ -2239,14 +2239,14 @@ case 'play3': {
         const { title, url, timestamp, views, author, thumbnail } = video;
 
         const infoMessage = `
-📀 *𝙄𝙣𝙛𝙤 𝙙𝙚𝙡 𝙫𝙞𝙙𝙚𝙤:*  
-╭───────────────╮  
+📀 \`info del Doc.Audio\`
+╭──────────╮  
 ├ 🎼 *Título:* ${title}
 ├ ⏱️ *Duración:* ${timestamp}
 ├ 👁️ *Vistas:* ${views.toLocaleString()}
 ├ 👤 *Autor:* ${author.name}
 └ 🔗 *Enlace:* ${url}
-╰───────────────╯`;
+╰──────────╯`;
 
         await sock.sendMessage(msg.key.remoteJid, {
             image: { url: thumbnail },
@@ -2402,14 +2402,14 @@ case 'play2': {
         else quality = '360';
 
         const infoMessage = `
-📀 *𝙄𝙣𝙛𝙤 𝙙𝙚𝙡 𝙫𝙞𝙙𝙚𝙤:*  
-╭───────────────╮  
+📽️ \`info del video\`  
+╭──────────╮  
 ├ 🎼 *Título:* ${title}
 ├ ⏱️ *Duración:* ${timestamp}
 ├ 👁️ *Vistas:* ${views.toLocaleString()}
 ├ 👤 *Autor:* ${author.name}
 └ 🔗 *Enlace:* ${url}
-╰───────────────╯`;
+╰──────────╯`;
 
         await sock.sendMessage(msg.key.remoteJid, {
             image: { url: thumbnail },
@@ -2579,14 +2579,14 @@ case 'play4': {
         else quality = '360';
 
         const infoMessage = `
-📀 *𝙄𝙣𝙛𝙤 𝙙𝙚𝙡 𝙫𝙞𝙙𝙚𝙤:*  
-╭───────────────╮  
+📽️ \`info del Doc.Video\`  
+╭──────────╮  
 ├ 🎼 *Título:* ${title}
 ├ ⏱️ *Duración:* ${timestamp}
 ├ 👁️ *Vistas:* ${views.toLocaleString()}
 ├ 👤 *Autor:* ${author.name}
 └ 🔗 *Enlace:* ${url}
-╰───────────────╯`;
+╰──────────╯`;
 
         await sock.sendMessage(msg.key.remoteJid, {
             image: { url: thumbnail },
