@@ -1,4 +1,4 @@
-const Starlights = require('@StarlightsTeam/Scraper');
+const Starlights from = require('@StarlightsTeam/Scraper');
 
 const handler = async (msg, { conn, text, usedPrefix }) => {
   if (!text) {
