@@ -43,9 +43,7 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}gemini  
 ┃ ⎔ ${global.prefix}chatgpt
 ┃ ⎔ ${global.prefix}dalle
-┃ ⎔ ${global.prefix}visión 
-┃ ⎔ ${global.prefix}simi
-┃ ⎔ ${global.prefix}visión2
+┃ ⎔ ${global.prefix}visión
 ┃ ⎔ ${global.prefix}chat on o off
 ┃ ⎔ ${global.prefix}lumi on o off
 ┃ ⎔ ${global.prefix}luminai
@@ -53,21 +51,18 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 
 > ⁉ ᴅᴇsᴄᴀʀɢᴀs - ᴍᴜʟᴛɪᴍᴇᴅɪᴀ📁
 ╭━⊰══❖══⊱━╮
+┃ ⎔ ${global.prefix}audio → título  
 ┃ ⎔ ${global.prefix}play → título  
-┃ ⎔ ${global.prefix}play1 → título  
 ┃ ⎔ ${global.prefix}play2 → título  
 ┃ ⎔ ${global.prefix}play3 spotify → titulo
-┃ ⎔ ${global.prefix}play5 → titulo
-┃ ⎔ ${global.prefix}play6 → titulo
+┃ ⎔ ${global.prefix}play4 → titulo
 ┃ ⎔ ${global.prefix}ytmp3 → link  
-┃ ⎔ ${global.prefix}ytmp35 → link  
 ┃ ⎔ ${global.prefix}get → responder a un estado.
-┃ ⎔ ${global.prefix}ytmp4 → link  
-┃ ⎔ ${global.prefix}ytmp45 → link  
+┃ ⎔ ${global.prefix}ytmp4 → link
 ┃ ⎔ ${global.prefix}tiktok → link  
 ┃ ⎔ ${global.prefix}fb → link  
 ┃ ⎔ ${global.prefix}ig → link  
-┃ ⎔ ${global.prefix}spotify → link
+┃ ⎔ ${global.prefix}spotify → título
 ┃ ⎔ ${global.prefix}mediafire → link
 ┃ ⎔ ${global.prefix}apk → título
 ╰━⊰══❖══⊱━╯
