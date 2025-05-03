@@ -1,4 +1,4 @@
-import Starlights from '@StarlightsTeam/Scraper'
+const Starlights from '@StarlightsTeam/Scraper'
 //const @StarlightsTeam/Scraper = requiere('@StarlightsTeam/Scraper')
 const handler = async (msg, { conn, text, usedPrefix }) => {
   if (!text) {
