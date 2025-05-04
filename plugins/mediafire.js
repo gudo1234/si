@@ -12,7 +12,7 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
   });*/
 
   try {
-    let res = await fetch(`https://api.agatz.xyz/api/mediafire?url=${encodeURIComponent(text)}`);
+    let res = await fetch(`https://api.agatz.xyz/api/mediafire?url=${text}`);
     if (!res.ok) throw 'No se pudo obtener respuesta de la API.';
 
     let data = await res.json();
