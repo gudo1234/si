@@ -20,10 +20,9 @@ await conn.sendMessage(msg.key.remoteJid, {
     if (!urlspo.status) return await m.react('❌')
     urlspo=urlspo.download
     let txt = `\`Spotify Track Download\`\n
-*Artista:* ${downTrack.artists}\n
-*Título:* ${downTrack.title}\n
+*Artista:* ${downTrack.artists}
+*Título:* ${downTrack.title}
 *Duración:* ${downTrack.duration}`
-    //conn.sendFile(m.chat, downTrack.imageUrl, 'error.jpg', txt, m, null, rcanal)
     await conn.sendMessage2(msg.key.remoteJid, {
       image: { url: downTrack.imageUrl },
       caption: txt
