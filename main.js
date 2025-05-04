@@ -13986,7 +13986,7 @@ case "instagram":
 case "ig":
     if (!text) return sock.sendMessage2(msg.key.remoteJid, { 
         text: `${e}Ejemplo de uso:\n${global.prefix + command} https://www.instagram.com/p/CCoI4DQBGVQ/` 
-    }, { msg );
+    }, msg );
 
     try {
         // ⏳ Reacción de carga mientras se procesa
