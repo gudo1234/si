@@ -21,14 +21,14 @@ let txt = '`乂  T I K T O K - I M G`\n\n'
     txt += `\t\t*» Descargas* : ${downloads}\n`
        
 for (let i = 0; i < dl_urls.length; i++) {
-  await conn.sendMessage(
+  await conn.sendMessage2(
   msg.key.remoteJid,
   {
     image: { url: dl_urls[i].dl_url },
     caption: txt,
     fileName: `tiktokimg${i + 1}.jpg`
   },
-  { quoted: msg }
+  msg 
 )
 
 await conn.sendMessage(msg.key.remoteJid, {
