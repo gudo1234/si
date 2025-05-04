@@ -37,7 +37,6 @@ await conn.sendMessage(msg.key.remoteJid, {
       mimetype: 'video/mp4',
       fileName: `${title}.mp4`
     }, { quoted: msg });
-    await conn.sendMessage(msg.key.remoteJid, dl_url, `thumbnail.mp4`, txt, msg, null, rcanal)
 
   } catch (err) {
     console.error(err);
