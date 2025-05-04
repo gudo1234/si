@@ -9,28 +9,21 @@ const handler = async (msg, { conn, args }) => {
   const isFromMe = msg.key.fromMe;
   const isOwner = global.owner.some(([id]) => id === senderClean);
 
-  if (isGroup && !isOwner && !isFromMe) {
-    const metadata = await conn.groupMetadata(chatId);
-    const participant = metadata.participants.find(p => p.id === senderId);
-  const isAdmin = participant?.admin === "admin" || participant?.admin === "superadmin";
-    if (!isAdmin) {
-      return conn.sendMessage2(chatId, {
-        text: `${e} *Solo los administradores, el owner o el bot pueden usar este comando.*`
-      }, msg );
-    }
-  } else if (!isGroup && !isOwner && !isFromMe) {
-    return conn.sendMessage2(chatId, {
-      text: `${e} *Solo el owner o el mismo bot pueden usar este comando en privado.*`
-    }, msg );
-}
-  
-  /*if (!isOwner && !isFromMe ) return conn.sendMessage(chatId, {
-    text: "❌ Solo el owner o el mismo bot puede restringir comandos."
-  }, { quoted: msg });
+  // Obtener los metadatos del grupo para verificar admins
+  const groupMetadata = await conn.groupMetadata(chatId).catch(() => null);
+  const isAdmin = groupMetadata?.participants?.some(p => 
+    p.id === sender && (p.admin === "admin" || p.admin === "superadmin")
+  );
 
-  if (!args[0]) return conn.sendMessage2(chatId, {
-    text: `${e}Usa: *.re comando* para restringirlo en este grupo.\n*Ejemplo:* .re kick`
-  }, msg );*/
+  if (!isOwner && !isFromMe && !isAdmin) {
+    return conn.sendMessage(chatId, {
+      text: "❌ Solo el owner, el bot o un admin del grupo puede restringir comandos."
+    }, { quoted: msg });
+  }
+
+  if (!args[0]) return conn.sendMessage(chatId, {
+    text: "⚠️ Usa: *re [comando]* para restringirlo en este grupo."
+  }, { quoted: msg });
 
   const filePath = path.resolve("./re.json");
   if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, JSON.stringify({}, null, 2));
