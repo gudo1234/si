@@ -1,4 +1,4 @@
-conts fetch = require("node-fetch");
+const fetch = require("node-fetch");
 
 let regex = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
 const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
