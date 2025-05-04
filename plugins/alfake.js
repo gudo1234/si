@@ -1,6 +1,7 @@
 const fetch = require("node-fetch")
 
-export async function before(msg, { conn }) {
+//export async function before(msg, { conn }) {
+const handler = async (msg, { conn }) => {
 
   global.rcanal = {
     contextInfo: {
