@@ -25,7 +25,7 @@ for (let i = 0; i < dl_urls.length; i++) {
 await sock.sendMessage(
   msg.key.remoteJid,
   {
-    image: { url: dl_urls[i].dl_url, `tiktokimg${i + 1}.jpg` }, 
+    image: { url: dl_urls[i].dl_url }, 
     caption: txt
   },
   msg 
