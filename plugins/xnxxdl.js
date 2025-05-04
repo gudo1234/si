@@ -1,6 +1,26 @@
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
 
+// Scraper que extrae el enlace directo y título del video desde XNXX
+async function xnxxScraper(url) {
+  const res = await fetch(url);
+  const html = await res.text();
+  const $ = cheerio.load(html);
+
+  const title = $('meta[property="og:title"]').attr('content') || 'video';
+  const videoUrl = $('meta[property="og:video"]').attr('content');
+
+  if (!videoUrl) {
+    throw new Error('No se encontró el enlace directo del video.');
+  }
+
+  return {
+    title,
+    videoUrl
+  };
+}
+
+// Handler del comando
 const handler = async (msg, { conn, text, usedPrefix, command }) => {
   if (!text) {
     return conn.sendMessage2(msg.key.remoteJid, {
@@ -8,45 +28,25 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
     }, msg);
   }
 
-  await conn.sendMessage(msg.key.remoteJid, {
-    react: { text: "🕒", key: msg.key }
-  });
-
   try {
-    await conn.sendMessage2(msg.key.remoteJid, {
-      text: `⏳ Procesando el enlace, por favor espera...`
-    }, msg);
+    await conn.sendMessage(msg.key.remoteJid, {
+      react: { text: "⏳", key: msg.key }
+    });
 
-    const result = await xnxxScraper(text);
-
-    if (!result.videoUrl) {
-      throw new Error('No se pudo extraer el enlace de video.');
-    }
+    const { title, videoUrl } = await xnxxScraper(text);
 
     await conn.sendMessage2(msg.key.remoteJid, {
-      document: { url: result.videoUrl },
+      document: { url: videoUrl },
       mimetype: 'video/mp4',
-      fileName: `${result.title || 'video'}.mp4`
+      fileName: `${title}.mp4`
     }, msg);
-
   } catch (err) {
     console.error(err);
     conn.sendMessage2(msg.key.remoteJid, {
-      text: `✖️ Error al procesar el enlace.`
+      text: '✖️ No se pudo obtener el video. Asegúrate de que el enlace sea válido.'
     }, msg);
   }
 };
 
 handler.command = ['xnxxdl', 'xnxx'];
 module.exports = handler;
-
-async function xnxxScraper(url) {
-  const res = await fetch(url);
-  const html = await res.text();
-  const $ = cheerio.load(html);
-
-  const title = $('meta[property="og:title"]').attr('content') || 'Sin título';
-  const videoUrl = $('meta[property="og:video"]').attr('content');
-
-  return { title, videoUrl };
-}
