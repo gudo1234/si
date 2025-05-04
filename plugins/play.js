@@ -21,7 +21,7 @@ await conn.sendMessage(msg.key.remoteJid, {
         });
 
   try {
-    let query = args.join(' ');
+    let query = text.join(' ');
     let isUrl = query.match(/youtu/gi);
 
     let video;
