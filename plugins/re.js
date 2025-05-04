@@ -8,7 +8,7 @@ const handler = async (msg, { conn, args }) => {
 
   const isFromMe = msg.key.fromMe;
   const isOwner = global.owner.some(([id]) => id === senderClean);
-  if (!isOwner && !isFromMe) return conn.sendMessage(chatId, {
+  if (!isOwner && !isFromMe && !isAdmin) return conn.sendMessage(chatId, {
     text: "❌ Solo el owner o el mismo bot puede restringir comandos."
   }, { quoted: msg });
 
