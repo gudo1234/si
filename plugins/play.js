@@ -92,26 +92,18 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
     const docCommands = ['play3', 'ytadoc', 'mp3doc', 'ytmp3doc'];
     const isDocument = docCommands.includes(command);
 
-    if (sizeMB > limit || durationInMinutes > 30) {
+    if (isDocument) {
+      await conn.sendMessage2(msg.key.remoteJid, {
+        document: { url: downloadUrl },
+        mimetype: 'audio/mpeg',
+        fileName: `${title}.mp3`
+      }, msg);
+    } else {
       await conn.sendMessage2(msg.key.remoteJid, {
         audio: { url: downloadUrl },
         mimetype: 'audio/mpeg',
         fileName: `${title}.mp3`
       }, msg);
-    } else {
-      if (isDocument) {
-        await conn.sendMessage2(msg.key.remoteJid, {
-          document: { url: downloadUrl },
-          mimetype: 'audio/mpeg',
-          fileName: `${title}.mp3`
-        }, msg);
-      } else {
-        await conn.sendMessage2(msg.key.remoteJid, {
-          audio: { url: downloadUrl },
-          mimetype: 'audio/mpeg',
-          fileName: `${title}.mp3`
-        }, msg);
-      }
     }
 
     await conn.sendMessage(msg.key.remoteJid, {
@@ -126,6 +118,5 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   }
 };
 
-// Agrega todos los comandos
 handler.command = ['play', 'yta', 'mp3', 'ytmp3', 'play3', 'ytadoc', 'mp3doc', 'ytmp3doc'];
 module.exports = handler;
