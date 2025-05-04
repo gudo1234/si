@@ -30,7 +30,6 @@ await conn.sendMessage(msg.key.remoteJid, {
       let ytres = await yts({ videoId: query.split('v=')[1] });
       video = ytres.videos[0];
     } else {
-      // Si es un texto
       let ytres = await yts(query);
       video = ytres.videos[0];
       if (!video) {
@@ -89,15 +88,7 @@ txt +=  `*Canal* ${video.author.name}\n`;
     }
 
     let { dl: downloadUrl } = data;
-
-    // Enviar el video según el tamaño o la duración
     if (sizeMB > limit || durationInMinutes > 30) {
-      // Enviar como documento si el tamaño supera los 100 MB o si dura más de 30 minutos
-      /*await star.sendMessage(
-        m.chat,
-        { audio: { url: downloadUrl }, mimetype: 'audio/mpeg', fileName: `${title}.mp4` },
-        { quoted: m }
-      );*/
  await conn.sendMessage2(msg.key.remoteJid, {
       audio: { url: dl_url },
       mimetype: 'audio/mpeg',
@@ -108,7 +99,6 @@ txt +=  `*Canal* ${video.author.name}\n`;
             react: { text: "✅", key: msg.key} 
         });
     } else {
-      // Enviar como video normal si es menor o igual al límite y dura menos de 30 minutos
       await conn.sendMessage2(msg.key.remoteJid, {
       video: { url: dl_url },
       mimetype: 'audio/mp4',
@@ -126,7 +116,6 @@ txt +=  `*Canal* ${video.author.name}\n`;
     }, msg );
   }
 };
-
 
 handler.command = ['play', 'yta', 'mp3', 'ytmp3'];
 module.exports = handler;
