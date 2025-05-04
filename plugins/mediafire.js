@@ -3,44 +3,36 @@ const axios = require('axios');
 const handler = async (msg, { conn, text, usedPrefix, command }) => {
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* https://www.mediafire.com/file/ruwl8ldd2hde8sh/archivo.zip`
+      text: `❌ Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* https://www.mediafire.com/file/ruwl8ldd2hde8sh/archivo.zip`
     }, msg);
   }
 
-  // Reaccionar con reloj de espera
   await conn.sendMessage(msg.key.remoteJid, {
     react: { text: "🕒", key: msg.key }
   });
 
   try {
-    const apiURL = `https://api.agatz.xyz/api/mediafire?url=${encodeURIComponent(text)}`;
-    const res = await axios.get(apiURL);
-    const { data } = res.data;
+    const apiUrl = `https://api.agatz.xyz/api/mediafire?url=${encodeURIComponent(text)}`;
+    const response = await axios.get(apiUrl);
+    const result = response.data;
 
-    if (!data || !data.link) {
-      throw new Error("No se pudo obtener el enlace de descarga.");
+    if (!result || !result.url) {
+      return await conn.sendMessage2(msg.key.remoteJid, {
+        text: `❌ No se pudo obtener el archivo desde la URL proporcionada.`
+      }, msg);
     }
 
-    await conn.sendMessage2(msg.key.remoteJid, {
-      document: { url: data.link },
-      mimetype: data.mime || 'application/octet-stream',
-      fileName: data.nama || 'archivo',
-      caption: `*Nombre:* ${data.nama}\n*Peso:* ${data.size}\n*Tipo:* ${data.mime}`
+    await conn.sendMessage(msg.key.remoteJid, {
+      text: `✅ Archivo encontrado:\n\n📄 *Nombre:* ${result.filename}\n📦 *Tamaño:* ${result.filesizeH}\n\nDescargando archivo...`
     }, msg);
 
-    // Reacción de éxito
-    await conn.sendMessage(msg.key.remoteJid, {
-      react: { text: "✅", key: msg.key }
-    });
+    await conn.sendFile(msg.key.remoteJid, result.url, result.filename, null, msg);
+    
   } catch (error) {
     console.error(error);
     await conn.sendMessage2(msg.key.remoteJid, {
-      text: `❌ Error al procesar la solicitud. Asegúrate de que el enlace sea válido.`
+      text: `⚠️ Error al procesar la solicitud.`
     }, msg);
-
-    await conn.sendMessage(msg.key.remoteJid, {
-      react: { text: "⚠️", key: msg.key }
-    });
   }
 };
 
