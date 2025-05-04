@@ -1,8 +1,10 @@
 const fetch = require("node-fetch");
 
-let handler = async (msg, { conn, text, usedPrefix, command }) => {
-
-if (!text) throw m.reply(`${e} Por favor, ingresa un link de mediafire.`);
+const handler = async (msg, { conn, text, usedPrefix }) => {
+  if (!text) {
+    return await conn.sendMessage2(msg.key.remoteJid, {
+      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}mediafire* https://www.mediafire.com/download/ruwl8ldd2hde8sh`
+    }, msg );
 await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "✅", key: msg.key} 
         });
