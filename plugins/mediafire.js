@@ -6,7 +6,7 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
       text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}mediafire* https://www.mediafire.com/download/ruwl8ldd2hde8sh`
     }, msg );
 await conn.sendMessage(msg.key.remoteJid, {
-            react: { text: "✅", key: msg.key} 
+            react: { text: "🕒", key: msg.key} 
         });
         let ouh = await fetch(`https://api.agatz.xyz/api/mediafire?url=${text}`)
   let gyh = await ouh.json() 
@@ -23,4 +23,5 @@ await conn.sendMessage(msg.key.remoteJid, {
 }
 
 handler.command = ['mf', 'mediafire']
+
 module.exports = handler;
