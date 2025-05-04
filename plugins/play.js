@@ -13,7 +13,7 @@ let limit = 100;
 const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* diles`
+      text: `❗ Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* diles`
     }, msg);
   }
 
@@ -34,7 +34,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
       video = ytres.videos[0];
       if (!video) {
         return await conn.sendMessage2(msg.key.remoteJid, {
-          text: `${e} *Video no encontrado.*`
+          text: `❗ *Video no encontrado.*`
         }, msg);
       }
     }
@@ -46,7 +46,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
 
     if (!videoInfo) {
       return await conn.sendMessage2(msg.key.remoteJid, {
-        text: `${e} *No se encontró una calidad compatible para el video.*`
+        text: `❗ *No se encontró una calidad compatible para el video.*`
       }, msg);
     }
 
@@ -55,7 +55,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
 
     if (sizeMB >= 700) {
       return await conn.sendMessage2(msg.key.remoteJid, {
-        text: `${e} *El archivo es demasiado pesado (más de 700 MB). Se canceló la descarga.*`
+        text: `❗ *El archivo es demasiado pesado (más de 700 MB). Se canceló la descarga.*`
       }, msg);
     }
 
@@ -75,7 +75,6 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
       caption: txt
     }, msg);
 
-    // Lógica API con Axios
     const apiURL = `https://api.siputzx.my.id/api/d/ytmp4?url=${url}`;
     const res = await axios.get(apiURL);
     const json = res.data;
@@ -83,26 +82,36 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
 
     if (!data || !data.dl) {
       return await conn.sendMessage2(msg.key.remoteJid, {
-        text: `${e} *Error al obtener el enlace de descarga desde la API.*`
+        text: `❗ *Error al obtener el enlace de descarga desde la API.*`
       }, msg);
     }
 
     let { dl: downloadUrl } = data;
 
+    // Lógica para diferenciar audio normal y documento
+    const docCommands = ['play3', 'ytadoc', 'mp3doc', 'ytmp3doc'];
+    const isDocument = docCommands.includes(command);
+
     if (sizeMB > limit || durationInMinutes > 30) {
       await conn.sendMessage2(msg.key.remoteJid, {
         audio: { url: downloadUrl },
         mimetype: 'audio/mpeg',
-        fileName: `${title}.mp4`,
-        caption: ``
+        fileName: `${title}.mp3`
       }, msg);
     } else {
-      await conn.sendMessage2(msg.key.remoteJid, {
-        video: { url: downloadUrl },
-        mimetype: 'video/mp4',
-        fileName: `${title}.mp4`,
-        caption: ``
-      }, msg);
+      if (isDocument) {
+        await conn.sendMessage2(msg.key.remoteJid, {
+          document: { url: downloadUrl },
+          mimetype: 'audio/mpeg',
+          fileName: `${title}.mp3`
+        }, msg);
+      } else {
+        await conn.sendMessage2(msg.key.remoteJid, {
+          audio: { url: downloadUrl },
+          mimetype: 'audio/mpeg',
+          fileName: `${title}.mp3`
+        }, msg);
+      }
     }
 
     await conn.sendMessage(msg.key.remoteJid, {
@@ -112,10 +121,11 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   } catch (err) {
     console.error('Error al descargar el video:', err);
     await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} Ocurrió un error al intentar descargar el video.`
+      text: `❗ Ocurrió un error al intentar descargar el video.`
     }, msg);
   }
 };
 
-handler.command = ['play', 'yta', 'mp3', 'ytmp3'];
+// Agrega todos los comandos
+handler.command = ['play', 'yta', 'mp3', 'ytmp3', 'play3', 'ytadoc', 'mp3doc', 'ytmp3doc'];
 module.exports = handler;
