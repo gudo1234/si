@@ -21,7 +21,7 @@ txt += `> *${textbot}*`
 await conn.sendMessage2(msg.key.remoteJid, {
       video: { url: dl_url },
       mimetype: 'video/mp4',
-      caption txt
+      caption: txt
     }, msg );
 await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "✅", key: msg.key} 
