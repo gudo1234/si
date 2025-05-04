@@ -12,12 +12,12 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
   });
 
   try {
-    let { ext, aploud, size, dl_url } = await Starlights.mediafire(text);
+    let { aploud, size, dl_url } = await Starlights.mediafire(text);
     let txt = `乂  *M E D I A F I R E  -  D O W N L O A D*\n\n`;
     txt += `✩  *Nombre* : ${size}\n`;
     txt += `✩  *Peso* : ${size}\n`;
     txt += `✩  *Publicado* : ${aploud}\n`;
-    txt += `✩  *MimeType* : ${ext}\n\n`;
+    txt += `✩  *MimeType* : ${size}\n\n`;
     txt += `*- ↻ El archivo se está enviando, espera un momento...*`;
 
     const im = await global.getRandomIcon();
@@ -28,18 +28,18 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
 
     await conn.sendMessage2(msg.key.remoteJid, {
       document: { url: dl_url },
-      mimetype: ext,
+      mimetype: size,
       fileName: size
     }, msg);
 
   } catch (err) {
     try {
-      let { ext, aploud, size, dl_url } = await Starlights.mediafireV2(text);
+      let { aploud, size, dl_url } = await Starlights.mediafireV2(text);
       let txt = `乂  *M E D I A F I R E  -  D O W N L O A D*\n\n`;
       txt += `✩  *Nombre* : ${size}\n`;
       txt += `✩  *Peso* : ${size}\n`;
       txt += `✩  *Publicado* : ${aploud}\n`;
-      txt += `✩  *MimeType* : ${ext}\n\n`;
+      txt += `✩  *MimeType* : ${size}\n\n`;
       txt += `*- ↻ El archivo se está enviando, espera un momento...*`;
 
       const im = await global.getRandomIcon();
@@ -50,7 +50,7 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
 
       await conn.sendMessage2(msg.key.remoteJid, {
         document: { url: dl_url },
-        mimetype: ext,
+        mimetype: size,
         fileName: size
       }, msg);
 
