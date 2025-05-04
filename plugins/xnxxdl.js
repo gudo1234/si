@@ -43,9 +43,11 @@ await conn.sendMessage(msg.key.remoteJid, {
     const res = await xnxxdl(xnxxLink);
     const json = await res.result.files;
     conn.sendMessage2(msg.key.remoteJid, {document: {url: json.high}, mimetype: 'video/mp4', fileName: res.result.title}, msg );
-  } catch (error) {
-    return await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} Ocurrió un error.\n\n- El enlace debe ser similar a:\n◉ https://www.xnxx.com/video-14lcwbe8/rubia_novia_follada_en_cuarto_de_bano\n\nDetalles del error: ${error}`}, msg);
+  } catch (err) {
+    console.error(err);
+    await conn.sendMessage2(msg.key.remoteJid, {
+      text: '✖️ Ocurrió un error al procesar el video. Asegúrate de que el enlace sea válido.'
+    }, msg );
   }
 };
 
