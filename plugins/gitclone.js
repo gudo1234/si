@@ -4,7 +4,7 @@ let regex = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
 const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
-      text: `Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* unicode pad`
+      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* link de github`
     }, msg);
   }
 await conn.sendMessage(msg.key.remoteJid, {
