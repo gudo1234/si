@@ -61,6 +61,7 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}ytmp4 → link
 ┃ ⎔ ${global.prefix}tiktok → link
 ┃ ⎔ ${global.prefix}tiktokvid → título
+┃ ⎔ ${global.prefix}tiktokimg → link
 ┃ ⎔ ${global.prefix}fb → link  
 ┃ ⎔ ${global.prefix}ig → link  
 ┃ ⎔ ${global.prefix}spotify → título
