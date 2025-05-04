@@ -16,13 +16,13 @@ const handler = async (msg, { conn, args }) => {
   );
 
   if (!isOwner && !isFromMe && !isAdmin) {
-    return conn.sendMessage(chatId, {
-      text: "❌ Solo el owner, el bot o un admin del grupo puede restringir comandos."
-    }, { quoted: msg });
+    return conn.sendMessage2(chatId, {
+      text: `${e} Solo el owner, el bot o un admin del grupo puede restringir comandos.`
+    }, msg );
   }
 
   if (!args[0]) return conn.sendMessage(chatId, {
-    text: "⚠️ Usa: *re [comando]* para restringirlo en este grupo."
+    text: "⚠️ Usa: *.re comando* para restringirlo en este grupo.\n*Ejemplo:* .re kick"
   }, { quoted: msg });
 
   const filePath = path.resolve("./re.json");
