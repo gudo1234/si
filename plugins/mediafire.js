@@ -34,7 +34,7 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
 
   } catch (err) {
     try {
-      let { title, ext, aploud, size, dl_url } = await Starlights.mediafireV2(text);
+      let { ext, aploud, size, dl_url } = await Starlights.mediafireV2(text);
       let txt = `乂  *M E D I A F I R E  -  D O W N L O A D*\n\n`;
       txt += `✩  *Nombre* : ${size}\n`;
       txt += `✩  *Peso* : ${size}\n`;
