@@ -7,8 +7,7 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
     }, msg );
   }
         let ouh = await fetch(`https://api.agatz.xyz/api/mediafire?url=${text}`)
-  let gyh = await ouh.json() 
-        //await conn.sendFile(m.chat, gyh.data[0].link, `${gyh.data[0].nama}`, `*Nombre:*  ${gyh.data[0].nama}\n*Peso:* ${gyh.data[0].size}*\n*Type:* ${gyh.data[0].mime}`, m, null, rcanal)       
+  let gyh = await ouh.json()     
  await conn.sendMessage(msg.key.remoteJid, {
       document: { url: gyh.data[0].link },
       fileName: `${gyh.data[0].nama}`,
