@@ -8,14 +8,26 @@ const handler = async (msg, { conn, args }) => {
 
   const isFromMe = msg.key.fromMe;
   const isOwner = global.owner.some(([id]) => id === senderClean);
+const isAdmin = participant?.admin === "admin" || participant?.admin === "superadmin";
+
+    if (!isAdmin) {
+      return conn.sendMessage2(chatId, {
+        text: `${e} *Solo los administradores, el owner o el bot pueden usar este comando.*`
+      }, msg );
+    }
+  } else if (!isGroup && !isOwner && !isFromMe) {
+    return conn.sendMessage2(chatId, {
+      text: `${e} *Solo el owner o el mismo bot pueden usar este comando en privado.*`
+    }, msg );
+}
   
-  if (!isOwner && !isFromMe ) return conn.sendMessage(chatId, {
+  /*if (!isOwner && !isFromMe ) return conn.sendMessage(chatId, {
     text: "❌ Solo el owner o el mismo bot puede restringir comandos."
   }, { quoted: msg });
 
   if (!args[0]) return conn.sendMessage2(chatId, {
     text: `${e}Usa: *.re comando* para restringirlo en este grupo.\n*Ejemplo:* .re kick`
-  }, msg );
+  }, msg );*/
 
   const filePath = path.resolve("./re.json");
   if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, JSON.stringify({}, null, 2));
