@@ -1,7 +1,7 @@
 const axios = require("axios");
 let enviando = false;
 
-const handler = async (msg, { conn, text, usedPrefix }) => {
+const handler = async (msg, { conn, text, usedPrefix, args }) => {
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
       text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}tw* url`
@@ -21,7 +21,6 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
         const caption = res.caption ? res.caption : `${msg.pushName}`;
 
         if (res?.type === 'video') {
-            //await conn.sendMessage(m.chat, { video: { url: res.media[0].url }, caption: caption }, { quoted: m });
         await conn.sendMessage2(msg.key.remoteJid, {
       video: { url: res.media[0].url },
       caption: caption,
