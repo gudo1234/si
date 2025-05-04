@@ -28,7 +28,7 @@ let canalNombre = ["🤖⃧►iʑυвöτ◃2.0▹"]
           serverMessageId: '',
           newsletterName: firstChannel.nombre
         },
-        forwardingScore: 9999999,
+        forwardingScore: false,
         isForwarded: true,
         mentionedJid: content.mentions || options.mentions || []
       }
