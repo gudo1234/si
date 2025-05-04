@@ -36,13 +36,13 @@ await conn.sendMessage(msg.key.remoteJid, {
       caption: txt,
       mimetype: 'video/mp4',
       fileName: `${title}.mp4`
-    }, { quoted: msg });
+    }, { quoted: msg, rcanal });
 
   } catch (err) {
     console.error(err);
     await conn.sendMessage(msg.key.remoteJid, {
       text: '✖️ Ocurrió un error al procesar el video. Asegúrate de que el enlace sea válido.'
-    }, { quoted: msg, rcanal });
+    }, { quoted: msg });
   }
 };
 
