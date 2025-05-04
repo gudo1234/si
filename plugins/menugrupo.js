@@ -34,6 +34,8 @@ let txt = `> 🛠 ᴄᴏɴғɪɢᴜʀᴀᴄɪóɴ
 ┃ ⎔ ${global.prefix}modoadmins on/off
 ┃ ⎔ ${global.prefix}invocar
 ┃ ⎔ ${global.prefix}todos
+┃ ⎔ ${global.prefix}re
+┃ ⎔ ${global.prefix}unre
 ┃ ⎔ ${global.prefix}damelink
 ┃ ⎔ ${global.prefix}abrirgrupo
 ┃ ⎔ ${global.prefix}cerrargrupo
