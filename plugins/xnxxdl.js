@@ -12,7 +12,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   });
 
   try {
-    let { title, dl_url } = await Starlights.xnxxdl(args[0]);
+    let { title, dl_url } = await Starlights.xnxxdl(text);
 
     await conn.sendMessage2(msg.key.remoteJid, {
       document: { url: dl_url },
