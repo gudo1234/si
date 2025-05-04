@@ -31,12 +31,22 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
 await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "✅", key: msg.key} 
         });
-    await conn.sendMessage2(msg.key.remoteJid, {
+    await conn.sendMessage(msg.key.remoteJid, {
       video: { url: dl_url },
       caption: txt,
       mimetype: 'video/mp4',
       fileName: `${title}.mp4`
     }, { quoted: msg });
+    await conn.sendMessage2(
+    msg.key.remoteJid,
+    {
+      video: dl_url,
+      text: menu,
+      mimetype: 'video/mp4',
+      fileName: `${title}.mp4`
+    },
+    msg
+  );
 
   } catch (err) {
     console.error(err);
