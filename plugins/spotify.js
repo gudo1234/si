@@ -23,25 +23,11 @@ await conn.sendMessage(msg.key.remoteJid, {
 *Artista:* ${downTrack.artists}\n
 *Título:* ${downTrack.title}\n
 *Duración:* ${downTrack.duration}`
-//conn.sendFile(m.chat, downTrack.imageUrl, 'error.jpg', txt, m, null, rcanal)
-const red = await global.getRandomRed();
-console.log(red);
-  const im = await global.getRandomIcon();
-if (im) {
-await conn.sendMessage(msg.key.remoteJid, {
-  text: txt,
-  contextInfo: {
-    externalAdReply: {
-      title: `${msg.pushName}`,
-      body: textbot,
-      thumbnailUrl: red,
-      thumbnail: downTrack.imageUrl,
-      sourceUrl: red,
-      mediaType: 1,
-      renderLargerThumbnail: true
-    }
-  }
-}, { quoted: msg })}
+    //conn.sendFile(m.chat, downTrack.imageUrl, 'error.jpg', txt, m, null, rcanal)
+    await conn.sendMessage2(msg.key.remoteJid, {
+      image: { url: downTrack.imageUrl },
+      caption: txt
+    },  msg );
     await conn.sendMessage(msg.key.remoteJid, {audio: {url: urlspo}, fileName: `${downTrack.title}.mp3`, mimetype: 'audio/mpeg'}, msg );
 await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "✅", key: msg.key} 
