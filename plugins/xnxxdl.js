@@ -15,7 +15,7 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
     let { title, dl_url } = await Starlights.xnxxdl(text);
 
     await conn.sendMessage(msg.key.remoteJid, {
-      video: { url: dl_url },
+      document: { url: dl_url },
       mimetype: 'video/mp4',
       fileName: `${title}.mp4`,
       caption: `*» Título* : ${title}`
