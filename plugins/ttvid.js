@@ -4,7 +4,7 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
       text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}ttvid* La Vaca Lola`
-    }, { quoted: msg });
+    }, msg );
   }
 
   try {
