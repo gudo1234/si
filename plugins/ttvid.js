@@ -42,7 +42,7 @@ await conn.sendMessage(msg.key.remoteJid, {
   caption: txt,
   mimetype: 'video/mp4',
   fileName: `${title}.mp4`,
-  contextInfo: global.rcanal.contextInfo
+  contextInfo: rcanal
 }, { quoted: msg });
 
   } catch (err) {
