@@ -1,14 +1,6 @@
-const fetch = require("node-fetch");
 const { youtubedl, youtubedlv2 } = require("@bochilteam/scraper");
 const yts = require('yt-search');
 const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
-const { pipeline } = require('stream');
-const { promisify } = require('util');
-const ffmpeg = require('fluent-ffmpeg');
-
-let limit = 100;
 
 const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   if (!text) {
@@ -22,90 +14,77 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   });
 
   try {
-    let query = args.join(' ');
-    let isUrl = query.match(/youtu/gi);
+    const query = args.join(' ');
+    const isUrl = /youtu/.test(query);
 
     let video;
     if (isUrl) {
-      let ytres = await yts({ videoId: query.split('v=')[1] });
+      const id = query.split('v=')[1];
+      const ytres = await yts({ videoId: id });
       video = ytres.videos[0];
     } else {
-      let ytres = await yts(query);
+      const ytres = await yts(query);
       video = ytres.videos[0];
-      if (!video) {
-        return await conn.sendMessage2(msg.key.remoteJid, {
-          text: `❗ *Video no encontrado.*`
-        }, msg);
-      }
     }
 
-    let { title, thumbnail, timestamp, views, ago, url } = video;
-
-    let yt = await youtubedl(url).catch(async () => await youtubedlv2(url));
-    let videoInfo = yt.video['360p'];
-
-    if (!videoInfo) {
+    if (!video) {
       return await conn.sendMessage2(msg.key.remoteJid, {
-        text: `❗ *No se encontró una calidad compatible para el video.*`
+        text: `❗ *Video no encontrado.*`
       }, msg);
     }
 
-    let { fileSizeH: sizeHumanReadable, fileSize } = videoInfo;
-    let sizeMB = fileSize / (1024 * 1024);
+    const { title, thumbnail, timestamp, views, ago, url } = video;
+    const yt = await youtubedl(url).catch(() => youtubedlv2(url));
+    const audio = yt.audio['128kbps'] || yt.audio['160kbps'];
 
-    if (sizeMB >= 700) {
+    if (!audio) {
       return await conn.sendMessage2(msg.key.remoteJid, {
-        text: `❗ *El archivo es demasiado pesado (más de 700 MB). Se canceló la descarga.*`
+        text: `❗ *No se encontró audio descargable.*`
       }, msg);
     }
 
-    let durationInMinutes = parseFloat(timestamp.split(':')[0]) * 60 + parseFloat(timestamp.split(':')[1]);
+    const sizeMB = (audio.fileSize || 0) / (1024 * 1024);
+    const duration = timestamp.split(':').reduce((acc, val) => acc * 60 + +val, 0);
+    const isDocument = ['play3', 'ytadoc', 'mp3doc', 'ytmp3doc'].includes(command);
 
-    // Lógica para detectar si será documento o audio normal
-    const docCommands = ['play3', 'ytadoc', 'mp3doc', 'ytmp3doc'];
-    const isDocument = docCommands.includes(command);
+    if (sizeMB > 100 || duration > 1800) {
+      return await conn.sendMessage2(msg.key.remoteJid, {
+        text: `❗ *El archivo supera el límite permitido.*`
+      }, msg);
+    }
 
-    // Texto con formato decorado
-    let txt = `┏━━━━━━━⊱\n`;
-    txt += `┃ *🎧 TÍTULO:* ${title}\n`;
-    txt += `┃ *📺 CANAL:* ${video.author.name}\n`;
-    txt += `┃ *⏱️ DURACIÓN:* ${timestamp}\n`;
-    txt += `┃ *👀 VISTAS:* ${views}\n`;
-    txt += `┃ *📆 PUBLICACIÓN:* ${ago}\n`;
-    txt += `┃ *💾 TAMAÑO:* ${sizeHumanReadable}\n`;
-    txt += `┃ *🔗 LINK:* ${url}\n`;
-    txt += `┗━━━━━━━━━━━━\n\n`;
-    txt += `> ${
-      isDocument ? '📂 Enviando audio como documento...' : '🔊 Enviando audio...'
-    }`;
+    // Mensaje decorado
+    const txt = [
+      '┏━━━━━━━━━━━━━━━',
+      `┃ *🎧 TÍTULO:* ${title}`,
+      `┃ *📺 CANAL:* ${video.author.name}`,
+      `┃ *⏱️ DURACIÓN:* ${timestamp}`,
+      `┃ *👀 VISTAS:* ${views}`,
+      `┃ *📆 PUBLICADO:* ${ago}`,
+      `┃ *💾 PESO:* ${audio.fileSizeH || 'N/A'}`,
+      `┃ *🔗 LINK:* ${url}`,
+      '┗━━━━━━━━━━━━━━━',
+      `> ${isDocument ? '📂 Enviando audio como documento...' : '🔊 Enviando audio...'}`
+    ].join('\n');
 
     await conn.sendMessage2(msg.key.remoteJid, {
       image: { url: thumbnail },
       caption: txt
     }, msg);
 
-    const apiURL = `https://api.siputzx.my.id/api/d/ytmp4?url=${url}`;
-    const res = await axios.get(apiURL);
-    const json = res.data;
-    const { data } = json;
-
-    if (!data || !data.dl) {
-      return await conn.sendMessage2(msg.key.remoteJid, {
-        text: `❗ *Error al obtener el enlace de descarga desde la API.*`
-      }, msg);
-    }
-
-    let { dl: downloadUrl } = data;
+    // Descargar como buffer para acelerar envío
+    const res = await axios.get(audio.download, { responseType: 'arraybuffer' });
+    const buffer = Buffer.from(res.data);
 
     if (isDocument) {
       await conn.sendMessage2(msg.key.remoteJid, {
-        document: { url: downloadUrl },
+        document: buffer,
         mimetype: 'audio/mpeg',
         fileName: `${title}.mp3`
       }, msg);
     } else {
       await conn.sendMessage2(msg.key.remoteJid, {
-        audio: { url: downloadUrl },
+        audio: buffer,
         mimetype: 'audio/mpeg',
         fileName: `${title}.mp3`
       }, msg);
@@ -116,9 +95,9 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
     });
 
   } catch (err) {
-    console.error('Error al descargar el video:', err);
+    console.error('Error:', err);
     await conn.sendMessage2(msg.key.remoteJid, {
-      text: `❗ Ocurrió un error al intentar descargar el video.`
+      text: `❗ *Ocurrió un error al procesar la descarga.*`
     }, msg);
   }
 };
