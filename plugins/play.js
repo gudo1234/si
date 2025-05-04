@@ -35,17 +35,33 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
 
     const { title, thumbnail, timestamp, views, ago, url } = video;
     const yt = await youtubedl(url).catch(() => youtubedlv2(url));
-    const audio = yt.audio['128kbps'] || yt.audio['160kbps'];
 
-    if (!audio) {
+    const isAudioCommand = [
+      'play', 'yta', 'mp3', 'ytmp3', 'play3', 'ytadoc', 'mp3doc', 'ytmp3doc'
+    ].includes(command);
+
+    const isVideo = [
+      'play2', 'ytv', 'mp4', 'ytmp4',
+      'play4', 'ytvdoc', 'mp4doc', 'ytmp4doc'
+    ].includes(command);
+
+    const isDocument = [
+      'play3', 'ytadoc', 'mp3doc', 'ytmp3doc',
+      'play4', 'ytvdoc', 'mp4doc', 'ytmp4doc'
+    ].includes(command);
+
+    const media = isAudioCommand
+      ? yt.audio['128kbps'] || yt.audio['160kbps']
+      : yt.video['360p'] || yt.video['480p'] || yt.video['720p'];
+
+    if (!media) {
       return await conn.sendMessage2(msg.key.remoteJid, {
-        text: `❗ *No se encontró audio descargable.*`
+        text: `❗ *No se encontró ${isAudioCommand ? 'audio' : 'video'} descargable.*`
       }, msg);
     }
 
-    const sizeMB = (audio.fileSize || 0) / (1024 * 1024);
+    const sizeMB = (media.fileSize || 0) / (1024 * 1024);
     const duration = timestamp.split(':').reduce((acc, val) => acc * 60 + +val, 0);
-    const isDocument = ['play3', 'ytadoc', 'mp3doc', 'ytmp3doc'].includes(command);
 
     if (sizeMB > 100 || duration > 1800) {
       return await conn.sendMessage2(msg.key.remoteJid, {
@@ -53,18 +69,25 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
       }, msg);
     }
 
-    // Mensaje decorado
+    const tipoEnvio = isAudioCommand
+      ? isDocument
+        ? '📂 Enviando *audio como documento*...'
+        : '🔊 Enviando *audio*...'
+      : isDocument
+        ? '📂 Enviando *video como documento*...'
+        : '🎥 Enviando *video*...';
+
     const txt = [
       '┏━━━━━━━━━━━━━━━',
-      `┃ *🎧 TÍTULO:* ${title}`,
+      `┃ *🎬 TÍTULO:* ${title}`,
       `┃ *📺 CANAL:* ${video.author.name}`,
       `┃ *⏱️ DURACIÓN:* ${timestamp}`,
       `┃ *👀 VISTAS:* ${views}`,
       `┃ *📆 PUBLICADO:* ${ago}`,
-      `┃ *💾 PESO:* ${audio.fileSizeH || 'N/A'}`,
+      `┃ *💾 PESO:* ${media.fileSizeH || 'N/A'}`,
       `┃ *🔗 LINK:* ${url}`,
       '┗━━━━━━━━━━━━━━━',
-      `> ${isDocument ? '📂 Enviando audio como documento...' : '🔊 Enviando audio...'}`
+      `> ${tipoEnvio}`
     ].join('\n');
 
     await conn.sendMessage2(msg.key.remoteJid, {
@@ -72,21 +95,21 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
       caption: txt
     }, msg);
 
-    // Descargar como buffer para acelerar envío
-    const res = await axios.get(audio.download, { responseType: 'arraybuffer' });
+    const res = await axios.get(media.download, { responseType: 'arraybuffer' });
     const buffer = Buffer.from(res.data);
 
     if (isDocument) {
       await conn.sendMessage2(msg.key.remoteJid, {
         document: buffer,
-        mimetype: 'audio/mpeg',
-        fileName: `${title}.mp3`
+        mimetype: isAudioCommand ? 'audio/mpeg' : 'video/mp4',
+        fileName: `${title}.${isAudioCommand ? 'mp3' : 'mp4'}`
       }, msg);
     } else {
+      const key = isAudioCommand ? 'audio' : 'video';
       await conn.sendMessage2(msg.key.remoteJid, {
-        audio: buffer,
-        mimetype: 'audio/mpeg',
-        fileName: `${title}.mp3`
+        [key]: buffer,
+        mimetype: isAudioCommand ? 'audio/mpeg' : 'video/mp4',
+        fileName: `${title}.${isAudioCommand ? 'mp3' : 'mp4'}`
       }, msg);
     }
 
@@ -102,5 +125,11 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   }
 };
 
-handler.command = ['play', 'yta', 'mp3', 'ytmp3', 'play3', 'ytadoc', 'mp3doc', 'ytmp3doc'];
+handler.command = [
+  // Audio
+  'play', 'yta', 'mp3', 'ytmp3', 'play3', 'ytadoc', 'mp3doc', 'ytmp3doc',
+  // Video
+  'play2', 'ytv', 'mp4', 'ytmp4', 'play4', 'ytvdoc', 'mp4doc', 'ytmp4doc'
+];
+
 module.exports = handler;
