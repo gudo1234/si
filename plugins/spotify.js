@@ -27,7 +27,6 @@ await conn.sendMessage(msg.key.remoteJid, {
       image: { url: downTrack.imageUrl },
       caption: txt
     },  msg );
-    //await conn.sendMessage(msg.key.remoteJid, {audio: {url: urlspo}, fileName: `${downTrack.title}.mp3`, mimetype: 'audio/mpeg'}, msg );
     await conn.sendMessage2(msg.key.remoteJid, {
       audio: { url: urlspo },
       mimetype: 'audio/mpeg',
