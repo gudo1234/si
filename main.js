@@ -13984,9 +13984,9 @@ case "kick": {
         
 case "instagram":
 case "ig":
-    if (!text) return sock.sendMessage(msg.key.remoteJid, { 
-        text: `Ejemplo de uso:\n${global.prefix + command} https://www.instagram.com/p/CCoI4DQBGVQ/` 
-    }, { quoted: msg });
+    if (!text) return sock.sendMessage2(msg.key.remoteJid, { 
+        text: `${e}Ejemplo de uso:\n${global.prefix + command} https://www.instagram.com/p/CCoI4DQBGVQ/` 
+    }, { msg );
 
     try {
         // ⏳ Reacción de carga mientras se procesa
@@ -14010,10 +14010,10 @@ case "ig":
 
         // 📩 Enviar cada video descargado con la marca de agua
         for (let item of data) {
-            await sock.sendMessage(msg.key.remoteJid, { 
+            await sock.sendMessage2(msg.key.remoteJid, { 
                 video: { url: item.url }, 
                 caption: caption 
-            }, { quoted: msg });
+            }, msg );
         }
 
         // ✅ Confirmación con reacción de éxito
@@ -14023,9 +14023,9 @@ case "ig":
 
     } catch (error) {
         console.error(error);
-        await sock.sendMessage(msg.key.remoteJid, { 
+        await sock.sendMessage2(msg.key.remoteJid, { 
             text: "❌ Ocurrió un error al procesar el enlace de Instagram." 
-        }, { quoted: msg });
+        }, msg );
     }
     break;
         
@@ -14033,14 +14033,14 @@ case "tiktok":
 case "tt":
     if (!text) {
         return sock.sendMessage(msg.key.remoteJid, {
-            text: `⚠️ *Ejemplo de uso:*\n📌 ${global.prefix + command} https://vm.tiktok.com/ZMjdrFCtg/`
+            text: `${e} *Ejemplo de uso:*\n📌 ${global.prefix + command} https://vm.tiktok.com/ZMjdrFCtg/`
         });
     }
 
     if (!isUrl(args[0]) || !args[0].includes('tiktok')) {
-        return sock.sendMessage(msg.key.remoteJid, { 
+        return sock.sendMessage2(msg.key.remoteJid, { 
             text: "❌ *Enlace de TikTok inválido.*" 
-        }, { quoted: msg });
+        }, msg );
     }
 
     try {
@@ -14072,10 +14072,10 @@ case "tt":
         mensaje += `❤️ *Likes:* ${videoLikes} | 💬 *Comentarios:* ${videoComments}`;
 
         // 📩 Enviar el video con la información
-        await sock.sendMessage(msg.key.remoteJid, {
+        await sock.sendMessage2(msg.key.remoteJid, {
             video: { url: videoUrl },
             caption: mensaje
-        }, { quoted: msg });
+        }, msg );
 
         // ✅ Reacción de éxito
         await sock.sendMessage(msg.key.remoteJid, { 
@@ -14084,9 +14084,9 @@ case "tt":
 
     } catch (error) {
         console.error("❌ Error en el comando .tiktok:", error.message);
-        await sock.sendMessage(msg.key.remoteJid, { 
+        await sock.sendMessage2(msg.key.remoteJid, { 
             text: "❌ *Ocurrió un error al procesar el enlace de TikTok.*\n🔹 _Inténtalo más tarde._" 
-        }, { quoted: msg });
+        }, msg );
 
         // ❌ Reacción de error
         await sock.sendMessage(msg.key.remoteJid, { 
@@ -14097,9 +14097,9 @@ case "tt":
         
 case "facebook":
 case "fb":
-    if (!text) return sock.sendMessage(msg.key.remoteJid, { 
-        text: `Ejemplo de uso:\n${global.prefix + command} https://fb.watch/ncowLHMp-x/` 
-    }, { quoted: msg });
+    if (!text) return sock.sendMessage2(msg.key.remoteJid, { 
+        text: `${e}Ejemplo de uso:\n${global.prefix + command} https://fb.watch/ncowLHMp-x/` 
+    }, msg );
 
     if (!text.match(/www.facebook.com|fb.watch/g)) {
         return sock.sendMessage(msg.key.remoteJid, {
@@ -14125,10 +14125,10 @@ case "fb":
         const message = `Resoluciones disponibles:\n${results.map((res) => `- ${res.resolution}`).join('\n')}`;
 
         // 📩 Enviar el video con la marca de agua
-        await sock.sendMessage(msg.key.remoteJid, {
+        await sock.sendMessage2(msg.key.remoteJid, {
             video: { url: results[0].url }, // Se envía en 720p por defecto
             caption: message
-        }, { quoted: msg });
+        }, msg );
 
         // ✅ Confirmación con reacción de éxito
         await sock.sendMessage(msg.key.remoteJid, { 
