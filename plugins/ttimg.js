@@ -1,103 +1,42 @@
-const axios = require("axios");
-const cheerio = requiere('cheerio');
+const Starlights = require('@StarlightsTeam/Scraper');
 
 const handler = async (msg, { conn, text, usedPrefix }) => {
   if (!text) {
     return await conn.sendMessage(msg.key.remoteJid, {
-      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}ttimg https://vm.tiktok.com/ZMBwnbFe7/*`
+      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}ttimg* https://vm.tiktok.com/ZMBwnbFe7/`
     }, { quoted: msg });
   }
-
-    let mainUrl = `https://dlpanda.com/id?url=${text}&token=G7eRpMaa`;
-    let backupUrl = `https://dlpanda.com/id?url=${text}&token51=G32254GLM09MN89Maa`;
-    let creator = 'KenisawaDev';
-
-    try {
-        let response = await axios.get(mainUrl, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                'Accept-Language': 'id,en-US;q=0.7,en;q=0.3',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Alt-Used': 'dlpanda.com',
-                'Connection': 'keep-alive',
-                'Cookie': 'cf_clearance=vdZS2yhltq5vorBBw7wPwGOxaRBiCANmFWRdAqKLlmI-1693612801-0-1-ab4b189c.e21c5b7c.f700a2ea-0.2.1693612801; _ga_DQ96ZJ6QXK=GS1.1.1693612800.2.1.1693612814.0.0.0; _ga=GA1.1.1626490340.1693347388; current_locale=id; __gads=ID=390b63a593862513-22debbc32ce300d7:T=1693347389:RT=1693612802:S=ALNI_Mbez6jYLnaF45LqwcUZR564jwrLgw; __gpi=UID=00000c3691b8b508:T=1693347389:RT=1693612802:S=ALNI_Ma03oA0UzqNgAsE2_fXRpT1NKg_Kw; fpestid=2g_N1gPYC68duNfJozpD093K-4zaMANBzHKNlh7x3Hg5XsGiN8TdNDAu6-MclRzqfUtePw; XSRF-TOKEN=eyJpIjoicUZtV0RJangwQXo2ZFZwZndxd1ZZck85OFMwWE9Edzg0ZnFUZXBGRzNVczNHeVpXbjFKdWhZQUFOZTBTZWRMUUN4Um1COVNDY3JRN1ZkWm5DUklseUlWTUNNc0huNkR1TjlZY2dpZUlPNExOcy9TbkNCeXNVTE50ZFgvSTkzelgiLCJpdiI6Ikd0ekE2VEdETkowRTh4OVYyU2ljeGc9PSIsInZhbHVlIjoicUZtV0RJangwQXo2ZFZwZndxd1ZZck85OFMwWE9Edzg0ZnFUZXBGRzNVczNHeVpXbjFKdWhZQUFOZTBTZWRMUUN4Um1COVNDY3JRN1ZkWm5DUklseUlWTUNNc0huNkR1TjlZY2dpZUlPNExOcy9TbkNCeXNVTE50ZFgvSTkzelgiLCJtYWMiOiIzMGU2ZmNlYWJmM2RjMzUzNGVhOWIwOTc9NGIwNmY0YWQ0MzdjY2RjYTE5ZTg0ZDg4ODI9NDI5NDAzZDZkZWNkNTlmIiwidGFnIjoiIn0%3D; dlpanda_session=eyJpIjoicUZtV0RJangwQXo2ZFZwZndxd1ZZck85OFMwWE9Edzg0ZnFUZXBGRzNVczNHeVpXbjFKdWhZQUFOZTBTZWRMUUN4Um1COVNDY3JRN1ZkWm5DUklseUlWTUNNc0huNkR1TjlZY2dpZUlPNExOcy9TbkNCeXNVTE50ZFgvSTkzelgiLCJtYWMiOiIzMGU2ZmNlYWJmM2DlgdMqMrdURupgpTcwPvOW6MWVaAvUnv4k_qtF_WI4XeKUFghBnCPT6-2I61p-IkBle-3xIg0ao-Fuz921rFwdOHdWKxAgnwgVewYjN-BPpJynw%3D%3D; FCNEC=%5B%5B%22AKsRol_1IXoIpvbEdbM5KJpi4sTFJvXiQ9eigpWLQvrmWuR0tVHN2aAiv7R-tN3T6POOnqE6glMWVaAvUnv4k_qtF_WI4XeKUFghBnCPT6-2I61p-IkBle-3xIg0ao-Fuz921rFwdOHdWKxAgnwgVewYjN-BPpJynw%3D%3D%22%5D%2Cnull%2C%5B%5D%5D',
-                'Upgrade-Insecure-Requests': '1',
-                'Sec-Fetch-Dest': 'document',
-                'Sec-Fetch-Mode': 'navigate',
-                'Sec-Fetch-Site': 'same-origin',
-                'Sec-Fetch-User': '?1'
-            }
-        });
-
-        const html = response.data;
-        const $ = cheerio.load(html);
-
-        let asd = []
-        let imgSrc = []
-
-        $('div.col-md-12 > img').each((index, element) => {
-            imgSrc.push($(element).attr('src'));
-        });
-
-        asd.push({ creator, imgSrc })
-        let fix = imgSrc.map((e, i) => {
-            return { img: e, creator: creator[i] }
-        })
-
-        if (asd[0].imgSrc.length === 0) {
-            response = await axios.get(backupUrl, {
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0',
-                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                    'Accept-Language': 'id,en-US;q=0.7,en;q=0.3',
-                    'Accept-Encoding': 'gzip, deflate, br',
-                    'Alt-Used': 'dlpanda.com',
-                    'Connection': 'keep-alive',
-                    'Cookie': 'cf_clearance=vdZS2yhltq5vorBBw7wPwGOxaRBiCANmFWRdAqKLlmI-1693612801-0-1-ab4b189c.e21c5b7c.f700a2ea-0.2.1693612801; _ga_DQ96ZJ6QXK=GS1.1.1693612800.2.1.1693612814.0.0.0; _ga=GA1.1.1626490340.1693347388; current_locale=id; __gads=ID=390b63a593862513-22debbc32ce300d7:T=1693347389:RT=1693612802:S=ALNI_Mbez6jYLnaF45LqwcUZR564jwrLgw; __gpi=UID=00000c3691b8b508:T=1693347389:RT=1693612802:S=ALNI_Ma03oA0UzqNgAsE2_fXRpT1NKg_Kw; fpestid=2g_N1gPYC68duNfJozpD093K-4zaMANBzHKNlh7x3Hg5XsGiN8TdNDAu6-MclRzqfUtePw; XSRF-TOKEN=eyJpIjoicUZtV0RJangwQXo2ZFZwZndxd1ZZck85OFMwWE9Edzg0ZnFUZXBGRzNVczNHeVpXbjFKdWhZQUFOZTBTZWRMUUN4Um1COVNDY3JRN1ZkWm5DUklseUlWTUNNc0huNkR1TjlZY2dpZUlPNExOcy9TbkNCeXNVTE50ZFgvSTkzelgiLCJpdiI6Ikd0ekE2VEdETkowRTh4OVYyU2ljeGc9PSIsInZhbHVlIjoicUZtV0RJangwQXo2ZFZwZndxd1ZZck85OFMwWE9Edzg0ZnFUZXBGRzNVczNHeVpXbjFKdWhZQUFOZTBTZWRMUUN4Um1COVNDY3JRN1ZkWm5DUklseUlWTUNNc0huNkR1TjlZY2dpZUlPNExOcy9TbkNCeXNVTE50ZFgvSTkzelgiLCJtYWMiOiIzMGU2ZmNlYWJmM2RjMzUzNGVhOWIwOTc9NGIwNmY0YWQ0MzdjY2RjYTE5ZTg0ZDg4ODI9NDI5NDAzZDZkZWNkNTlmIiwidGFnIjoiIn0%3D; dlpanda_session=eyJpIjoicUZtV0RJangwQXo2ZFZwZndxd1ZZck85OFMwWE9Edzg0ZnFUZXBGRzNVczNHeVpXbjFKdWhZQUFOZTBTZWRMUUN4Um1COVNDY3JRN1ZkWm5DUklseUlWTUNNc0huNkR1TjlZY2dpZUlPNExOcy9TbkNCeXNVTE50ZFgvSTkzelgiLCJtYWMiOiIzMGU2ZmNlYWJmM2DlgdMqMrdURupgpTcwPvOW6MWVaAvUnv4k_qtF_WI4XeKUFghBnCPT6-2I61p-IkBle-3xIg0ao-Fuz921rFwdOHdWKxAgnwgVewYjN-BPpJynw%3D%3D; FCNEC=%5B%5B%22AKsRol_1IXoIpvbEdbM5KJpi4sTFJvXiQ9eigpWLQvrmWuR0tVHN2aAiv7R-tN3T6POOnqE6glMWVaAvUnv4k_qtF_WI4XeKUFghBnCPT6-2I61p-IkBle-3xIg0ao-Fuz921rFwdOHdWKxAgnwgVewYjN-BPpJynw%3D%3D%22%5D%2Cnull%2C%5B%5D%5D',
-                    'Upgrade-Insecure-Requests': '1',
-                    'Sec-Fetch-Dest': 'document',
-                    'Sec-Fetch-Mode': 'navigate',
-                    'Sec-Fetch-Site': 'same-origin',
-                    'Sec-Fetch-User': '?1'
-                }
-            });
-
-            const html2 = response.data;
-            const $2 = cheerio.load(html2);
-
-            let imgSrc2 = []
-
-            $2('div.col-md-12 > img').each((index, element) => {
-                imgSrc2.push($2(element).attr('src'));
-            });
-
-            asd.push({ creator, imgSrc: imgSrc2 });
-        }
-
-        if (asd[0].imgSrc.length === 0) {
-            throw `${emoji2} No se encontraron resultados...`;
-        }
- await conn.sendMessage(msg.key.remoteJid, {
+    await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "🕒", key: msg.key} 
         });
-        for (let i of asd[0].imgSrc) {
-            try {
-                //await conn.sendFile(msg.key.remoteJid, i, '', null, msg);
+if (!args[0].match(/tiktok/gi)) return await conn.sendMessage(msg.key.remoteJid, {
+      text: `${e} Verifica que el link sea de TikTok` }, { quoted: msg });
+try {
+let { username, views, comments, shares, downloads, profile, dl_urls } = await Starlights.tiktokdlV2(args[0])
+let txt = '`乂  T I K T O K - I M G`\n\n'
+    txt += `\t\t*» Usuario* : ${username}\n`
+    txt += `\t\t*» Visitas* : ${views}\n`
+    txt += `\t\t*» Comentarios* : ${comments}\n`
+    txt += `\t\t*» Compartidos* : ${shares}\n`
+    txt += `\t\t*» Descargas* : ${downloads}\n`
+       
+for (let i = 0; i < dl_urls.length; i++) {
+await conn.sendFile(msg.key.remoteJid, dl_urls[i].dl_url, `tiktokimg${i + 1}.jpg`, txt, msg)
 await conn.sendMessage(msg.key.remoteJid, {
-    image: i,
-    caption: "Aquí tienes la imagen de TikTok"
+    image: dl_urls[i].dl_url, `tiktokimg${i + 1}.jpg,
+    caption: null,
+    quoted: msg
 });
- await conn.sendMessage(msg.key.remoteJid, {
+await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "✅", key: msg.key} 
         });
-            } catch (err) {
+}} catch (err) {
     console.error(err);
     await conn.sendMessage(msg.key.remoteJid, {
-      text: '✖️ Ocurrió un error al procesar el video. Asegúrate de que el enlace sea válido.'
+      text: '✖️ Ocurrió un error al procesar las imágenes. Asegúrate de que el enlace sea válido.'
     }, { quoted: msg });
   }
 }
 
-handler.command = ['tiktokimg', 'ttimg']
+handler.command = ['tiktokimg', 'tiktokimgs', 'ttimg', 'ttimgs']
 module.exports = handler;
