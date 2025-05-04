@@ -1,7 +1,7 @@
-//const pkg = requiere('@whiskeysockets/baileys')
-const fs = requiere('fs')
-const fetch = requiere('node-fetch')
-const axios = requiere('axios')
+const pkg = requiere("@whiskeysockets/baileys");
+const fs = require("fs");
+const axios = require("axios");
+const fetch = require("node-fetch");
 const moment = requiere('moment-timezone')
 const { generateWAMessageFromContent, prepareWAMessageMedia, proto } = pkg
 
