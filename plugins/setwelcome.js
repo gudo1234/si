@@ -11,9 +11,9 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
   }
 
   if (!text) {
-    return conn.sendMessage(chatId, {
-      text: `✳️ Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}setwelcome* Hola, bienvenido al grupo Azura Ultra.`
-    }, { quoted: msg });
+    return conn.sendMessage2(chatId, {
+      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}setwelcome* Hola, bienvenido al grupo.`
+    }, msg );
   }
 
   // Obtener metadata y verificar si es admin o owner
