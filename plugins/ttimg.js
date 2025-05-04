@@ -28,7 +28,7 @@ for (let i = 0; i < dl_urls.length; i++) {
     caption: txt,
     fileName: `tiktokimg${i + 1}.jpg`
   },
-  msg
+  quoted: msg
 )
 
 await conn.sendMessage(msg.key.remoteJid, {
