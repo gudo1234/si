@@ -10,7 +10,7 @@ const handler = async (msg, { conn, text, usedPrefix, args }) => {
         });
 const res = await googleImage(text);
 //const image = await res.getRandom();
-const link = image;
+//const link = image;
 await conn.sendMessage(
   msg.key.remoteJid,
   {
