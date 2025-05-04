@@ -12,9 +12,9 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
   });
 
   try {
-    let { title, ext, aploud, size, dl_url } = await Starlights.mediafire(text);
+    let { ext, aploud, size, dl_url } = await Starlights.mediafire(text);
     let txt = `乂  *M E D I A F I R E  -  D O W N L O A D*\n\n`;
-    txt += `✩  *Nombre* : ${title}\n`;
+    txt += `✩  *Nombre* : ${size}\n`;
     txt += `✩  *Peso* : ${size}\n`;
     txt += `✩  *Publicado* : ${aploud}\n`;
     txt += `✩  *MimeType* : ${ext}\n\n`;
@@ -29,14 +29,14 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
     await conn.sendMessage2(msg.key.remoteJid, {
       document: { url: dl_url },
       mimetype: ext,
-      fileName: title
+      fileName: size
     }, msg);
 
   } catch (err) {
     try {
       let { title, ext, aploud, size, dl_url } = await Starlights.mediafireV2(text);
       let txt = `乂  *M E D I A F I R E  -  D O W N L O A D*\n\n`;
-      txt += `✩  *Nombre* : ${title}\n`;
+      txt += `✩  *Nombre* : ${size}\n`;
       txt += `✩  *Peso* : ${size}\n`;
       txt += `✩  *Publicado* : ${aploud}\n`;
       txt += `✩  *MimeType* : ${ext}\n\n`;
@@ -51,7 +51,7 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
       await conn.sendMessage2(msg.key.remoteJid, {
         document: { url: dl_url },
         mimetype: ext,
-        fileName: title
+        fileName: size
       }, msg);
 
     } catch (err) {
