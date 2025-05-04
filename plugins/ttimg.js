@@ -23,7 +23,7 @@ let txt = '`乂  T I K T O K - I M G`\n\n'
 for (let i = 0; i < dl_urls.length; i++) {
 //await conn.sendFile(msg.key.remoteJid, dl_urls[i].dl_url, `tiktokimg${i + 1}.jpg`, txt, msg)
 await conn.sendMessage(msg.key.remoteJid, {
-    image: dl_urls[i].dl_url, `tiktokimg${i + 1}.jpg,
+    image: dl_urls[i].dl_url, `tiktokimg${i + 1}.jpg`,
     caption: null,
     quoted: msg
 });
