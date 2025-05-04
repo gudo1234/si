@@ -13,7 +13,7 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
   });
 
   try {
-    const res = await fetch(`https://api.agatz.xyz/api/mediafire?url=${encodeURIComponent(text)}`);
+    const res = await fetch(`https://api.agatz.xyz/api/mediafire?url=${text}`);
     const gyh = await res.json();
     const file = gyh.data[0];
 
