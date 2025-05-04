@@ -1,4 +1,3 @@
-//import {googleImage} from '@bochilteam/scraper';
 const { googleImage } = require("@bochilteam/scraper");
 const handler = async (msg, { conn, text, usedPrefix, args }) => {
   if (!text) {
