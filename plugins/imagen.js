@@ -1,26 +1,38 @@
 const { googleImage } = require("@bochilteam/scraper");
-const handler = async (msg, { conn, text, usedPrefix, args }) => {
+
+const handler = async (msg, { conn, text, usedPrefix }) => {
   if (!text) {
-    return await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}imagen* mia kalifa`
-    }, msg );
+    return await conn.sendMessage(msg.key.remoteJid, {
+      text: `Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}imagen* mia khalifa`
+    }, { quoted: msg });
   }
-    await conn.sendMessage(msg.key.remoteJid, {
-            react: { text: "🕒", key: msg.key} 
-        });
-const res = await googleImage(text);
-//const image = await res.getRandom();
-//const link = image;
-await conn.sendMessage(
-  msg.key.remoteJid,
-  {
-    image: { url: res },
-    caption: null,
-    fileName: 'image.jpg'
-  },
-  { quoted: msg }
-)
+
+  await conn.sendMessage(msg.key.remoteJid, {
+    react: { text: "🕒", key: msg.key }
+  });
+
+  const results = await googleImage(text);
+  if (!results || results.length === 0) {
+    return await conn.sendMessage(msg.key.remoteJid, {
+      text: 'No se encontraron imágenes.'
+    }, { quoted: msg });
+  }
+
+  // Seleccionar 5 imágenes aleatorias (o menos si no hay suficientes)
+  const images = results.sort(() => 0.5 - Math.random()).slice(0, 5);
+
+  for (const img of images) {
+    await conn.sendMessage(
+      msg.key.remoteJid,
+      {
+        image: { url: img },
+        caption: '',
+        fileName: 'image.jpg'
+      },
+      { quoted: msg }
+    );
+  }
 };
 
-handler.command = ['image','imagen'];
+handler.command = ['image', 'imagen'];
 module.exports = handler;
