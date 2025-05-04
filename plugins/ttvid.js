@@ -36,7 +36,7 @@ await conn.sendMessage(msg.key.remoteJid, {
       caption: txt,
       mimetype: 'video/mp4',
       fileName: `${title}.mp4`
-    }, { quoted: msg, rcanal });
+    }, { quoted: msg, null, rcanal });
 
   } catch (err) {
     console.error(err);
