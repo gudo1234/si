@@ -2,9 +2,9 @@ const { googleImage } = require("@bochilteam/scraper");
 
 const handler = async (msg, { conn, text, usedPrefix }) => {
   if (!text) {
-    return await conn.sendMessage(msg.key.remoteJid, {
+    return await conn.sendMessage2(msg.key.remoteJid, {
       text: `Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}imagen* mia khalifa`
-    }, { quoted: msg });
+    }, msg );
   }
 
   await conn.sendMessage(msg.key.remoteJid, {
@@ -22,14 +22,14 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
   const images = results.sort(() => 0.5 - Math.random()).slice(0, 5);
 
   for (const img of images) {
-    await conn.sendMessage(
+    await conn.sendMessage2(
       msg.key.remoteJid,
       {
         image: { url: img },
         caption: '',
         fileName: 'image.jpg'
       },
-      { quoted: msg }
+      msg 
     );
   }
 };
