@@ -1,7 +1,9 @@
 const { 
   downloadTrack2,
 } = require("@nechlophomeriaa/spotifydl");
+const fs = require("fs");
 const axios = require("axios");
+const fetch = require("node-fetch");
 
 const handler = async (msg, { conn, text, usedPrefix, command }) => {
   if (!text) {
