@@ -1,4 +1,4 @@
-const pkg = requiere('@whiskeysockets/baileys')
+//const pkg = requiere('@whiskeysockets/baileys')
 const fs = requiere('fs')
 const fetch = requiere('node-fetch')
 const axios = requiere('axios')
