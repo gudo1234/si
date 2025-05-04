@@ -70,7 +70,7 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}pinterest → link
 ┃ ⎔ ${global.prefix}ig → link  
 ┃ ⎔ ${global.prefix}spotify → título
-┃ ⎔ ${global.prefix}spotifydl → título
+┃ ⎔ ${global.prefix}spotifydl → link
 ┃ ⎔ ${global.prefix}mediafire → link
 ┃ ⎔ ${global.prefix}apk → título
 ╰━⊰══❖══⊱━╯
