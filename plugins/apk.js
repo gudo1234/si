@@ -6,7 +6,9 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
       text: `Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* unicode pad`
     }, msg);
   }
-
+await conn.sendMessage(msg.key.remoteJid, {
+            react: { text: "🕒", key: msg.key} 
+        });
   try {
     const searchA = await search(text);
     if (!searchA.length) {
@@ -26,7 +28,9 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
         text: 'El archivo es demasiado grande, por lo que no se enviará.'
       }, { quoted: msg });
     }
-
+await conn.sendMessage(msg.key.remoteJid, {
+            react: { text: "✅", key: msg.key} 
+        });
     await conn.sendMessage(msg.key.remoteJid, {
       document: { url: data5.dllink },
       mimetype: 'application/vnd.android.package-archive',
