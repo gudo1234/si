@@ -10,7 +10,7 @@ await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "🕒", key: msg.key} 
         });
 try {
-let { title, dl_url } = await Starlights.xvideosdl(args[0])
+let { title, dl_url } = await Starlights.xvideosdl(text)
 //await conn.sendFile(m.chat, dl_url, title + '.mp4', `*» Título* : ${title}`, m, false, { asDocument: user.useDocument })
 
 await conn.sendMessage2(msg.key.remoteJid, {
