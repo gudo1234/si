@@ -10,7 +10,7 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
 await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "🕒", key: msg.key} 
         });
-
+try {
         const file = File.fromURL(text);
         await file.loadAttributes();
 
@@ -42,12 +42,12 @@ await conn.sendMessage2(msg.key.remoteJid, {
       caption: caption
     }, msg );
 
-    } catch (error) {
-        return await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} ${msm} Ocurrió un error: ${error.message}`
-    }, msg);
-    }
-}
+    } catch (err) {
+    console.error('Error al descargar el video:', err);
+    await conn.sendMessage2(msg.key.remoteJid, {
+      text: `${e} Ocurrió un error al intentar descargar el video.`
+    }, msg );
+  }}
 
 handler.command = ['mega', 'mg']
 module.exports = handler;
