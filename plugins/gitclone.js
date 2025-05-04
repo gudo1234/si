@@ -1,4 +1,4 @@
-conts fetch = require("node-fetch")
+conts fetch = require("node-fetch");
 
 let regex = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
 const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
@@ -19,7 +19,6 @@ await conn.sendMessage(msg.key.remoteJid, {
   let sanitizedRepo = repo.replace(/.git$/, '')
   let repoUrl = `https://api.github.com/repos/${user}/${sanitizedRepo}`
   let zipUrl = `https://api.github.com/repos/${user}/${sanitizedRepo}/zipball`
-  try {
     let [repoResponse, zipResponse] = await Promise.all([
       fetch(repoUrl),
       fetch(zipUrl),
@@ -46,8 +45,6 @@ await conn.sendMessage2(msg.key.remoteJid, {
       mimetype: 'application/vnd.android.package-archive',
       fileName: filename
     }, msg );
-  } catch {
-  }
 }
 
 handler.command = ['gitclone']
