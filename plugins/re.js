@@ -8,8 +8,11 @@ const handler = async (msg, { conn, args }) => {
 
   const isFromMe = msg.key.fromMe;
   const isOwner = global.owner.some(([id]) => id === senderClean);
-const isAdmin = participant?.admin === "admin" || participant?.admin === "superadmin";
 
+  if (isGroup && !isOwner && !isFromMe) {
+    const metadata = await conn.groupMetadata(chatId);
+    const participant = metadata.participants.find(p => p.id === senderId);
+  const isAdmin = participant?.admin === "admin" || participant?.admin === "superadmin";
     if (!isAdmin) {
       return conn.sendMessage2(chatId, {
         text: `${e} *Solo los administradores, el owner o el bot pueden usar este comando.*`
