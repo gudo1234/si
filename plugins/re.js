@@ -13,9 +13,9 @@ const handler = async (msg, { conn, args }) => {
     text: "❌ Solo el owner o el mismo bot puede restringir comandos."
   }, { quoted: msg });
 
-  if (!args[0]) return conn.sendMessage(chatId, {
-    text: "⚠️ Usa: *re [comando]* para restringirlo en este grupo."
-  }, { quoted: msg });
+  if (!args[0]) return conn.sendMessage2(chatId, {
+    text: `${e}Usa: *.re comando* para restringirlo en este grupo.\n*Ejemplo:* .re kick`
+  }, msg );
 
   const filePath = path.resolve("./re.json");
   if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, JSON.stringify({}, null, 2));
