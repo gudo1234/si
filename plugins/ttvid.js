@@ -42,7 +42,7 @@ await conn.sendMessage(msg.key.remoteJid, {
     console.error(err);
     await conn.sendMessage(msg.key.remoteJid, {
       text: '✖️ Ocurrió un error al procesar el video. Asegúrate de que el enlace sea válido.'
-    }, { quoted: msg, null, rcanal });
+    }, { quoted: msg, rcanal });
   }
 };
 
