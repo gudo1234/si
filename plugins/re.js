@@ -8,13 +8,6 @@ const handler = async (msg, { conn, args }) => {
 
   const isFromMe = msg.key.fromMe;
   const isOwner = global.owner.some(([id]) => id === senderClean);
-  const isAdmin = participant?.admin === "admin" || participant?.admin === "superadmin";
-  
-  if (!isAdmin) {
-      return conn.sendMessage2(chatId, {
-        text: `${e} *Solo los administradores, el owner o el bot pueden usar este comando.*`
-      }, msg );
-  }
   
   if (!isOwner && !isFromMe ) return conn.sendMessage(chatId, {
     text: "❌ Solo el owner o el mismo bot puede restringir comandos."
