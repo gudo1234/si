@@ -1,6 +1,6 @@
 const Starlights = require('@StarlightsTeam/Scraper');
 
-const handler = async (msg, { conn, text, usedPrefix }) => {
+const handler = async (msg, { conn, text, usedPrefix, args }) => {
   if (!text) {
     return await conn.sendMessage(msg.key.remoteJid, {
       text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}ttimg* https://vm.tiktok.com/ZMBwnbFe7/`
