@@ -16,7 +16,7 @@ await conn.sendMessage(msg.key.remoteJid, {
   {
     image: { url: gyh.data[0].link },
     caption: `*Nombre:*  ${gyh.data[0].nama}\n*Peso:* ${gyh.data[0].size}*\n*Type:* ${gyh.data[0].mime}`,
-    fileName: `archivo.zip`
+    fileName: `${gyh.data[0].nama}`
   },
   msg 
 )
