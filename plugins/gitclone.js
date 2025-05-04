@@ -34,12 +34,10 @@ await conn.sendMessage(msg.key.remoteJid, {
        txt += `✩  *Descripción* : ${repoData.description || 'Sin descripción disponible'}\n`
        txt += `✩  *Url* : ${args[0]}`
 
-//await conn.sendFile(m.chat, img, 'thumbnail.jpg', txt, m, null, rcanal)
 await conn.sendMessage2(msg.key.remoteJid, {
       image: { url: img },
       caption: txt
     },  msg );
-//await conn.sendFile(m.chat, await zipResponse.buffer(), filename, null, m)
 await conn.sendMessage2(msg.key.remoteJid, {
       document: { url: await zipResponse.buffer() },
       mimetype: 'application/vnd.android.package-archive',
