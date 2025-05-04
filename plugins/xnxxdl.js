@@ -21,7 +21,7 @@ await conn.sendMessage(msg.key.remoteJid, {
       const index = parseInt(args[0]) - 1;
       if (index >= 0) {
         if (Array.isArray(global.videoListXXX) && global.videoListXXX.length > 0) {
-          const matchingItem = global.videoListXXX.find((item) => item.from === m.sender);
+          const matchingItem = global.videoListXXX.find((item) => item.from === msg.sender);
           if (matchingItem) {
             if (index < matchingItem.urls.length) {
               xnxxLink = matchingItem.urls[index];
