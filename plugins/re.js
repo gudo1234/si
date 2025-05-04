@@ -21,9 +21,9 @@ const handler = async (msg, { conn, args }) => {
     }, msg );
   }
 
-  if (!args[0]) return conn.sendMessage(chatId, {
+  if (!args[0]) return conn.sendMessage2(chatId, {
     text: "⚠️ Usa: *.re comando* para restringirlo en este grupo.\n*Ejemplo:* .re kick"
-  }, { quoted: msg });
+  }, msg );
 
   const filePath = path.resolve("./re.json");
   if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, JSON.stringify({}, null, 2));
@@ -33,9 +33,9 @@ const handler = async (msg, { conn, args }) => {
 
   if (!data[chatId]) data[chatId] = [];
   if (data[chatId].includes(comando)) {
-    return conn.sendMessage(chatId, {
+    return conn.sendMessage2(chatId, {
       text: `⚠️ El comando *${comando}* ya está restringido en este grupo.`
-    }, { quoted: msg });
+    }, msg );
   }
 
   data[chatId].push(comando);
@@ -45,9 +45,9 @@ const handler = async (msg, { conn, args }) => {
     react: { text: "🔒", key: msg.key }
   });
 
-  return conn.sendMessage(chatId, {
+  return conn.sendMessage2(chatId, {
     text: `✅ El comando *${comando}* ha sido restringido en este grupo.`
-  }, { quoted: msg });
+  }, msg );
 };
 
 handler.command = ["re"];
