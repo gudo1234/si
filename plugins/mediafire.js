@@ -7,7 +7,7 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
     }, msg );
   }
 
-  await conn.sendMessage(m.chat, {
+  await conn.sendMessage(msg.key.remoteJid, {
     react: { text: "🕒", key: m.key }
   });
 
