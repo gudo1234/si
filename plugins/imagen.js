@@ -9,7 +9,7 @@ const handler = async (msg, { conn, text, usedPrefix, args }) => {
             react: { text: "🕒", key: msg.key} 
         });
 const res = await googleImage(text);
-const image = await res.getRandom();
+//const image = await res.getRandom();
 const link = image;
 await conn.sendMessage(
   msg.key.remoteJid,
