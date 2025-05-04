@@ -1,5 +1,3 @@
-Agregar errores que se presentan en la consola
-
 const Starlights = require("@StarlightsTeam/Scraper");
 
 const handler = async (msg, { conn, text, usedPrefix, command }) => {
