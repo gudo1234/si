@@ -118,5 +118,11 @@ global.getRandomIcon = async () => {
         return null;
     }
 };
+const red = await global.getRandomRed();
+console.log(red);
+  const im = await global.getRandomIcon();
+if (im) {
+
+global.rcanal = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: channel, serverMessageId: 100, newsletterName: wm, }, externalAdReply: { showAdAttribution: true, title: wm, body: textbot, mediaUrl: null, description: null, previewType: "PHOTO", thumbnailUrl: red, sourceUrl: red, thumbnail: im, mediaType: 1, renderLargerThumbnail: false }, }, }}
 // 🔄 Exportar configuraciones
 module.exports = { isOwner: global.isOwner, setPrefix: global.setPrefix, allowedPrefixes: global.allowedPrefixes };
