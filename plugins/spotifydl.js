@@ -15,7 +15,7 @@ if (!isSpotifyUrl) return await conn.sendMessage2(msg.key.remoteJid, {
 
 try {
 let { title, artist, album, thumbnail, dl_url } = await Starlights.spotifydl(text);
-let img = await (await fetch(thumbnail)).buffer();
+//let img = await (await fetch(thumbnail)).buffer();
 
 let txt = `*乂  S P O T I F Y  -  D O W N L O A D*\n\n`;
     txt += `    ✩  *Título* : ${title}\n`;
@@ -23,7 +23,7 @@ let txt = `*乂  S P O T I F Y  -  D O W N L O A D*\n\n`;
     txt += `    ✩  *Artista* : ${artist}\n\n`;
     txt += `*- ↻ Los audios se están enviando, espera un momento. . .*`;
 await conn.sendMessage2(msg.key.remoteJid, {
-      image: { url: img },
+      image: { url: thumbnail },
       caption: txt
     },  msg );
 await conn.sendMessage2(msg.key.remoteJid, {
