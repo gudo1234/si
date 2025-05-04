@@ -45,8 +45,11 @@ await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "✅", key: msg.key} 
         });
     }
-  catch
-  {
+  catch (err) {
+    console.error('Error al descargar el video:', err);
+    await conn.sendMessage2(msg.key.remoteJid, {
+      text: `${e} Ocurrió un error al intentar descargar el video.`
+    }, msg );
   }
 }
 
