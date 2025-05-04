@@ -1,104 +1,106 @@
-const yts = require('yt-search'); const axios = require('axios');
+const { youtubedl, youtubedlv2 } = require("@bochilteam/scraper");
+const yts = require('yt-search');
+const axios = require('axios');
 
-const handler = async (msg, { conn, text, usedPrefix, command, args }) => { if (!text) { return await conn.sendMessage2(msg.key.remoteJid, { text: ❗ Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* diles }, msg); }
+const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
+  if (!text) {
+    return await conn.sendMessage2(msg.key.remoteJid, {
+      text: `❗ Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* diles`
+    }, msg);
+  }
 
-await conn.sendMessage(msg.key.remoteJid, { react: { text: "🕒", key: msg.key } });
+  await conn.sendMessage(msg.key.remoteJid, {
+    react: { text: "🕒", key: msg.key }
+  });
 
-try { const query = args.join(' '); const isUrl = /youtu/.test(query);
+  try {
+    const query = args.join(' ');
+    const isUrl = /youtu/.test(query);
 
-let video;
-if (isUrl) {
-  const id = query.split('v=')[1];
-  const ytres = await yts({ videoId: id });
-  video = ytres.videos[0];
-} else {
-  const ytres = await yts(query);
-  video = ytres.videos[0];
-}
+    let video;
+    if (isUrl) {
+      const id = query.split('v=')[1];
+      const ytres = await yts({ videoId: id });
+      video = ytres.videos[0];
+    } else {
+      const ytres = await yts(query);
+      video = ytres.videos[0];
+    }
 
-if (!video) {
-  return await conn.sendMessage2(msg.key.remoteJid, {
-    text: `❗ *Video no encontrado.*`
-  }, msg);
-}
+    if (!video) {
+      return await conn.sendMessage2(msg.key.remoteJid, {
+        text: `❗ *Video no encontrado.*`
+      }, msg);
+    }
 
-const { title, thumbnail, timestamp, views, ago, url } = video;
+    const { title, thumbnail, timestamp, views, ago, url } = video;
+    const yt = await youtubedl(url).catch(() => youtubedlv2(url));
+    const audio = yt.audio['128kbps'] || yt.audio['160kbps'];
 
-const isAudioCommand = [
-  'play', 'yta', 'mp3', 'ytmp3', 'play3', 'ytadoc', 'mp3doc', 'ytmp3doc'
-].includes(command);
+    if (!audio) {
+      return await conn.sendMessage2(msg.key.remoteJid, {
+        text: `❗ *No se encontró audio descargable.*`
+      }, msg);
+    }
 
-const isVideo = [
-  'play2', 'ytv', 'mp4', 'ytmp4',
-  'play4', 'ytvdoc', 'mp4doc', 'ytmp4doc'
-].includes(command);
+    const sizeMB = (audio.fileSize || 0) / (1024 * 1024);
+    const duration = timestamp.split(':').reduce((acc, val) => acc * 60 + +val, 0);
+    const isDocument = ['play3', 'ytadoc', 'mp3doc', 'ytmp3doc'].includes(command);
 
-const isDocument = [
-  'play3', 'ytadoc', 'mp3doc', 'ytmp3doc',
-  'play4', 'ytvdoc', 'mp4doc', 'ytmp4doc'
-].includes(command);
+    if (sizeMB > 100 || duration > 1800) {
+      return await conn.sendMessage2(msg.key.remoteJid, {
+        text: `❗ *El archivo supera el límite permitido.*`
+      }, msg);
+    }
 
-const tipoEnvio = isAudioCommand
-  ? isDocument
-    ? '📂 Enviando *audio como documento*...'
-    : '🔊 Enviando *audio*...'
-  : isDocument
-    ? '📂 Enviando *video como documento*...'
-    : '🎥 Enviando *video*...';
+    // Mensaje decorado
+    const txt = [
+      '┏━━━━━━━━━━━━━━━',
+      `┃ *🎧 TÍTULO:* ${title}`,
+      `┃ *📺 CANAL:* ${video.author.name}`,
+      `┃ *⏱️ DURACIÓN:* ${timestamp}`,
+      `┃ *👀 VISTAS:* ${views}`,
+      `┃ *📆 PUBLICADO:* ${ago}`,
+      `┃ *💾 PESO:* ${audio.fileSizeH || 'N/A'}`,
+      `┃ *🔗 LINK:* ${url}`,
+      '┗━━━━━━━━━━━━━━━',
+      `> ${isDocument ? '📂 Enviando audio como documento...' : '🔊 Enviando audio...'}`
+    ].join('\n');
 
-const txt = [
-  '┏━━━━━━━━━━━━━━━',
-  `┃ *🎬 TÍTULO:* ${title}`,
-  `┃ *📺 CANAL:* ${video.author.name}`,
-  `┃ *⏱️ DURACIÓN:* ${timestamp}`,
-  `┃ *👀 VISTAS:* ${views}`,
-  `┃ *📆 PUBLICADO:* ${ago}`,
-  `┃ *🔗 LINK:* ${url}`,
-  '┗━━━━━━━━━━━━━━━',
-  `> ${tipoEnvio}`
-].join('\n');
+    await conn.sendMessage2(msg.key.remoteJid, {
+      image: { url: thumbnail },
+      caption: txt
+    }, msg);
 
-await conn.sendMessage2(msg.key.remoteJid, {
-  image: { url: thumbnail },
-  caption: txt
-}, msg);
+    // Descargar como buffer para acelerar envío
+    const res = await axios.get(audio.download, { responseType: 'arraybuffer' });
+    const buffer = Buffer.from(res.data);
 
-const apiURL = `https://api.siputzx.my.id/api/d/ytmp4?url=${url}`;
-const res = await axios.get(apiURL);
-const json = res.data;
-if (!json || !json.data || !json.data.url) {
-  throw new Error('API alternativa falló al obtener URL');
-}
+    if (isDocument) {
+      await conn.sendMessage2(msg.key.remoteJid, {
+        document: buffer,
+        mimetype: 'audio/mpeg',
+        fileName: `${title}.mp3`
+      }, msg);
+    } else {
+      await conn.sendMessage2(msg.key.remoteJid, {
+        audio: buffer,
+        mimetype: 'audio/mpeg',
+        fileName: `${title}.mp3`
+      }, msg);
+    }
 
-const mediaUrl = json.data.url;
-const bufferRes = await axios.get(mediaUrl, { responseType: 'arraybuffer' });
-const buffer = Buffer.from(bufferRes.data);
+    await conn.sendMessage(msg.key.remoteJid, {
+      react: { text: "✅", key: msg.key }
+    });
 
-const fileExt = isAudioCommand ? 'mp3' : 'mp4';
-const mimeType = isAudioCommand ? 'audio/mpeg' : 'video/mp4';
+  } catch (err) {
+    console.error('Error:', err);
+    await conn.sendMessage2(msg.key.remoteJid, {
+      text: `❗ *Ocurrió un error al procesar la descarga.*`
+    }, msg);
+  }
+};
 
-if (isDocument) {
-  await conn.sendMessage2(msg.key.remoteJid, {
-    document: buffer,
-    mimetype: mimeType,
-    fileName: `${title}.${fileExt}`
-  }, msg);
-} else {
-  const key = isAudioCommand ? 'audio' : 'video';
-  await conn.sendMessage2(msg.key.remoteJid, {
-    [key]: buffer,
-    mimetype: mimeType,
-    fileName: `${title}.${fileExt}`
-  }, msg);
-}
-
-await conn.sendMessage(msg.key.remoteJid, {
-  react: { text: "✅", key: msg.key }
-});
-
-} catch (err) { console.error('Error:', err); await conn.sendMessage2(msg.key.remoteJid, { text: ❗ *Ocurrió un error al procesar la descarga.* }, msg); } };
-
-handler.command = [ 'play', 'yta', 'mp3', 'ytmp3', 'play3', 'ytadoc', 'mp3doc', 'ytmp3doc', 'play2', 'ytv', 'mp4', 'ytmp4', 'play4', 'ytvdoc', 'mp4doc', 'ytmp4doc' ];
-
+handler.command = ['play', 'yta', 'mp3', 'ytmp3', 'play3', 'ytadoc', 'mp3doc', 'ytmp3doc'];
 module.exports = handler;
-
