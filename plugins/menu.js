@@ -13,7 +13,7 @@ const jpg = jp[Math.floor(Math.random() * jp.length)];
   let media = or[Math.floor(Math.random() * 3)]
 let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBot:\` Es un sistema automático que responde a comandos para realizar ciertas acciones dentro del \`Chat\` como las descargas de videos de diferentes plataformas y búsquedas en la \`Web\`.
 
-> ⁉ ᴊᴀᴅɪʙᴛs-ʙᴏᴛs🤖 
+\`ᴊᴀᴅɪʙᴛs-ʙᴏᴛs🤖\`
 ╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}serbot / ${global.prefix}jadibot
 ┃ ⎔ ${global.prefix}sercode / ${global.prefix}code
@@ -21,14 +21,14 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ° mas comandos en el menu de subbots...
 ╰━⊰══❖══⊱━╯
 
-> ⁉ ɪɴғᴏʀᴍᴀᴄɪóɴ 🪐
+\`ɪɴғᴏʀᴍᴀᴄɪóɴ 🪐\`
 ╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}speedtest  
 ┃ ⎔ ${global.prefix}ping  
 ┃ ⎔ ${global.prefix}creador
 ╰━⊰══❖══⊱━╯
 
-> ⁉ ᴍᴇɴᴜs ᴅɪsᴘᴏɴɪʙʟᴇs📕
+\`ᴍᴇɴᴜs ᴅɪsᴘᴏɴɪʙʟᴇs📕\`
 ╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}allmenu  
 ┃ ⎔ ${global.prefix}menugrupo  
@@ -38,7 +38,7 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}menuowner
 ╰━⊰══❖══⊱━╯
 
-> ⁉ ɪᴀ ᴄʜᴀᴛ-ʙᴏᴛ🌐
+\`ɪᴀ ᴄʜᴀᴛ-ʙᴏᴛ🌐\`
 ╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}gemini  
 ┃ ⎔ ${global.prefix}chatgpt
@@ -49,7 +49,7 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}luminai
 ╰━⊰══❖══⊱━╯
 
-> ⁉ ᴅᴇsᴄᴀʀɢᴀs - ᴍᴜʟᴛɪᴍᴇᴅɪᴀ📁
+\`ᴅᴇsᴄᴀʀɢᴀs - ᴍᴜʟᴛɪᴍᴇᴅɪᴀ📁\`
 ╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}audio → título  
 ┃ ⎔ ${global.prefix}play → título  
@@ -62,6 +62,7 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}tiktok → link
 ┃ ⎔ ${global.prefix}tiktokvid → título
 ┃ ⎔ ${global.prefix}tiktokimg → link
+┃ ⎔ ${global.prefix}imagen → título
 ┃ ⎔ ${global.prefix}fb → link  
 ┃ ⎔ ${global.prefix}ig → link  
 ┃ ⎔ ${global.prefix}spotify → título
@@ -69,7 +70,7 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}apk → título
 ╰━⊰══❖══⊱━╯
 
-> ⁉ ʙᴜsᴄᴀᴅᴏʀᴇs🔎
+\`ʙᴜsᴄᴀᴅᴏʀᴇs🔎\`
 ╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}pixai → titulo
 ┃ ⎔ ${global.prefix}Tiktoksearch → título
@@ -77,7 +78,7 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}tiktokstalk → usuario
 ╰━⊰══❖══⊱━╯
 
-> ⁉ ᴄᴏɴᴠᴇʀᴛɪᴅᴏʀᴇs🕹️ 
+\`ᴄᴏɴᴠᴇʀᴛɪᴅᴏʀᴇs🕹️\`
 ╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}tomp3  
 ┃ ⎔ ${global.prefix}tts  
@@ -88,7 +89,7 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}ff2
 ╰━⊰══❖══⊱━╯
 
-> ⁉ sᴛɪᴄᴋᴇʀs - ғғᴘᴇɢ🧩
+\`sᴛɪᴄᴋᴇʀs - ғғᴘᴇɢ🧩\`
 ╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}s
 ┃ ⎔ ${global.prefix}newpack
@@ -97,7 +98,7 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}sendpack
 ╰━⊰══❖══⊱━╯
 
-> ⁉ ʜᴇʀʀᴀᴍɪᴇɴᴛᴀs🛠️
+\`ʜᴇʀʀᴀᴍɪᴇɴᴛᴀs🛠️\`
 ╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}ver → responder a un mensaje  
 ┃ ⎔ ${global.prefix}tourl → responder a una imagen/video/musica
@@ -110,7 +111,7 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}delco
 ╰━⊰══❖══⊱━╯
 
-> ⁉ ᴍɪɴɪ - ᴊᴜᴇɢᴏs🎮
+\`ᴍɪɴɪ - ᴊᴜᴇɢᴏs🎮\`
 ╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}verdad  
 ┃ ⎔ ${global.prefix}reto  
