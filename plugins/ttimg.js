@@ -21,8 +21,8 @@ let txt = '`乂  T I K T O K - I M G`\n\n'
     txt += `\t\t*» Descargas* : ${downloads}\n`
        
 for (let i = 0; i < dl_urls.length; i++) {
-//await conn.sendFile(msg.key.remoteJid, dl_urls[i].dl_url, `tiktokimg${i + 1}.jpg`, txt, msg)
-await sock.sendMessage(
+await conn.sendFile(msg.key.remoteJid, dl_urls[i].dl_url, `tiktokimg${i + 1}.jpg`, txt, msg)
+  await conn.sendMessage(
   msg.key.remoteJid,
   {
     image: { url: dl_urls[i].dl_url }, 
