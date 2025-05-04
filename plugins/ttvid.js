@@ -8,6 +8,13 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
   }
 
   try {
+    await conn.sendMessage2(
+    msg.key.remoteJid,
+    {
+      text: `${e} Espere un momento`,
+    },
+    msg
+  );
     await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "🕒", key: msg.key} 
         });
@@ -37,16 +44,6 @@ await conn.sendMessage(msg.key.remoteJid, {
       mimetype: 'video/mp4',
       fileName: `${title}.mp4`
     }, { quoted: msg });
-    await conn.sendMessage2(
-    msg.key.remoteJid,
-    {
-      video: dl_url,
-      text: menu,
-      mimetype: 'video/mp4',
-      fileName: `${title}.mp4`
-    },
-    msg
-  );
 
   } catch (err) {
     console.error(err);
