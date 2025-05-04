@@ -10,7 +10,7 @@ await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "🕒", key: msg.key} 
         });
 try {
-let { dl_url, quality, size, duration, url } = await Starlights.pinterestdl(args[0]);
+let { dl_url, quality, size, duration, url } = await Starlights.pinterestdl(text);
 
 let txt = '`乂  P I N T E R E S T  -  D L`\n\n'
 txt += `  ✩   *Calidad* : ${quality}\n`;
