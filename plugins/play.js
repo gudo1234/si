@@ -61,14 +61,23 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
 
     let durationInMinutes = parseFloat(timestamp.split(':')[0]) * 60 + parseFloat(timestamp.split(':')[1]);
 
-    let txt = `\`${title}\`\n\n`;
-    txt += `*Canal* ${video.author.name}\n`;
-    txt += `*Duración* ${timestamp}\n`;
-    txt += `*Vistas* ${views}\n`;
-    txt += `*Publicación* ${ago}\n`;
-    txt += `*Tamaño:* ${sizeHumanReadable}\n`;
-    txt += `*Link* ${url}\n`;
-    txt += `> ↻ El audio se está enviando, espera un momento...`;
+    // Lógica para detectar si será documento o audio normal
+    const docCommands = ['play3', 'ytadoc', 'mp3doc', 'ytmp3doc'];
+    const isDocument = docCommands.includes(command);
+
+    // Texto con formato decorado
+    let txt = `┏━━━━━━━⊱\n`;
+    txt += `┃ *🎧 TÍTULO:* ${title}\n`;
+    txt += `┃ *📺 CANAL:* ${video.author.name}\n`;
+    txt += `┃ *⏱️ DURACIÓN:* ${timestamp}\n`;
+    txt += `┃ *👀 VISTAS:* ${views}\n`;
+    txt += `┃ *📆 PUBLICACIÓN:* ${ago}\n`;
+    txt += `┃ *💾 TAMAÑO:* ${sizeHumanReadable}\n`;
+    txt += `┃ *🔗 LINK:* ${url}\n`;
+    txt += `┗━━━━━━━━━━━━\n\n`;
+    txt += `> ${
+      isDocument ? '📂 Enviando audio como documento...' : '🔊 Enviando audio...'
+    }`;
 
     await conn.sendMessage2(msg.key.remoteJid, {
       image: { url: thumbnail },
@@ -87,10 +96,6 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
     }
 
     let { dl: downloadUrl } = data;
-
-    // Lógica para diferenciar audio normal y documento
-    const docCommands = ['play3', 'ytadoc', 'mp3doc', 'ytmp3doc'];
-    const isDocument = docCommands.includes(command);
 
     if (isDocument) {
       await conn.sendMessage2(msg.key.remoteJid, {
