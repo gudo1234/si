@@ -14,7 +14,7 @@ const link = image;
 await conn.sendMessage(
   msg.key.remoteJid,
   {
-    image: { url: image },
+    image: { url: res },
     caption: null,
     fileName: 'image.jpg'
   },
