@@ -7,9 +7,9 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
     }, msg );
   }
 
-  await conn.sendMessage(msg.key.remoteJid, {
+  /*await conn.sendMessage(msg.key.remoteJid, {
     react: { text: "🕒", key: m.key }
-  });
+  });*/
 
   try {
     let res = await fetch(`https://api.agatz.xyz/api/mediafire?url=${encodeURIComponent(text)}`);
@@ -33,9 +33,9 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
     //m.reply('Ocurrió un error al procesar el enlace. Asegúrate de que sea válido y vuelve a intentarlo.');
   }
 
-  await conn.sendMessage(msg.key.remoteJid, {
+  /*await conn.sendMessage(msg.key.remoteJid, {
     react: { text: "✅", key: m.key }
-  });
+  });*/
 };
 
 handler.command = ['mf', 'mediafire'];
