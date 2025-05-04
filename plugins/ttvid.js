@@ -8,13 +8,6 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
   }
 
   try {
-    await conn.sendMessage2(
-    msg.key.remoteJid,
-    {
-      text: `${e} Espere un momento`,
-    },
-    msg
-  );
     await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "🕒", key: msg.key} 
         });
