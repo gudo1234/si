@@ -48,8 +48,7 @@ const handler = async (msg, { conn }) => {
     if (!buffer.length) throw new Error('No se pudo descargar el archivo multimedia.');
 
     const metadata = {
-      packname: `${msg.pushName || "Usuario"} ✨`,
-      author: global.wm || "Bot"
+      packname: `${msg.pushName || "Usuario"}`
     };
 
     const stickerBuffer = mediaType === 'image'
