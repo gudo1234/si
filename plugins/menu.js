@@ -101,6 +101,7 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}addsticker
 ┃ ⎔ ${global.prefix}listpacks
 ┃ ⎔ ${global.prefix}sendpack
+┃ ⎔ ${global.prefix}bratvid → título
 ╰━⊰══❖══⊱━╯
 
 \`ʜᴇʀʀᴀᴍɪᴇɴᴛᴀs🛠️\`
