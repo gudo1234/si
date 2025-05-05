@@ -10,7 +10,9 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
     const women = result?.women;
     const man = result?.man;
 
-    if (!women || !man) throw new Error('No se pudieron obtener las imágenes');
+    if (!women || !man) await conn.sendMessage2(msg.key.remoteJid, {
+      text: `${err.message} Ocurrió un error al intentar obtener las fotos.`
+    }, msg);
 
     await conn.sendMessage2(msg.key.remoteJid, {
       image: { url: women },
