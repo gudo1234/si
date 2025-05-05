@@ -1,13 +1,13 @@
-const handler = async (m, { conn }) => {
-  if (!m.messageStubType || !m.isGroup) return;
+const handler = async (msg, { conn }) => {
+  if (!msg.messageStubType || !msg.isGroup) return;
 
-  const type = m.messageStubType;
-  const chatId = m.chat;
+  const type = msg.messageStubType;
+  const chatId = msg.chat;
 
   const chat = global.db.data.chats[chatId];
   if (!chat || !chat.welcome) return;
 
-  const participant = (m.messageStubParameters || [])[0];
+  const participant = (msg.messageStubParameters || [])[0];
   if (!participant) return;
 
   const who = participant + '@s.whatsapp.net';
@@ -16,23 +16,22 @@ const handler = async (m, { conn }) => {
   const groupName = groupMetadata.subject;
 
   let text = '';
-  if (type === 27) {
-    // Agregado al grupo
-    await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} hola bienvenido ${useName}`
-    }, msg);
+  if (type === 27 || type === 31) {
+    // Nuevo miembro (agregado o se unió)
+    text = `Hola, bienvenido/a *${userName}* a *${groupName}*`;
   } else if (type === 28 || type === 32) {
-    // Eliminado o salió del grupo
-    await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} adios de *${groupName}*`
-    }, msg);
+    // Salida o eliminación del grupo
+    text = `Adiós *${userName}*, te has ido de *${groupName}*`;
   } else {
     return;
   }
 
-  await conn.sendMessage(chatId, { text });
+  await conn.sendMessage2(msg.key.remoteJid, { text }, { quoted: null });
 };
 
-handler.customPrefix = /.^/; // para que no reaccione a comandos
-handler.command = new RegExp(); // lo hace silencioso
+
+handler.customPrefix = /.^/;
+handler.command = new RegExp();
+handler.group = true;
+
 module.exports = handler;
