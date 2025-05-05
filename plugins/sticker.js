@@ -1,18 +1,42 @@
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const { writeExifImg, writeExifVid } = require('../libs/fuctions');
 
-const handler = async (msg, { conn, args }) => {
+const handler = async (msg, { conn, args, command }) => {
   try {
+    // Mostrar explicación si se usa 'wm' o 'take' sin multimedia
+    if ((command === 'wm' || command === 'take') && args.length === 0) {
+      return await conn.sendMessage2(msg.key.remoteJid, {
+        text: `✏️ *Personaliza tus stickers*
+
+Usa el comando así:
+.wm Packname|Autor
+
+Ejemplos:
+.wm edi|love
+.take zeus|By edi
+
+Luego responde a una imagen, video o sticker estático para que se genere el nuevo sticker personalizado.`
+      }, msg );
+    }
+
     let mediaMsg = null;
     let mediaType = null;
     const m = msg.message;
 
-    // Obtener texto personalizado (ej: .s Jesús => Jesús)
-    const customText = args.join(' ').trim();
-    const packname = customText || `${msg.pushName || 'Usuario'} ✨`;
-    const author = global.wm || 'Bot';
+    // Dividir packname y author si el comando es wm o take
+    let packname = `${msg.pushName || 'Usuario'} ✨`;
+    let author = global.wm || 'Bot';
 
-    // Detectar imagen/video con caption
+    if (command === 'wm' || command === 'take') {
+      const txt = args.join(' ').split('|');
+      packname = txt[0]?.trim() || packname;
+      author = txt[1]?.trim() || author;
+    } else {
+      const customText = args.join(' ').trim();
+      packname = customText || packname;
+    }
+
+    // Detectar imagen, video o sticker con caption
     if (m.imageMessage && m.imageMessage.caption?.toLowerCase().includes('s')) {
       mediaMsg = m.imageMessage;
       mediaType = 'image';
@@ -21,7 +45,7 @@ const handler = async (msg, { conn, args }) => {
       mediaType = 'video';
     } else if (m.stickerMessage && m.stickerMessage.isAnimated === false) {
       mediaMsg = m.stickerMessage;
-      mediaType = 'image'; // Sticker estático tratado como imagen
+      mediaType = 'image';
     }
 
     // Detectar multimedia respondida
@@ -40,9 +64,9 @@ const handler = async (msg, { conn, args }) => {
     }
 
     if (!mediaMsg || !mediaType) {
-      return await conn.sendMessage2(msg.key.remoteJid, {
+      return await conn.sendMessage(msg.key.remoteJid, {
         text: `❌ Responde a una imagen, video o sticker estático, o inclúyelo con el comando.`
-      }, msg );
+      }, { quoted: msg });
     }
 
     await conn.sendMessage(msg.key.remoteJid, {
