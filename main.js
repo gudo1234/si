@@ -12194,21 +12194,23 @@ case "listpacks":
     }
     break;
 case "s":
-case "sticker":
-case "stiker":
     try {
         let mediaType = null;
         let mediaContent = null;
         let buffer = Buffer.alloc(0);
         
-        let quoted = msg.message.extendedTextMessage?.contextInfo?.quotedMessage;
-        
-        if (quoted && (quoted.imageMessage || quoted.videoMessage)) {
-            mediaType = quoted.imageMessage ? "image" : "video";
-            mediaContent = quoted[`${mediaType}Message`];
-        } else if (msg.message.imageMessage || msg.message.videoMessage) {
+        if (msg.message.imageMessage || msg.message.videoMessage) {
             mediaType = msg.message.imageMessage ? "image" : "video";
             mediaContent = msg.message[`${mediaType}Message`];
+        } else if (msg.message.extendedTextMessage?.contextInfo?.quotedMessage) {
+            const quoted = msg.message.extendedTextMessage.contextInfo.quotedMessage;
+            if (quoted.imageMessage) {
+                mediaType = "image";
+                mediaContent = quoted.imageMessage;
+            } else if (quoted.videoMessage) {
+                mediaType = "video";
+                mediaContent = quoted.videoMessage;
+            }
         }
         
         if (!mediaType || !mediaContent) {
@@ -12267,64 +12269,6 @@ case "stiker":
         );
     }
     break;
-        
-case "sendpack":
-    try {
-        if (!args[0]) {
-            await sock.sendMessage(msg.key.remoteJid, { 
-                text: "⚠️ *Debes especificar el nombre del paquete.*\nEjemplo: `.sendpack Memes`" 
-            }, { quoted: msg });
-            return;
-        }
-
-        let packName = args.join(" ");
-
-        // Cargar los paquetes de stickers desde el JSON
-        let stickerData = JSON.parse(fs.readFileSync(stickersFile, "utf-8"));
-
-        // Verificar si el paquete existe
-        if (!stickerData[packName]) {
-            await sock.sendMessage(msg.key.remoteJid, { 
-                text: "❌ *Ese paquete no existe.* Usa `.listpacks` para ver los disponibles." 
-            }, { quoted: msg });
-            return;
-        }
-
-        let stickerPaths = stickerData[packName];
-
-        if (stickerPaths.length === 0) {
-            await sock.sendMessage(msg.key.remoteJid, { 
-                text: "⚠️ *Este paquete no tiene stickers guardados.* Usa `.addsticker <paquete>` para añadir." 
-            }, { quoted: msg });
-            return;
-        }
-
-        // Enviar cada sticker desde la carpeta 'stickers/'
-        for (let stickerFileName of stickerPaths) {
-            let stickerPath = path.join(stickersDir, stickerFileName); // Asegurar la ruta correcta
-
-            // Verificar si el archivo del sticker existe en la carpeta
-            if (fs.existsSync(stickerPath)) {
-                await sock.sendMessage(msg.key.remoteJid, { 
-                    sticker: { url: stickerPath } 
-                }, { quoted: msg });
-            } else {
-                console.warn(`⚠️ Sticker no encontrado: ${stickerPath}`);
-            }
-        }
-
-        await sock.sendMessage(msg.key.remoteJid, { 
-            text: `✅ *Paquete de stickers '${packName}' enviado.*` 
-        }, { quoted: msg });
-
-    } catch (error) {
-        console.error("❌ Error en el comando .sendpack:", error);
-        await sock.sendMessage(msg.key.remoteJid, { 
-            text: "❌ *Ocurrió un error al enviar el paquete de stickers.*" 
-        }, { quoted: msg });
-    }
-    break;
-
         
 case "addsticker":
     try {
