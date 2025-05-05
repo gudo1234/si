@@ -12195,26 +12195,19 @@ case "listpacks":
     break;
 case "s":
     try {
-        const quoted = msg.quoted || msg
-const mime = (quoted.msg || quoted).mimetype || ''
-const isMedia = /image|video|sticker|audio/.test(mime)
-        if (!quoted) {
-        const xds = `${e} *Uso correcto:*\nResponde a una imagen/video con "${global.prefix}s" para convertirlo en sticker\n\nEjemplo: Responde a una foto con ${global.prefix}s`
-            await sock.sendMessage(msg.key.remoteJid, {  // <- Mensaje directo normal
-                text: xds
-            }, { quoted: msg });
+        const quoted = msg.message.extendedTextMessage?.contextInfo?.quotedMessage;
+        const isQuoted = !!quoted;
+
+        // Detectar mensaje citado o directo con media
+        const m = isQuoted ? quoted : msg.message;
+        const mime = Object.keys(m).find(k => /imageMessage|videoMessage/.test(k));
+        if (!mime) {
+            const xds = `${e} *Uso correcto:*\nResponde a una imagen/video con "${global.prefix}s" para convertirlo en sticker\n\nEjemplo: Responde a una foto con ${global.prefix}s`;
+            await sock.sendMessage(msg.key.remoteJid, { text: xds }, { quoted: msg });
             return;
         }
-         
-        let mediaType = quoted.imageMessage ? "image" : quoted.videoMessage ? "video" : null;
-        if (!mediaType) {
-            await sock.sendMessage2(  // <- Cambiado a sendMessage2
-                msg.key.remoteJid,
-                "⚠️ *Solo puedes convertir imágenes o videos en stickers.*",
-                msg
-            );
-            return;
-        }
+
+        const mediaType = mime.includes("image") ? "image" : mime.includes("video") ? "video" : null;
 
         // Obtener el nombre del usuario
         let senderName = msg.pushName || "Usuario Desconocido";
@@ -12228,7 +12221,8 @@ const isMedia = /image|video|sticker|audio/.test(mime)
             react: { text: "🛠️", key: msg.key } 
         });
 
-        let mediaStream = await downloadContentFromMessage(quoted[`${mediaType}Message`], mediaType);
+        const mediaMsg = m[mime];
+        const mediaStream = await downloadContentFromMessage(mediaMsg, mediaType);
         let buffer = Buffer.alloc(0);
         for await (const chunk of mediaStream) {
             buffer = Buffer.concat([buffer, chunk]);
@@ -12261,8 +12255,8 @@ const isMedia = /image|video|sticker|audio/.test(mime)
         });
 
     } catch (error) {
-        console.error("❌ Error en el comando .ss:", error);
-        await sock.sendMessage2(  // <- Cambiado a sendMessage2
+        console.error("❌ Error en el comando .s:", error);
+        await sock.sendMessage2(
             msg.key.remoteJid,
             "❌ *Hubo un error al procesar el sticker. Inténtalo de nuevo.*",
             msg
