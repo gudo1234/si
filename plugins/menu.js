@@ -13,7 +13,7 @@ const handler = async (msg, { conn }) => {
   const im = await global.getRandomIcon();
   const jpg = videoUrls[Math.floor(Math.random() * videoUrls.length)];
 
-  const txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBot:\` Es un sistema automático que responde a comandos para realizar ciertas acciones dentro del \`Chat\` como las descargas de videos de diferentes plataformas y búsquedas en la \`Web\`.
+  const txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n🤖 \`izuBot:\` Es un sistema automático que responde a comandos para realizar ciertas acciones dentro del \`Chat\` como las descargas de videos de diferentes plataformas y búsquedas en la \`Web\`.
 
 \`ᴊᴀᴅɪʙᴛs-ʙᴏᴛs🤖\`
 ╭━⊰══❖══⊱━╮
@@ -141,7 +141,7 @@ const handler = async (msg, { conn }) => {
       text: txt,
       contextInfo: {
         externalAdReply: {
-          title: user,
+          title: ,
           body: textbot,
           thumbnailUrl: red,
           thumbnail: im,
