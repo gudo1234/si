@@ -1,28 +1,37 @@
 const Starlights = require("@StarlightsTeam/Scraper");
 
 const handler = async (msg, { conn, text, usedPrefix, command }) => {
-try {
-await conn.sendMessage(msg.key.remoteJid, {
-            react: { text: "🕒", key: msg.key} 
-        });
-let { women, man } = await Starlights.ppcouple("xd")
-await conn.sendMessage2(msg.key.remoteJid, {
+  try {
+    await conn.sendMessage(msg.key.remoteJid, {
+      react: { text: "🕒", key: msg.key }
+    });
+
+    const result = await Starlights.ppcouple();
+    const women = result?.women;
+    const man = result?.man;
+
+    if (!women || !man) throw new Error('No se pudieron obtener las imágenes');
+
+    await conn.sendMessage2(msg.key.remoteJid, {
       image: { url: women },
       caption: '*Chica* 👧🏼'
-    },  msg );
-await conn.sendMessage2(msg.key.remoteJid, {
+    }, msg);
+
+    await conn.sendMessage2(msg.key.remoteJid, {
       image: { url: man },
       caption: '*Chico* 🧒🏻'
-    },  msg );
-await conn.sendMessage(msg.key.remoteJid, {
-            react: { text: "✅", key: msg.key} 
-        });
-} catch (err) {
-    console.error('Error al descargar el video:', err);
-    await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} Ocurrió un error al intentar descargar las fotos.`
-    }, msg );
-  }}
+    }, msg);
 
-handler.command = ['ppcouple', 'par']
+    await conn.sendMessage(msg.key.remoteJid, {
+      react: { text: "✅", key: msg.key }
+    });
+  } catch (err) {
+    console.error('Error al obtener las imágenes:', err);
+    await conn.sendMessage2(msg.key.remoteJid, {
+      text: `${err.message} Ocurrió un error al intentar obtener las fotos.`
+    }, msg);
+  }
+};
+
+handler.command = ['ppcouple', 'par'];
 module.exports = handler;
