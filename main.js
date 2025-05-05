@@ -1528,7 +1528,9 @@ case 'ff2': {
 
     break;
 }
-case 'tag': {
+case 'tag':
+case 'hidetag':
+case 'notify': {
   try {
     const chatId = msg.key.remoteJid;
     const senderJid = msg.key.participant || msg.key.remoteJid;
@@ -1616,7 +1618,7 @@ case 'tag': {
     await sock.sendMessage(chatId, {
       ...messageToForward,
       mentions: allMentions
-    }, { quoted: msg });
+    }, { quoted: null });
 
   } catch (error) {
     console.error("❌ Error en el comando tag:", error);
@@ -3755,7 +3757,7 @@ case 'todos': {
     await sock.sendMessage(chatId, {
       text: finalMsg,
       mentions: mentionIds
-    }, { quoted: msg });
+    }, { quoted: null });
 
   } catch (error) {
     console.error("❌ Error en el comando tagall:", error);
