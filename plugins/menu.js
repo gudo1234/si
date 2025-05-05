@@ -4,14 +4,16 @@ const fetch = require("node-fetch");
 
 const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid;
-const jp = [
-  'https://files.catbox.moe/rdyj5q.mp4',
-  'https://files.catbox.moe/693ws4.mp4'
-];
-const jpg = jp[Math.floor(Math.random() * jp.length)];
-  let or = ['grupo', 'gif', 'anu'];
-  let media = or[Math.floor(Math.random() * 3)]
-let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBot:\` Es un sistema automático que responde a comandos para realizar ciertas acciones dentro del \`Chat\` como las descargas de videos de diferentes plataformas y búsquedas en la \`Web\`.
+  const user = msg.pushName || 'Usuario';
+  const videoUrls = [
+    'https://files.catbox.moe/rdyj5q.mp4',
+    'https://files.catbox.moe/693ws4.mp4'
+  ];
+  const red = await global.getRandomRed();
+  const im = await global.getRandomIcon();
+  const jpg = videoUrls[Math.floor(Math.random() * videoUrls.length)];
+
+  const txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBot:\` Es un sistema automático que responde a comandos para realizar ciertas acciones dentro del \`Chat\` como las descargas de videos de diferentes plataformas y búsquedas en la \`Web\`.
 
 \`ᴊᴀᴅɪʙᴛs-ʙᴏᴛs🤖\`
 ╭━⊰══❖══⊱━╮
@@ -127,86 +129,74 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 ┃ ⎔ ${global.prefix}parejas
 ╰━⊰══❖══⊱━╯
 
-\`ʙᴏᴛ ᴇɴ ᴅᴇsᴀʀʀᴏʟʟᴏ, ᴘʀᴏɴᴛᴏ sᴇ ᴀɢʀᴇɢᴀʀᴀɴ ᴍᴀs ᴄᴏᴍᴀɴᴅᴏs.\``
-await conn.sendMessage(chatId, {
-            react: { text: "⚡", key: msg.key} 
-        });
-  const red = await global.getRandomRed();
-console.log(red);
-  const im = await global.getRandomIcon();
-if (im) {
-if (media === 'grupo') {
-await conn.sendMessage(chatId, {
-  text: txt,
-  contextInfo: {
-    externalAdReply: {
-      title: `${msg.pushName}`,
-      body: textbot,
-      thumbnailUrl: red,
-      thumbnail: im,
-      sourceUrl: red,
-      mediaType: 1,
-      renderLargerThumbnail: true
-    }
-  }
-}, { quoted: msg })};
-  
-  if (media === 'gif') {
-await conn.sendMessage(chatId, {
-    video: { url: jpg },
-    gifPlayback: true,
-    caption: txt,
-    contextInfo: {
-          mentionedJid: [],
-          isForwarded: true,
-          forwardedNewsletterMessageInfo: {
-              newsletterJid: channel,
-              newsletterName: wm,
-              serverMessageId: -1,
-          },
-          forwardingScore: false,
-          externalAdReply: {
-              title: `${msg.pushName}`,
-              body: textbot,
-              thumbnailUrl: red,
-              thumbnail: im,
-              sourceUrl: red,
-              mediaType: 1,
-              showAdAttribution: true,
-              //renderLargerThumbnail: true,
-          },
-      },
-  }, { quoted: msg })};
+\`ʙᴏᴛ ᴇɴ ᴅᴇsᴀʀʀᴏʟʟᴏ, ᴘʀᴏɴᴛᴏ sᴇ ᴀɢʀᴇɢᴀʀᴀɴ ᴍᴀs ᴄᴏᴍᴀɴᴅᴏs.\``;
 
-if (media === 'anu') {
   await conn.sendMessage(chatId, {
-    text: txt, 
-    contextInfo: {
-      mentionedJid: [],
-      groupMentions: [],
-      isForwarded: true,
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: channel,
-        newsletterName: wm,
-        serverMessageId: 0
-      },
-      businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
-      forwardingScore: 0,
-      externalAdReply: {
-        title: `${msg.pushName}`,
-        body: textbot,
-        thumbnailUrl: red,
-        thumbnail: im,
-        sourceUrl: red
-      }
-    }
-  }, { quoted: msg })}
-  
-  };
+    react: { text: "⚡", key: msg.key }
+  });
 
-//arriba
+  const formatos = [
+    // Formato tipo texto con preview
+    async () => conn.sendMessage(chatId, {
+      text: txt,
+      contextInfo: {
+        externalAdReply: {
+          title: user,
+          body: textbot,
+          thumbnailUrl: red,
+          thumbnail: im,
+          sourceUrl: red,
+          mediaType: 1,
+          renderLargerThumbnail: true
+        }
+      }
+    }, { quoted: msg }),
+
+    // Formato tipo gif/video
+    async () => conn.sendMessage(chatId, {
+      video: { url: jpg },
+      gifPlayback: true,
+      caption: txt,
+      contextInfo: {
+        forwardingScore: 0,
+        isForwarded: true,
+        externalAdReply: {
+          title: user,
+          body: textbot,
+          thumbnailUrl: red,
+          thumbnail: im,
+          sourceUrl: red,
+          mediaType: 1,
+          showAdAttribution: true
+        }
+      }
+    }, { quoted: msg }),
+
+    // Formato tipo anuncio tipo "broadcast"
+    async () => conn.sendMessage(chatId, {
+      text: txt,
+      contextInfo: {
+        forwardingScore: 0,
+        isForwarded: true,
+        businessMessageForwardInfo: {
+          businessOwnerJid: '50492280729@s.whatsapp.net'
+        },
+        externalAdReply: {
+          title: user,
+          body: textbot,
+          thumbnailUrl: red,
+          thumbnail: im,
+          sourceUrl: red,
+          mediaType: 1
+        }
+      }
+    }, { quoted: msg })
+  ];
+
+  // Selecciona y ejecuta aleatoriamente uno de los formatos
+  const randomFormato = formatos[Math.floor(Math.random() * formatos.length)];
+  await randomFormato();
 };
 
 handler.command = ['menu', 'm'];
-
 module.exports = handler;
