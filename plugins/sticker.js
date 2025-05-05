@@ -31,7 +31,7 @@ const handler = async (msg, { conn }) => {
 
     if (!mediaMsg || !mediaType) {
       return await conn.sendMessage(msg.key.remoteJid, {
-        text: `👾 *Uso correcto:*\n\n1. Envía una imagen/video con *s* como pie de foto.\n2. O responde a una imagen/video con *s*.`
+        text: `${e} Responda a una imagen o video para generar un sticker.`
       }, { quoted: msg });
     }
 
