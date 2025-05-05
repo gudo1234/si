@@ -4,7 +4,7 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
 try {
 await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "🕒", key: msg.key} 
-        });)
+        });
 let { women, man } = await Starlights.ppcouple("xd")
 await conn.sendMessage2(msg.key.remoteJid, {
       image: { url: women },
