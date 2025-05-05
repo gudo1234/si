@@ -4,6 +4,8 @@ const fg = require("api-dylux");
 
 const handler = async (msg, { conn, text, usedPrefix, command }) => {
   try {
+    const e = '⚠️';
+
     // Validación del texto
     if (!text || text.length > 200) {
       return await conn.sendMessage2(msg.key.remoteJid, {
@@ -16,35 +18,36 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
       react: { text: "🕒", key: msg.key }
     });
 
-    // Generar sticker con color personalizado
+    // Generar imagen desde texto
     const color = '2FFF2E';
     const res = await fg.ttp(text, color);
 
-    // Crear sticker
-    const stiker = await sticker(null, res.result, global.packname, global.author);
+    // Descargar la imagen
+    const buffer = await fetch(res.result).then(res => res.arrayBuffer());
 
-    if (stiker) {
-      // Enviar sticker
-      await conn.sendMessage(msg.key.remoteJid, {
-        sticker: { url: stiker }
-      }, { quoted: msg });
+    // Metadata personalizada
+    const metadata = {
+      packname: `${msg.pushName || "Usuario"} ✨`,
+      author: global.wm || "Bot"
+    };
 
-      // Reacción de éxito
-      return await conn.sendMessage(msg.key.remoteJid, {
-        react: { text: "✅", key: msg.key }
-      });
-    } else {
-      // Si no se generó el sticker
-      await conn.sendMessage(msg.key.remoteJid, {
-        react: { text: "❌", key: msg.key }
-      });
-      throw new Error('No se pudo generar el sticker.');
-    }
+    // Crear sticker con metadatos
+    const stickerBuffer = await writeExifImg(buffer, metadata);
+
+    // Enviar el sticker
+    await conn.sendMessage(msg.key.remoteJid, {
+      sticker: { url: stickerBuffer }
+    }, { quoted: msg });
+
+    // Reacción de éxito
+    await conn.sendMessage(msg.key.remoteJid, {
+      react: { text: "✅", key: msg.key }
+    });
+
   } catch (err) {
-    // Manejo de errores
     console.error(err);
     await conn.sendMessage(msg.key.remoteJid, {
-      text: `${e} Ocurrió un error al generar el sticker.`,
+      text: `⚠️ Ocurrió un error al generar el sticker.`,
     }, msg);
   }
 };
