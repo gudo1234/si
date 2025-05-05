@@ -12223,12 +12223,14 @@ case "stiker":
         });
 
         // Descarga del contenido
-        let mediaMsg = quoted ? quoted[`${mediaType}Message`] : messageContent[`${mediaType}Message`];
-        let mediaStream = await downloadContentFromMessage(mediaMsg, mediaType);
-        let buffer = Buffer.alloc(0);
-        for await (const chunk of mediaStream) {
-            buffer = Buffer.concat([buffer, chunk]);
-        }
+        let mediaMsg = quoted?.[`${mediaType}Message`] || messageContent?.[`${mediaType}Message`];
+if (!mediaMsg) return await sock.sendMessage(msg.key.remoteJid, { text: xds }, { quoted: msg });
+
+let mediaStream = await downloadContentFromMessage(mediaMsg, mediaType);
+let buffer = Buffer.alloc(0);
+for await (const chunk of mediaStream) {
+    buffer = Buffer.concat([buffer, chunk]);
+}
 
         if (buffer.length === 0) {
             throw new Error("❌ Error: No se pudo descargar el archivo.");
