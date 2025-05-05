@@ -1,6 +1,8 @@
 const fetch = require("node-fetch");
 
-const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
+const handler = async (msg, { conn, args, usedPrefix, command }) => {
+  const text = args.join(' ').trim();
+
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
       text: `❌ Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* hola mundo`
@@ -11,8 +13,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
     react: { text: "🕒", key: msg.key }
   });
 
-  const query = encodeURIComponent(text);
-  const apiUrl = `https://api.nekorinn.my.id/maker/bratvid?text=${query}`;
+  const apiUrl = `https://api.nekorinn.my.id/maker/bratvid?text=${encodeURIComponent(text)}`;
 
   try {
     const response = await fetch(apiUrl);
