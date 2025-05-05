@@ -284,7 +284,7 @@ sock.ev.on("group-participants.update", async (update) => {
     // **************** FIN LÓGICA ANTIARABE ****************
 
     // **************** LÓGICA BIENVENIDA/DESPEDIDA ****************
-const welcomeActivo = activos.welcome?.[update.id];
+/*const welcomeActivo = activos.welcome?.[update.id];
 const despedidasActivo = activos.despedidas?.[update.id];
 
 if (!welcomeActivo && !despedidasActivo) return;
@@ -344,42 +344,6 @@ if (update.action === "add" && welcomeActivo) {
         caption: `👋 ${mention}\n\n${customMessage}`,
         mentions: [participant]
       });
-  /*await conn.sendMessage(update.id, {
-  text: `👋 ${mention}\n\n${customMessage}`,
-  contextInfo: {
-    externalAdReply: {
-      title: wm,
-      body: 'izuBot te da la bienvenida',
-      thumbnailUrl: 'https://www.instagram.com/edar504__',
-      thumbnail: profilePicUrl,
-      sourceUrl: 'https://www.instagram.com/edar504__',
-      mediaType: 1,
-      renderLargerThumbnail: true
-    }
-  }
-}, { quoted: null });
-  await conn.sendMessage(update.id, {
-    text: `👋 ${mention}\n\n${customMessage}`, 
-    contextInfo: {
-      mentionedJid: [participant],
-      groupMentions: [],
-      isForwarded: true,
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: '120363285614743024@newsletter',
-        newsletterName: wm,
-        serverMessageId: 0
-      },
-      businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
-      forwardingScore: 0,
-      externalAdReply: {
-        title: 'hola',
-        body: 'hola mosha',
-        thumbnailUrl: 'https://www.instagram.com/edar504__',
-        thumbnail: profilePicUrl,
-        sourceUrl: 'https://www.instagram.com/edar504__'
-      }
-    }
-  }, { quoted: null })*/
     } else {
       // Elegir mensaje aleatorio
       const mensajeTexto = welcomeTexts[Math.floor(Math.random() * welcomeTexts.length)];
@@ -439,7 +403,7 @@ if (update.action === "add" && welcomeActivo) {
       });
     }
   }
-}
+}*/
 // **************** FIN LÓGICA BIENVENIDA/DESPEDIDA ****************
     // **************** FIN LÓGICA BIENVENIDA/DESPEDIDA ****************
 
