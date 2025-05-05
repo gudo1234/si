@@ -12195,25 +12195,28 @@ case "listpacks":
     break;
 case "s":
     try {
+        let mediaMsg = null;
         let mediaType = null;
-        let mediaContent = null;
-        let buffer = Buffer.alloc(0);
         
-        if (msg.message.imageMessage || msg.message.videoMessage) {
-            mediaType = msg.message.imageMessage ? "image" : "video";
-            mediaContent = msg.message[`${mediaType}Message`];
-        } else if (msg.message.extendedTextMessage?.contextInfo?.quotedMessage) {
-            const quoted = msg.message.extendedTextMessage.contextInfo.quotedMessage;
-            if (quoted.imageMessage) {
+        if (msg.message.imageMessage) {
+            mediaMsg = msg.message.imageMessage;
+            mediaType = "image";
+        } else if (msg.message.videoMessage) {
+            mediaMsg = msg.message.videoMessage;
+            mediaType = "video";
+        } else if (msg.message.extendedTextMessage && msg.message.extendedTextMessage.contextInfo && msg.message.extendedTextMessage.contextInfo.quotedMessage) {
+            const quotedMsg = msg.message.extendedTextMessage.contextInfo.quotedMessage;
+            
+            if (quotedMsg.imageMessage) {
+                mediaMsg = quotedMsg.imageMessage;
                 mediaType = "image";
-                mediaContent = quoted.imageMessage;
-            } else if (quoted.videoMessage) {
+            } else if (quotedMsg.videoMessage) {
+                mediaMsg = quotedMsg.videoMessage;
                 mediaType = "video";
-                mediaContent = quoted.videoMessage;
             }
         }
         
-        if (!mediaType || !mediaContent) {
+        if (!mediaMsg || !mediaType) {
             const xds = `👾 *Uso correcto:*\nEnvía una imagen/video con "${global.prefix}s" como texto o responde a una imagen/video con "${global.prefix}s" para convertirlo en sticker\n\nEjemplo: Envía una foto con ${global.prefix}s como texto`
             await sock.sendMessage(msg.key.remoteJid, {
                 text: xds
@@ -12221,23 +12224,21 @@ case "s":
             return;
         }
 
-        let senderName = msg.pushName || "Usuario Desconocido";
-        
-        let now = new Date();
-        let fechaCreacion = `📅 Fecha de Creación de Stickerz: ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()} 🕒 ${now.getHours()}:${now.getMinutes()}`;
-        
         await sock.sendMessage(msg.key.remoteJid, { 
             react: { text: "🛠️", key: msg.key } 
         });
 
-        let mediaStream = await downloadContentFromMessage(mediaContent, mediaType);
+        let senderName = msg.pushName || "Usuario Desconocido";
+        
+        let buffer = Buffer.alloc(0);
+        let mediaStream = await downloadContentFromMessage(mediaMsg, mediaType);
         
         for await (const chunk of mediaStream) {
             buffer = Buffer.concat([buffer, chunk]);
         }
 
         if (buffer.length === 0) {
-            throw new Error("❌ Error: No se pudo descargar el archivo.");
+            throw new Error("No se pudo descargar el archivo");
         }
 
         let metadata = {
