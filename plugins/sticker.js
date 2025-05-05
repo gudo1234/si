@@ -1,14 +1,18 @@
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const { writeExifImg, writeExifVid } = require('../libs/fuctions');
 
-const handler = async (msg, { conn }) => {
+const handler = async (msg, { conn, args }) => {
   try {
     let mediaMsg = null;
     let mediaType = null;
-
     const m = msg.message;
 
-    // Detectar multimedia enviada directamente con el comando en caption
+    // Obtener texto personalizado (ej: .s Jesús => Jesús)
+    const customText = args.join(' ').trim();
+    const packname = customText || `${msg.pushName || 'Usuario'} ✨`;
+    const author = global.wm || 'Bot';
+
+    // Detectar imagen/video con caption
     if (m.imageMessage && m.imageMessage.caption?.toLowerCase().includes('s')) {
       mediaMsg = m.imageMessage;
       mediaType = 'image';
@@ -17,10 +21,10 @@ const handler = async (msg, { conn }) => {
       mediaType = 'video';
     } else if (m.stickerMessage && m.stickerMessage.isAnimated === false) {
       mediaMsg = m.stickerMessage;
-      mediaType = 'image'; // Los stickers estáticos son tratados como imagen
+      mediaType = 'image'; // Sticker estático tratado como imagen
     }
 
-    // Detectar si se respondió a una imagen/video/sticker
+    // Detectar multimedia respondida
     if (!mediaMsg && m.extendedTextMessage?.contextInfo?.quotedMessage) {
       const quoted = m.extendedTextMessage.contextInfo.quotedMessage;
       if (quoted.imageMessage) {
@@ -31,14 +35,14 @@ const handler = async (msg, { conn }) => {
         mediaType = 'video';
       } else if (quoted.stickerMessage && quoted.stickerMessage.isAnimated === false) {
         mediaMsg = quoted.stickerMessage;
-        mediaType = 'image'; // Solo stickers estáticos
+        mediaType = 'image';
       }
     }
 
     if (!mediaMsg || !mediaType) {
-      return await conn.sendMessage(msg.key.remoteJid, {
-        text: `❌ Responda a una imagen, video o sticker estático para generar un sticker.`
-      }, { quoted: msg });
+      return await conn.sendMessage2(msg.key.remoteJid, {
+        text: `❌ Responde a una imagen, video o sticker estático, o inclúyelo con el comando.`
+      }, msg );
     }
 
     await conn.sendMessage(msg.key.remoteJid, {
@@ -53,10 +57,7 @@ const handler = async (msg, { conn }) => {
 
     if (!buffer.length) throw new Error('No se pudo descargar el archivo multimedia.');
 
-    const metadata = {
-      packname: `${msg.pushName || "Usuario"} ✨`,
-      author: global.wm || "Bot"
-    };
+    const metadata = { packname, author };
 
     const stickerBuffer = mediaType === 'image'
       ? await writeExifImg(buffer, metadata)
@@ -78,5 +79,5 @@ const handler = async (msg, { conn }) => {
   }
 };
 
-handler.command = ['s', 'sticker'];
+handler.command = ['s', 'sticker', 'wm', 'take'];
 module.exports = handler;
