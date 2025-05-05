@@ -12195,61 +12195,65 @@ case "listpacks":
     break;
 case "s":
     try {
-        const quoted = msg.message.extendedTextMessage?.contextInfo?.quotedMessage;
-        const isQuoted = !!quoted;
+        // Usar la lógica proporcionada
+        const m = msg.message.extendedTextMessage?.contextInfo?.quotedMessage 
+                    ? { quoted: msg.message.extendedTextMessage.contextInfo.quotedMessage }
+                    : msg;
 
-        // Detectar mensaje citado o directo con media
-        const m = isQuoted ? quoted : msg.message;
-        const mime = Object.keys(m).find(k => /imageMessage|videoMessage/.test(k));
-        if (!mime) {
-            const xds = `${e} *Uso correcto:*\nResponde a una imagen/video con "${global.prefix}s" para convertirlo en sticker\n\nEjemplo: Responde a una foto con ${global.prefix}s`;
+        const quoted = m.quoted || m;
+        const mime = (quoted.msg || quoted).mimetype || '';
+        const isMedia = /image|video/.test(mime);
+
+        if (!isMedia) {
+            const xds = `${e} *Uso correcto:*\nResponde a una imagen/video o envía uno con "${global.prefix}s" para convertirlo en sticker\n\nEjemplo: Responde a una foto con ${global.prefix}s`;
             await sock.sendMessage(msg.key.remoteJid, { text: xds }, { quoted: msg });
             return;
         }
 
         const mediaType = mime.includes("image") ? "image" : mime.includes("video") ? "video" : null;
+        if (!mediaType) {
+            await sock.sendMessage2(
+                msg.key.remoteJid,
+                "⚠️ *Solo puedes convertir imágenes o videos en stickers.*",
+                msg
+            );
+            return;
+        }
 
-        // Obtener el nombre del usuario
+        // Nombre del usuario
         let senderName = msg.pushName || "Usuario Desconocido";
 
-        // Obtener la fecha exacta de creación 📅
+        // Fecha de creación
         let now = new Date();
-        let fechaCreacion = `📅 Fecha de Creación de Stickerz: ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()} 🕒 ${now.getHours()}:${now.getMinutes()}`;
+        let fechaCreacion = `📅 Fecha de Creación: ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()} 🕒 ${now.getHours()}:${now.getMinutes()}`;
 
-        // Mensaje de reacción mientras se crea el sticker ⚙️
+        // Reacción de creación
         await sock.sendMessage(msg.key.remoteJid, { 
             react: { text: "🛠️", key: msg.key } 
         });
 
-        const mediaMsg = m[mime];
-        const mediaStream = await downloadContentFromMessage(mediaMsg, mediaType);
+        // Descargar contenido
+        const mediaStream = await downloadContentFromMessage(quoted, mediaType);
         let buffer = Buffer.alloc(0);
         for await (const chunk of mediaStream) {
             buffer = Buffer.concat([buffer, chunk]);
         }
 
-        if (buffer.length === 0) {
-            throw new Error("❌ Error: No se pudo descargar el archivo.");
-        }
+        if (buffer.length === 0) throw new Error("❌ Error: No se pudo descargar el archivo.");
 
-        // 🌟 Formato llamativo para la metadata del sticker 🌟
-        let metadata = {
+        const metadata = {
             packname: `${senderName} ✨`,
             author: `${wm}`
         };
 
-        let stickerBuffer;
-        if (mediaType === "image") {
-            stickerBuffer = await writeExifImg(buffer, metadata);
-        } else {
-            stickerBuffer = await writeExifVid(buffer, metadata);
-        }
+        const stickerBuffer = mediaType === "image"
+            ? await writeExifImg(buffer, metadata)
+            : await writeExifVid(buffer, metadata);
 
         await sock.sendMessage(msg.key.remoteJid, { 
             sticker: { url: stickerBuffer } 
         }, { quoted: msg });
 
-        // Confirmación final con reacción ✅
         await sock.sendMessage(msg.key.remoteJid, { 
             react: { text: "✅", key: msg.key } 
         });
