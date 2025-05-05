@@ -206,7 +206,7 @@ const support = {
   find: false
 }
 
-export {
+module.exports = {
   sticker,
   sticker1,
   sticker2,
