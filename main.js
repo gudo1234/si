@@ -12195,7 +12195,7 @@ case "listpacks":
     break;
 case "s":
     try {
-        const quoted = m.quoted || m
+        const quoted = msg.quoted || msg
 const mime = (quoted.msg || quoted).mimetype || ''
 const isMedia = /image|video|sticker|audio/.test(mime)
         if (!quoted) {
