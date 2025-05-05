@@ -15,9 +15,12 @@ const handler = async (msg, { conn }) => {
     } else if (m.videoMessage && m.videoMessage.caption?.toLowerCase().includes('s')) {
       mediaMsg = m.videoMessage;
       mediaType = 'video';
+    } else if (m.stickerMessage && m.stickerMessage.isAnimated === false) {
+      mediaMsg = m.stickerMessage;
+      mediaType = 'image'; // Los stickers estáticos son tratados como imagen
     }
 
-    // Detectar si se respondió a una imagen/video
+    // Detectar si se respondió a una imagen/video/sticker
     if (!mediaMsg && m.extendedTextMessage?.contextInfo?.quotedMessage) {
       const quoted = m.extendedTextMessage.contextInfo.quotedMessage;
       if (quoted.imageMessage) {
@@ -26,12 +29,15 @@ const handler = async (msg, { conn }) => {
       } else if (quoted.videoMessage) {
         mediaMsg = quoted.videoMessage;
         mediaType = 'video';
+      } else if (quoted.stickerMessage && quoted.stickerMessage.isAnimated === false) {
+        mediaMsg = quoted.stickerMessage;
+        mediaType = 'image'; // Solo stickers estáticos
       }
     }
 
     if (!mediaMsg || !mediaType) {
       return await conn.sendMessage(msg.key.remoteJid, {
-        text: `${e} Responda a una imagen o video para generar un sticker.`
+        text: `❌ Responda a una imagen, video o sticker estático para generar un sticker.`
       }, { quoted: msg });
     }
 
@@ -48,7 +54,8 @@ const handler = async (msg, { conn }) => {
     if (!buffer.length) throw new Error('No se pudo descargar el archivo multimedia.');
 
     const metadata = {
-      packname: `${msg.pushName || "Usuario"}`
+      packname: `${msg.pushName || "Usuario"} ✨`,
+      author: global.wm || "Bot"
     };
 
     const stickerBuffer = mediaType === 'image'
