@@ -10,7 +10,6 @@ const { execSync } = require("child_process");
 const path = require("path");
 const { imageToWebp, videoToWebp, writeExifImg, writeExifVid, writeExif, toAudio } = require('./libs/fuctions');
 const activeSessions = new Set();
-const { sticker } = require("../libs/sticker.js");
 const stickersDir = "./stickers";
 const stickersFile = "./stickers.json";
 function isUrl(string) {
