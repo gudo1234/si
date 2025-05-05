@@ -1,42 +1,37 @@
-const fetch = require("node-fetch");
+const axios = require('axios');
 
-const handler = async (msg, { conn, args, usedPrefix, command }) => {
-  const text = args.join(' ').trim();
+const handler = async (msg, { conn, text, usedPrefix, command }) => {
+  const e = '⚠️'; // Puedes personalizar este emoji si lo necesitas
 
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
-      text: `❌ Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* hola mundo`
+      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* hola mundo`
     }, msg);
   }
 
   await conn.sendMessage(msg.key.remoteJid, {
-    react: { text: "🕒", key: msg.key }
+    react: { text: '🕒', key: msg.key }
   });
 
-  const apiUrl = `https://api.nekorinn.my.id/maker/bratvid?text=${encodeURIComponent(text)}`;
-
   try {
-    const response = await fetch(apiUrl);
-    if (!response.ok) throw new Error(`Error al obtener respuesta: ${response.statusText}`);
-
-    const json = await response.json();
-    const { data } = json;
-
-    if (!data) throw new Error("Respuesta inválida de la API");
+    const apiURL = `https://api.nekorinn.my.id/maker/bratvid?text=${encodeURIComponent(text)}`;
+    const res = await axios.get(apiURL, { responseType: 'arraybuffer' });
+    
+    const buffer = Buffer.from(res.data);
 
     await conn.sendMessage2(msg.key.remoteJid, {
-      video: { url: data },
+      video: buffer,
       mimetype: 'video/mp4',
-      caption: `✅ *Video generado para:* _${text}_`
+      caption: `${e} *Video generado para:* _${text}_`
     }, msg);
 
     await conn.sendMessage(msg.key.remoteJid, {
-      react: { text: "✅", key: msg.key }
+      react: { text: '✅', key: msg.key }
     });
   } catch (err) {
     console.error('Error al descargar el video:', err);
     await conn.sendMessage2(msg.key.remoteJid, {
-      text: `⚠️ Ocurrió un error al intentar descargar el video, pruebe más tarde`
+      text: `${e} Ocurrió un error al intentar descargar el video, pruebe más tarde.`
     }, msg);
   }
 };
