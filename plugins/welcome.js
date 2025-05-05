@@ -18,10 +18,14 @@ const handler = async (m, { conn }) => {
   let text = '';
   if (type === 27) {
     // Agregado al grupo
-    text = `👋 ¡Bienvenido/a *${userName}* al grupo *${groupName}*!`;
+    await conn.sendMessage2(msg.key.remoteJid, {
+      text: `${e} hola bienvenido ${useName}`
+    }, msg);
   } else if (type === 28 || type === 32) {
     // Eliminado o salió del grupo
-    text = `👋 *${userName}* ha salido del grupo *${groupName}*.`;
+    await conn.sendMessage2(msg.key.remoteJid, {
+      text: `${e} adios de *${groupName}*`
+    }, msg);
   } else {
     return;
   }
