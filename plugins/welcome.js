@@ -1,30 +1,34 @@
-const { prepareWAMessageMedia } = require("@whiskeysockets/baileys");
+const handler = async (m, { conn }) => {
+  if (!m.messageStubType || !m.isGroup) return;
 
-const handler = async (msg, { conn, participants, groupMetadata }) => {
-  if (!msg.messageStubType || !msg.key.remoteJid.endsWith("@g.us")) return true;
-  if (![27, 28, 32].includes(msg.messageStubType)) return true;
+  const type = m.messageStubType;
+  const chatId = m.chat;
 
-  let chat = global.db.data.chats[msg.key.remoteJid];
+  const chat = global.db.data.chats[chatId];
   if (!chat || !chat.welcome) return;
 
-  let who = msg.messageStubParameters[0] + "@s.whatsapp.net";
-  let user = global.db.data.users[who] || {};
-  let userName = user.name || await conn.getName(who);
+  const participant = (m.messageStubParameters || [])[0];
+  if (!participant) return;
 
-  let emoji = "👋"; // o cualquier otro que desees usar
+  const who = participant + '@s.whatsapp.net';
+  const userName = (global.db.data.users[who]?.name) || await conn.getName(who);
+  const groupMetadata = await conn.groupMetadata(chatId);
+  const groupName = groupMetadata.subject;
 
-  if (msg.messageStubType === 27) {
-    // MENSAJE DE BIENVENIDA
-    await conn.sendMessage(msg.key.remoteJid, {
-      text: `${emoji} Hola, bienvenido/a ${userName}`
-    });
+  let text = '';
+  if (type === 27) {
+    // Agregado al grupo
+    text = `👋 ¡Bienvenido/a *${userName}* al grupo *${groupName}*!`;
+  } else if (type === 28 || type === 32) {
+    // Eliminado o salió del grupo
+    text = `👋 *${userName}* ha salido del grupo *${groupName}*.`;
   } else {
-    const action = msg.messageStubType === 28 ? "fue eliminado del grupo" : "salió del grupo";
-    // MENSAJE DE DESPEDIDA
-    await conn.sendMessage(msg.key.remoteJid, {
-      text: `${emoji} ${userName} ${action}`
-    });
+    return;
   }
+
+  await conn.sendMessage(chatId, { text });
 };
 
+handler.customPrefix = /.^/; // para que no reaccione a comandos
+handler.command = new RegExp(); // lo hace silencioso
 module.exports = handler;
