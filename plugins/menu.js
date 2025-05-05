@@ -97,6 +97,7 @@ let txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n⚡ \`izuBo
 \`sᴛɪᴄᴋᴇʀs - ғғᴘᴇɢ🧩\`
 ╭━⊰══❖══⊱━╮
 ┃ ⎔ ${global.prefix}s
+┃ ⎔ ${global.prefix}qc
 ┃ ⎔ ${global.prefix}newpack
 ┃ ⎔ ${global.prefix}addsticker
 ┃ ⎔ ${global.prefix}listpacks
