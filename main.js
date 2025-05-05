@@ -12196,78 +12196,82 @@ case "listpacks":
         
 case "s":
 case "sticker":
-case "stiker":
-    try {
-        // Revisa si hay mensaje citado
-        let quoted = msg.message.extendedTextMessage?.contextInfo?.quotedMessage;
+case "st":
+try {
+    // Detectar si es respuesta o archivo directo
+    const quoted = msg.message?.extendedTextMessage?.contextInfo?.quotedMessage;
+    const messageContent = quoted || msg.message;
 
-        // Si no hay citado, revisa si el mensaje actual contiene imagen/video
-        let messageContent = quoted ? quoted : msg.message;
-        let mediaType = messageContent.imageMessage ? "image" :
-                        messageContent.videoMessage ? "video" : null;
+    // Verificar tipo de medio
+    const mediaType = messageContent?.imageMessage ? 'image'
+                      : messageContent?.videoMessage ? 'video'
+                      : null;
 
-        if (!mediaType) {
-            const xds = `👾 *Uso correcto:*\nResponde a una imagen/video con "${global.prefix}s" o envía una imagen/video junto con el comando.`;
-            await sock.sendMessage(msg.key.remoteJid, { text: xds }, { quoted: msg });
-            return;
-        }
-
-        // Nombre del usuario y fecha
-        let senderName = msg.pushName || "Usuario Desconocido";
-        let now = new Date();
-        let fechaCreacion = `📅 ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()} 🕒 ${now.getHours()}:${now.getMinutes()}`;
-
-        // Reacción mientras se genera
+    if (!mediaType) {
         await sock.sendMessage(msg.key.remoteJid, {
-            react: { text: "🛠️", key: msg.key }
-        });
-
-        // Descarga del contenido
-        let mediaMsg = quoted?.[`${mediaType}Message`] || messageContent?.[`${mediaType}Message`];
-if (!mediaMsg) return await sock.sendMessage(msg.key.remoteJid, { text: xds }, { quoted: msg });
-
-let mediaStream = await downloadContentFromMessage(mediaMsg, mediaType);
-let buffer = Buffer.alloc(0);
-for await (const chunk of mediaStream) {
-    buffer = Buffer.concat([buffer, chunk]);
-}
-
-        if (buffer.length === 0) {
-            throw new Error("❌ Error: No se pudo descargar el archivo.");
-        }
-
-        // Metadata llamativa
-        let metadata = {
-            packname: `${senderName} ✨`,
-            author: wm
-        };
-
-        // Generar sticker
-        let stickerBuffer;
-        if (mediaType === "image") {
-            stickerBuffer = await writeExifImg(buffer, metadata);
-        } else {
-            stickerBuffer = await writeExifVid(buffer, metadata);
-        }
-
-        await sock.sendMessage(msg.key.remoteJid, {
-            sticker: { url: stickerBuffer }
+            text: `⚠️ *Envía o responde a una imagen o video con el comando para crear un sticker.*`
         }, { quoted: msg });
-
-        // Confirmación con reacción
-        await sock.sendMessage(msg.key.remoteJid, {
-            react: { text: "✅", key: msg.key }
-        });
-
-    } catch (error) {
-        console.error("❌ Error en el comando .s:", error);
-        await sock.sendMessage2(
-            msg.key.remoteJid,
-            "❌ *Hubo un error al procesar el sticker. Inténtalo de nuevo.*",
-            msg
-        );
+        return;
     }
-    break;
+
+    // Verificar duración si es video
+    const duration = messageContent?.videoMessage?.seconds || 0;
+    if (mediaType === 'video' && duration > 10) {
+        await sock.sendMessage(msg.key.remoteJid, {
+            text: `⚠️ *El video no debe durar más de 10 segundos.*`
+        }, { quoted: msg });
+        return;
+    }
+
+    // Reacción de trabajo
+    await sock.sendMessage(msg.key.remoteJid, {
+        react: { text: "🛠️", key: msg.key }
+    });
+
+    // Descargar contenido
+    const mediaMsg = messageContent[`${mediaType}Message`];
+    const stream = await downloadContentFromMessage(mediaMsg, mediaType);
+    let buffer = Buffer.alloc(0);
+    for await (const chunk of stream) {
+        buffer = Buffer.concat([buffer, chunk]);
+    }
+
+    if (!buffer.length) {
+        await sock.sendMessage(msg.key.remoteJid, {
+            text: "❌ *No se pudo descargar el archivo.*"
+        }, { quoted: msg });
+        return;
+    }
+
+    // Crear sticker con metadata
+    const metadata = {
+        packname: `${msg.pushName || "Usuario"} ✨`,
+        author: "StickerBot"
+    };
+
+    const stickerBuffer = mediaType === 'image'
+        ? await writeExifImg(buffer, metadata)
+        : await writeExifVid(buffer, metadata);
+
+    // Enviar sticker
+    await sock.sendMessage(msg.key.remoteJid, {
+        sticker: { url: stickerBuffer }
+    }, { quoted: msg });
+
+    // Confirmación con reacción
+    await sock.sendMessage(msg.key.remoteJid, {
+        react: { text: "✅", key: msg.key }
+    });
+
+} catch (error) {
+    console.error("❌ Error en el comando .s:", error);
+    await sock.sendMessage2(
+        msg.key.remoteJid,
+        "❌ *Hubo un error al procesar el sticker. Inténtalo de nuevo.*",
+        msg
+    );
+}
+break;
         
 case "sendpack":
     try {
