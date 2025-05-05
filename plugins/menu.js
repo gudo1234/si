@@ -141,7 +141,7 @@ const handler = async (msg, { conn }) => {
       text: txt,
       contextInfo: {
         externalAdReply: {
-          title: ,
+          title: user,
           body: textbot,
           thumbnailUrl: red,
           thumbnail: im,
