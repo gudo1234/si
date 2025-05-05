@@ -12198,43 +12198,44 @@ case "s":
 case "sticker":
 case "stiker":
     try {
-        let mediaMessage = msg.message.imageMessage || msg.message.videoMessage;
+        let type = Object.keys(msg.message)[0];
+        let content = msg.message[type];
+
+        // Captura el caption si existe
+        let caption = content?.caption || "";
+        let mediaMessage = (type === "imageMessage" || type === "videoMessage") ? content : null;
+
+        // Verifica si también es una respuesta a media
         let quoted = msg.message.extendedTextMessage?.contextInfo?.quotedMessage;
         let quotedMedia = quoted?.imageMessage || quoted?.videoMessage;
 
-        // Validar si hay media directa o citada
+        // Verifica si viene con media directa o citada
         if (!mediaMessage && !quotedMedia) {
-            const xds = `👾 *Uso correcto:*\nEnvía o responde a una imagen/video con "${global.prefix}s" para convertirlo en sticker\n\nEjemplo: Responde a una foto con ${global.prefix}s o envíala junto con el comando.`;
+            const xds = `👾 *Uso correcto:*\nEnvía o responde a una imagen/video con "${global.prefix}s" para convertirlo en sticker.\n\nEjemplo: Responde a una foto con ${global.prefix}s o envíala con el pie de foto "${global.prefix}s"`;
             await sock.sendMessage(msg.key.remoteJid, {
                 text: xds
             }, { quoted: msg });
             return;
         }
 
-        let mediaType = mediaMessage ? (msg.message.imageMessage ? "image" : "video") : (quoted.imageMessage ? "image" : "video");
-        let content = mediaMessage || quoted[`${mediaType}Message`];
+        let mediaType = mediaMessage ? (type === "imageMessage" ? "image" : "video") : (quoted.imageMessage ? "image" : "video");
+        let mediaContent = mediaMessage || quoted[`${mediaType}Message`];
 
-        // Nombre del usuario
         let senderName = msg.pushName || "Usuario Desconocido";
-
-        // Fecha
         let now = new Date();
-        let fechaCreacion = `📅 ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()} 🕒 ${now.getHours()}:${now.getMinutes()}`;
 
-        // Reacción
-        await sock.sendMessage(msg.key.remoteJid, { 
-            react: { text: "🛠️", key: msg.key } 
+        await sock.sendMessage(msg.key.remoteJid, {
+            react: { text: "🛠️", key: msg.key }
         });
 
-        // Descargar media
-        let mediaStream = await downloadContentFromMessage(content, mediaType);
+        let mediaStream = await downloadContentFromMessage(mediaContent, mediaType);
         let buffer = Buffer.alloc(0);
         for await (const chunk of mediaStream) {
             buffer = Buffer.concat([buffer, chunk]);
         }
 
         if (buffer.length === 0) {
-            throw new Error("❌ Error: No se pudo descargar el archivo.");
+            throw new Error("❌ No se pudo descargar el archivo.");
         }
 
         let metadata = {
@@ -12250,9 +12251,8 @@ case "stiker":
             sticker: { url: stickerBuffer }
         }, { quoted: msg });
 
-        // Reacción final
-        await sock.sendMessage(msg.key.remoteJid, { 
-            react: { text: "✅", key: msg.key } 
+        await sock.sendMessage(msg.key.remoteJid, {
+            react: { text: "✅", key: msg.key }
         });
 
     } catch (error) {
@@ -12264,6 +12264,7 @@ case "stiker":
         );
     }
     break;
+        
 case "sendpack":
     try {
         if (!args[0]) {
