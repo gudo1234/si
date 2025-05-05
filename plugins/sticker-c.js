@@ -91,5 +91,5 @@ const handler = async (msg, { conn }) => {
   }
 };
 
-handler.command = ['s -c'];
+handler.command = ['c'];
 module.exports = handler;
