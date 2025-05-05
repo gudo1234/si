@@ -12199,7 +12199,7 @@ case "stiker":
     try {
         let quoted = msg.message.extendedTextMessage?.contextInfo?.quotedMessage;
         if (!quoted) {
-        const xds = `${e} *Responde a una imagen/video con "${global.prefix}s" para convertirlo en sticker\n\nEjemplo: Responde a una foto con ${global.prefix}s`
+        const xds = `${e} *Responde a una imagen/video con "${global.prefix}s" para convertirlo en sticker.*\n\nEjemplo: Responde a una foto con ${global.prefix}s`
             await sock.sendMessage2(msg.key.remoteJid, {  // <- Mensaje directo normal
                 text: xds
             }, msg );
