@@ -12197,39 +12197,39 @@ case "s":
 case "sticker":
 case "stiker":
     try {
+        let mediaType = null;
+        let mediaContent = null;
+        let buffer = Buffer.alloc(0);
+        
         let quoted = msg.message.extendedTextMessage?.contextInfo?.quotedMessage;
-        if (!quoted) {
-        const xds = `${e} *Responde a una imagen/video con "${global.prefix}s" para convertirlo en sticker.*\n\nEjemplo: Responde a una foto con ${global.prefix}s`
-            await sock.sendMessage2(msg.key.remoteJid, {  // <- Mensaje directo normal
+        
+        if (quoted && (quoted.imageMessage || quoted.videoMessage)) {
+            mediaType = quoted.imageMessage ? "image" : "video";
+            mediaContent = quoted[`${mediaType}Message`];
+        } else if (msg.message.imageMessage || msg.message.videoMessage) {
+            mediaType = msg.message.imageMessage ? "image" : "video";
+            mediaContent = msg.message[`${mediaType}Message`];
+        }
+        
+        if (!mediaType || !mediaContent) {
+            const xds = `👾 *Uso correcto:*\nEnvía una imagen/video con "${global.prefix}s" como texto o responde a una imagen/video con "${global.prefix}s" para convertirlo en sticker\n\nEjemplo: Envía una foto con ${global.prefix}s como texto`
+            await sock.sendMessage(msg.key.remoteJid, {
                 text: xds
-            }, msg );
-            return;
-        }
-         
-        let mediaType = quoted.imageMessage ? "image" : quoted.videoMessage ? "video" : null;
-        if (!mediaType) {
-            await sock.sendMessage2(  // <- Cambiado a sendMessage2
-                msg.key.remoteJid,
-                "⚠️ *Solo puedes convertir imágenes o videos en stickers.*",
-                msg
-            );
+            }, { quoted: msg });
             return;
         }
 
-        // Obtener el nombre del usuario
         let senderName = msg.pushName || "Usuario Desconocido";
-
-        // Obtener la fecha exacta de creación 📅
+        
         let now = new Date();
         let fechaCreacion = `📅 Fecha de Creación de Stickerz: ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()} 🕒 ${now.getHours()}:${now.getMinutes()}`;
-
-        // Mensaje de reacción mientras se crea el sticker ⚙️
+        
         await sock.sendMessage(msg.key.remoteJid, { 
             react: { text: "🛠️", key: msg.key } 
         });
 
-        let mediaStream = await downloadContentFromMessage(quoted[`${mediaType}Message`], mediaType);
-        let buffer = Buffer.alloc(0);
+        let mediaStream = await downloadContentFromMessage(mediaContent, mediaType);
+        
         for await (const chunk of mediaStream) {
             buffer = Buffer.concat([buffer, chunk]);
         }
@@ -12238,7 +12238,6 @@ case "stiker":
             throw new Error("❌ Error: No se pudo descargar el archivo.");
         }
 
-        // 🌟 Formato llamativo para la metadata del sticker 🌟
         let metadata = {
             packname: `${senderName} ✨`,
             author: `${wm}`
@@ -12251,18 +12250,17 @@ case "stiker":
             stickerBuffer = await writeExifVid(buffer, metadata);
         }
 
-        await sock.sendMessage2(msg.key.remoteJid, { 
+        await sock.sendMessage(msg.key.remoteJid, { 
             sticker: { url: stickerBuffer } 
-        }, msg );
+        }, { quoted: msg });
 
-        // Confirmación final con reacción ✅
         await sock.sendMessage(msg.key.remoteJid, { 
             react: { text: "✅", key: msg.key } 
         });
 
     } catch (error) {
         console.error("❌ Error en el comando .ss:", error);
-        await sock.sendMessage2(  // <- Cambiado a sendMessage2
+        await sock.sendMessage2(
             msg.key.remoteJid,
             "❌ *Hubo un error al procesar el sticker. Inténtalo de nuevo.*",
             msg
