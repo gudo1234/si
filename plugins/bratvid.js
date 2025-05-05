@@ -1,8 +1,6 @@
 const axios = require('axios');
 
 const handler = async (msg, { conn, text, usedPrefix, command }) => {
-  const e = '⚠️'; // Puedes personalizar este emoji si lo necesitas
-
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
       text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* hola mundo`
