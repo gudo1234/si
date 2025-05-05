@@ -10,7 +10,7 @@ await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "🕒", key: msg.key} 
         });
 
-  const args = args.join(' ');
+  const text = text.join(' ');
   const apiUrl = `https://api.nekorinn.my.id/maker/bratvid?text=${encodeURIComponent(text)}`;
 
   try {
