@@ -32,7 +32,7 @@ const farewellTexts = [
   "¡Adiós! Que tu camino esté lleno de éxitos, te lo desea el Bot 🚀🌟."
 ];
 
-export async function before(m, { conn, participants, groupMetadata }) {
+const handler = async (msg, { conn, participants, groupMetadata }) {
   if (!m.messageStubType || !m.isGroup) return true;
   if (![27, 28, 32].includes(m.messageStubType)) return true;
 
