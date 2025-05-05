@@ -75,7 +75,7 @@
     "ruhend-scraper": "^7.0.4",
     "sanzy-spotifydl": "*",
     "savetubedl": "^3.0.0",
-    "sharp": "^0.33.2",
+    "sharp": "^0.33.7",
     "similarity": "^1.2.1",
     "socket.io": "^4.5.2",
     "syntax-error": "^1.4.0",
