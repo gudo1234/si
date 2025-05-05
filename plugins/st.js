@@ -1,22 +1,25 @@
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
-const { writeExifImg, writeExifVid } = require('../libs/fuctions'); // Asegúrate de tener estas funciones
+const { writeExifImg, writeExifVid } = require('../libs/fuctions'); // Asegúrate de que estas funciones existan
 const fs = require('fs');
-const path = require('path');
 
-const handler = async (msg, { conn }) => {
+const handler = async (msg, { conn, command }) => {
   try {
     let mediaMsg = null;
     let mediaType = null;
 
     const m = msg.message;
 
-    if (m.imageMessage) {
+    // Detecta si el mensaje contiene imagen/video con texto (directo al comando)
+    if (m.imageMessage && m.imageMessage.caption?.toLowerCase().startsWith(command)) {
       mediaMsg = m.imageMessage;
       mediaType = "image";
-    } else if (m.videoMessage) {
+    } else if (m.videoMessage && m.videoMessage.caption?.toLowerCase().startsWith(command)) {
       mediaMsg = m.videoMessage;
       mediaType = "video";
-    } else if (m.extendedTextMessage?.contextInfo?.quotedMessage) {
+    }
+
+    // Detecta si se respondió a una imagen/video
+    if (!mediaMsg && m.extendedTextMessage?.contextInfo?.quotedMessage) {
       const quoted = m.extendedTextMessage.contextInfo.quotedMessage;
       if (quoted.imageMessage) {
         mediaMsg = quoted.imageMessage;
@@ -29,7 +32,7 @@ const handler = async (msg, { conn }) => {
 
     if (!mediaMsg || !mediaType) {
       return await conn.sendMessage(msg.key.remoteJid, {
-        text: `👾 *Uso correcto:*\nResponde a una imagen o video con *${global.prefix}s* para convertirlo en sticker.\n\nEjemplo: Envía una foto con *${global.prefix}s* como texto.`
+        text: `👾 *Uso correcto:*\nEnvía una imagen/video con *${global.prefix}s* como texto o responde a una imagen/video con *${global.prefix}s* para convertirlo en sticker.`
       }, { quoted: msg });
     }
 
@@ -73,5 +76,5 @@ const handler = async (msg, { conn }) => {
   }
 };
 
-handler.command = ['st'];
+handler.command = ['s', 'sticker'];
 module.exports = handler;
