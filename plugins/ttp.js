@@ -1,7 +1,6 @@
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const { writeExifImg, writeExifVid } = require('../libs/fuctions');
-const fg = require("api-dylux"); // Cliente para la API TTP
-const e = '⚠️'; // Emoji de advertencia
+const fg = require("api-dylux");
 
 const handler = async (msg, { conn, text, usedPrefix, command }) => {
   try {
