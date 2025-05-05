@@ -6,13 +6,10 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
       react: { text: "🕒", key: msg.key }
     });
 
-    const result = await Starlights.ppcouple();
-    const women = result?.women;
-    const man = result?.man;
+    const { data } = await Starlights.ppcouple(); // Si retorna { data: { women, man } }
+    const { women, man } = data;
 
-    if (!women || !man) await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${err.message} Ocurrió un error al intentar obtener las fotos.`
-    }, msg);
+    if (!women || !man) throw new Error('No se pudieron obtener las imágenes');
 
     await conn.sendMessage2(msg.key.remoteJid, {
       image: { url: women },
