@@ -1,74 +1,59 @@
-const fs = require('fs');
-const path = require('path');
 const levenshtein = require("fast-levenshtein");
 
-const handler = async (msg, { conn, text }) => {
-  if (!text) return;
+const handler = async (msg, { conn }) => {
+  if (!msg.text || !global.prefix.test(msg.text)) return;
 
-  const userCommand = text.toLowerCase();
+  const usedPrefix = global.prefix.exec(msg.text)[0];
+  const command = msg.text.slice(usedPrefix.length).trim().split(' ')[0].toLowerCase();
 
-  // Función para extraer los case 'comando' del main.js
-  function getSwitchCommands(filePath) {
-    if (!fs.existsSync(filePath)) return [];
-    const code = fs.readFileSync(filePath, 'utf8');
-    const regex = /case\s+['"`](\w+)['"`]/g;
-    const matches = [];
-    let match;
-    while ((match = regex.exec(code)) !== null) {
-      matches.push(match[1]);
+  const validCommand = (cmd, plugins) => {
+    for (let plugin of Object.values(plugins)) {
+      const cmds = Array.isArray(plugin.command) ? plugin.command : [plugin.command];
+      if (cmds.includes(cmd)) return true;
     }
-    return matches;
-  }
+    return false;
+  };
 
-  // Función para extraer handler.command = ['comando'] de carpetas
-  function getHandlerCommandsFromDir(dir) {
-    const commands = [];
-    if (!fs.existsSync(dir)) return [];
+  if (!command || command === "bot") return;
 
-    const files = fs.readdirSync(dir);
-    for (const file of files) {
-      const filePath = path.join(dir, file);
-      if (fs.statSync(filePath).isFile() && file.endsWith('.js')) {
-        const code = fs.readFileSync(filePath, 'utf8');
-        const regex = /handler\.command\s*=\s*([^]+)/;
-        const match = regex.exec(code);
-        if (match) {
-          const rawArray = match[1];
-          const cmdMatches = rawArray.match(/['"`](\w+)['"`]/g);
-          if (cmdMatches) {
-            commands.push(...cmdMatches.map(c => c.replace(/['"`]/g, '')));
-          }
-        }
+  if (validCommand(command, global.plugins)) {
+    let chat = global.db.data.chats[msg.chat];
+    let user = global.db.data.users[msg.sender];
+
+    if (chat.isBanned) {
+      const avisoDesactivado = `El bot *${botname}* está desactivado en este grupo.\n\n> ✦ Un *administrador* puede activarlo con el comando:\n> » *${usedPrefix}bot on*`;
+      await conn.sendMessage(msg.chat, { text: avisoDesactivado }, { quoted: msg });
+      return;
+    }
+
+    user.commands = (user.commands || 0) + 1;
+  } else {
+    // Obtener lista de comandos válidos
+    let allCommands = [];
+    for (let plugin of Object.values(global.plugins)) {
+      if (!plugin.command) continue;
+      const cmds = Array.isArray(plugin.command) ? plugin.command : [plugin.command];
+      allCommands.push(...cmds);
+    }
+
+    // Buscar el comando más cercano
+    let closest = '';
+    let shortest = Infinity;
+    for (let cmd of allCommands) {
+      let dist = levenshtein.get(command, cmd);
+      if (dist < shortest) {
+        shortest = dist;
+        closest = cmd;
       }
     }
-    return commands;
+
+    const maxLength = Math.max(command.length, closest.length);
+    const similarity = Math.round((1 - shortest / maxLength) * 100);
+
+    const mensaje = `El comando *${usedPrefix + command}* no existe.\n` +
+                    `> Usa *${usedPrefix}menu* para ver los comandos disponibles.\n\n` +
+                    `*¿Quisiste decir?* ➤ \`${usedPrefix + closest}\` (${similarity}% de coincidencia)`;
+
+    await conn.sendMessage(msg.chat, { text: mensaje }, { quoted: msg });
   }
-
-  // Comprobar si el comando existe o sugerir el más parecido
-  const mainCommands = getSwitchCommands('./main.js');
-  const pluginCommands = getHandlerCommandsFromDir('./plugins');
-  const plugin2Commands = getHandlerCommandsFromDir('./plugins2');
-  const allCommands = [...new Set([...mainCommands, ...pluginCommands, ...plugin2Commands])];
-
-  if (allCommands.includes(userCommand)) return; // Comando válido, continúa normalmente
-
-  // Buscar el más parecido
-  let closest = null;
-  let minDistance = Infinity;
-  for (const cmd of allCommands) {
-    const distance = levenshtein.get(userCommand, cmd);
-    if (distance < minDistance) {
-      minDistance = distance;
-      closest = cmd;
-    }
-  }
-
-  const similarity = (1 - minDistance / Math.max(userCommand.length, closest.length)) * 100;
-
-  // Respuesta si el comando no existe
-  return await conn.sendMessage2(msg.key.remoteJid, {
-    text: `🪐 El comando *.${userCommand}* no existe.\n> 🧮 Usa *.menu* para ver los comandos disponibles.\n\n*¿Quisiste decir?* ➤ *.${closest}* (${similarity.toFixed(0)}% de coincidencia)`
-  }, msg);
 };
-
-module.exports = handler;
