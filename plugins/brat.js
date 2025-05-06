@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require("axios");
 
 const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   if (!text) {
