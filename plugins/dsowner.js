@@ -64,7 +64,7 @@ const limpiarSesiones = () => {
   }
 };
 
-// Ejecutar cada 20 segundos
-setInterval(limpiarSesiones, 20_000);
+// Ejecutar cada 60 segundos
+setInterval(limpiarSesiones, 60_000);
 
 module.exports = {};
