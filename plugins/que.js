@@ -6,15 +6,20 @@ await conn.sendMessage2(msg.key.remoteJid, {
 handler.command = ['que'];
 module.exports = handler;*/
 
-const handler = async (msg, { conn, text }) => {
-  const texto = msg.message?.conversation || msg.message?.extendedTextMessage?.text;
-  if (!texto) return;
+const handler = async (msg, { conn }) => {
+  const texto = msg.message?.conversation 
+    || msg.message?.extendedTextMessage?.text 
+    || '';
 
-  if (texto.toLowerCase() === 'que') {
-    await conn.sendMessage2(msg.key.remoteJid, {
+  if (texto.trim().toLowerCase() === 'que') {
+    await conn.sendMessage(msg.key.remoteJid, {
       text: 'zo🧀'
-    }, msg);
+    }, { quoted: msg });
   }
 };
+
+// Esto hace que no dependa del prefijo ni de handler.command
+handler.customPrefix = true;
+handler.command = /^$/; // no hace match con nada directamente
 
 module.exports = handler;
