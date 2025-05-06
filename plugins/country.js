@@ -1,6 +1,4 @@
-import moment from 'moment-timezone';
-let userMessageCount = {};
-let flags = [
+[
   {
     "name": "Afganistán",
     "code": "AF",
@@ -2354,60 +2352,3 @@ let flags = [
     "slug": "wallis-and-futuna"
   }
 ];
-
-export async function before(m, { conn, args, usedPrefix, command }) {
-    if (!m.message) return !0;
-    if (!userMessageCount[m.chat]) userMessageCount[m.chat] = { count: 0, currentFlag: null, questionMessage: null, timestamp: null };
-
-    userMessageCount[m.chat].count += 1;
-
-    if (userMessageCount[m.chat].count % 100 === 0) {
-        const randomFlag = flags[Math.floor(Math.random() * flags.length)];
-        userMessageCount[m.chat].currentFlag = randomFlag.name; 
-        userMessageCount[m.chat].currentFlag2 = randomFlag.emoji; 
-        userMessageCount[m.chat].currentFlag3 = randomFlag.dialCodes || "DESCONOCIDO"; 
-
-        let txt = `💣 *¿A qué país pertenece la bandera que se muestra? ${userMessageCount[m.chat].currentFlag2}*\n_🤖 Por favor, responda a este mensaje con la respuesta correcta en un plazo de *3 minutos*._`;
-        userMessageCount[m.chat].questionMessage = await conn.sendFile(m.chat, randomFlag.image, "Thumbnail.jpg", txt, null, null, rcanal);
-        userMessageCount[m.chat].timestamp = Date.now(); 
-
-        setTimeout(async () => {
-            try {
-                await conn.sendMessage(m.chat, { delete: { remoteJid: m.chat, id: userMessageCount[m.chat].questionMessage.id, fromMe: true } });
-            } catch (error) {
-                console.error("Error al eliminar el mensaje:", error);
-            }
-            userMessageCount[m.chat].currentFlag = null; 
-            userMessageCount[m.chat].questionMessage = null; 
-            userMessageCount[m.chat].timestamp = null; 
-        }, 180000); 
-    }
-
-    const timeElapsed = Date.now() - userMessageCount[m.chat].timestamp;
-
-    if (timeElapsed > 180000) {
-        return; 
-    }
-
-    if (m.quoted && m.quoted.id === userMessageCount[m.chat].questionMessage.id && m.text.toLowerCase() === userMessageCount[m.chat].currentFlag.toLowerCase()) {
-        m.react('🎉');
-        await conn.reply(m.chat, `*¡Correcto, ${m.pushName}!* 🎉 La bandera es de *${userMessageCount[m.chat].currentFlag}* ${userMessageCount[m.chat].currentFlag2} y su código es: *${userMessageCount[m.chat].currentFlag3}*.`, m);
-        
-        try {
-            await conn.sendMessage(m.chat, { delete: { remoteJid: m.chat, id: userMessageCount[m.chat].questionMessage.id, fromMe: true } });
-        } catch (error) {
-            console.error("Error al eliminar el mensaje:", error);
-        }
-        
-        userMessageCount[m.chat].currentFlag = null; 
-        userMessageCount[m.chat].questionMessage = null; 
-        userMessageCount[m.chat].timestamp = null; 
-    } else if (m.quoted && m.quoted.id === userMessageCount[m.chat].questionMessage.id) {
-        const timeRemaining = Math.max(0, 180000 - timeElapsed); // Tiempo restante en milisegundos
-        const minutesRemaining = Math.floor(timeRemaining / 60000); // Convertir a minutos
-        const secondsRemaining = Math.floor((timeRemaining % 60000) / 1000); // Convertir a segundos
-
-        m.react('✖️');
-        await conn.reply(m.chat, `*¡Respuesta Incorrecta!*\n> vuelve a intentar\n🧩 _*Pista:* Su código de área es *${userMessageCount[m.chat].currentFlag3}* ${userMessageCount[m.chat].currentFlag2}_ \n⏳ *Tiempo restante:* _${minutesRemaining} minutos y ${secondsRemaining} segundos._`, m);
-    }
-}
