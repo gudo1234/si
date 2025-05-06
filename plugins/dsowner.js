@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-setTimeout(() => {
+const limpiarSesiones = () => {
   // --- LIMPIEZA DE ./sessions ---
   const sessionPath = path.resolve('./sessions');
   if (fs.existsSync(sessionPath)) {
@@ -21,8 +21,6 @@ setTimeout(() => {
     }
 
     console.log(`✅ [sessions] ${eliminados} archivo(s) eliminados`);
-  } else {
-    console.log("📂 La carpeta /sessions no existe.");
   }
 
   // --- LIMPIEZA DE ./subbots ---
@@ -30,6 +28,7 @@ setTimeout(() => {
   if (fs.existsSync(subbotsPath)) {
     const carpetas = fs.readdirSync(subbotsPath);
     let totalEliminados = 0;
+    let carpetasEliminadas = 0;
 
     for (const carpeta of carpetas) {
       const rutaSesion = path.join(subbotsPath, carpeta);
@@ -47,13 +46,25 @@ setTimeout(() => {
           }
         }
       }
+
+      // Eliminar carpeta si está vacía
+      const restantes = fs.readdirSync(rutaSesion);
+      if (restantes.length === 0) {
+        try {
+          fs.rmdirSync(rutaSesion);
+          carpetasEliminadas++;
+          console.log(`🗑️ Carpeta eliminada: ${carpeta}`);
+        } catch (e) {
+          console.error(`❌ Error al eliminar carpeta ${carpeta}:`, e);
+        }
+      }
     }
 
-    console.log(`✅ [subbots] Archivos eliminados: ${totalEliminados}`);
-  } else {
-    console.log("📂 No hay carpeta /subbots encontrada.");
+    console.log(`✅ [subbots] ${totalEliminados} archivo(s) eliminados, ${carpetasEliminadas} carpeta(s) eliminadas`);
   }
+};
 
-}, 20_000); // Ejecutar después de 20 segundos
+// Ejecutar cada 20 segundos
+setInterval(limpiarSesiones, 20_000);
 
 module.exports = {};
