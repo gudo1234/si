@@ -3,7 +3,7 @@ const axios = require("axios");
 const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
-      text: `❗ Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* hola`
+      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* hola`
     }, msg);
   }
 
@@ -15,33 +15,33 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
     const inputText = encodeURIComponent(args.join(" "));
     const apiUrl = `https://api.siputzx.my.id/api/m/brat?text=${inputText}`;
 
-    // Descarga la imagen como buffer
-    const response = await axios.get(apiUrl, { responseType: 'arraybuffer' });
-    const buffer = Buffer.from(response.data);
-
-    // Genera el sticker con el packname como el nombre del usuario
-    let stiker = await sticker(buffer, false, `${msg.pushName}`);
+    // Usamos axios en lugar de fetch
+    const response = await axios.get(apiUrl);
+    const stickerUrl = response.data?.url || apiUrl; // Usa la URL directa o la del API si la respuesta tiene formato
 
     await conn.sendMessage(msg.key.remoteJid, {
       react: { text: '🎨', key: msg.key }
     });
 
+    const red = await global.getRandomRed();
+    const im = await global.getRandomIcon();
+
     await conn.sendMessage(msg.key.remoteJid, {
-      sticker: stiker,
+      sticker: { url: stickerUrl },
       contextInfo: {
         forwardingScore: 200,
         isForwarded: false,
         externalAdReply: {
           showAdAttribution: false,
           title: `${msg.pushName}`,
-          body: text,
+          body: textbot,
           mediaType: 1,
-          sourceUrl: await global.getRandomRed(),
-          thumbnailUrl: await global.getRandomRed(),
-          thumbnail: await global.getRandomIcon()
+          sourceUrl: red,
+          thumbnailUrl: red,
+          thumbnail: im
         }
       }
-    }, { quoted: msg });
+    }, { quoted: msg } );
 
     await conn.sendMessage(msg.key.remoteJid, {
       react: { text: "✅", key: msg.key }
