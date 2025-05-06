@@ -1,3 +1,5 @@
+const { getDevice } = require("@whiskeysockets/baileys");
+const PhoneNumber = require("awesome-phonenumber");
 const fs = require("fs");
 const axios = require("axios");
 const fetch = require("node-fetch");
@@ -9,11 +11,32 @@ const handler = async (msg, { conn }) => {
     'https://files.catbox.moe/rdyj5q.mp4',
     'https://files.catbox.moe/693ws4.mp4'
   ];
+  
   const red = await global.getRandomRed();
   const im = await global.getRandomIcon();
   const jpg = videoUrls[Math.floor(Math.random() * videoUrls.length)];
 
+  const senderNumber = '+' + msg.key.participant.replace('@s.whatsapp.net', '');
+  const phoneInfo = new PhoneNumber(senderNumber);
+  const internationalNumber = phoneInfo.getNumber('international');
+
+  let mundo = 'Desconocido';
+  try {
+    const delirius = await axios.get(`https://delirius-apiofc.vercel.app/tools/country?text=${internationalNumber}`);
+    const paisdata = delirius.data.result;
+    if (paisdata) mundo = `${paisdata.name} ${paisdata.emoji}\n│🗓️ *Fecha:* ${paisdata.date}\n│🕒 *Hora local:* ${paisdata.time12}`;
+  } catch (e) {
+    console.error('Error consultando país:', e.message);
+  }
+
   const txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n🤖 \`izuBot:\` Es un sistema automático que responde a comandos para realizar ciertas acciones dentro del \`Chat\` como las descargas de videos de diferentes plataformas y búsquedas en la \`Web\`.
+
+━━━━━━━━━━━━━
+⁉ ᴄᴏɴᴛᴇxᴛ-ɪɴғᴏ☔
+┌────────────
+│ 🚩 Nombre: ${msg.pushName}
+│ 🌎 País: ${mundo}
+└────────────
 
 \`ᴊᴀᴅɪʙᴛs-ʙᴏᴛs🤖\`
 ╭━⊰══❖══⊱━╮
