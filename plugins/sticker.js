@@ -11,35 +11,18 @@ const handler = async (msg, { conn, args, command }) => {
       !m.stickerMessage &&
       !m.extendedTextMessage?.contextInfo?.quotedMessage;
 
-    // Mostrar ayuda según el comando
-    if (noMedia) {
-      if (command === 's' || command === 'sticker') {
-        return await conn.sendMessage2(msg.key.remoteJid, {
-          text: `${e} Responda a una imágen o video para generar un sticker.`
-        }, msg );
-      }
-
-      if (command === 'wm' || command === 'take') {
-        return await conn.sendMessage2(msg.key.remoteJid, {
-          text: `✏️ \`Personalizar Stickers\`
-
-> Usa los comandos *.wm* o *.take* para personalizar el *packname* y el *autor* del sticker.
-
-*Ejemplo*:
-.wm Packname|Autor → *Personaliza ambos*
-.take texto → *Solo packname*`
-        }, msg );
-      }
-    }
-
-    let mediaMsg = null;
-    let mediaType = null;
-
     let packname = `${msg.pushName || 'Usuario'} ✨`;
     let author = global.wm || 'Bot';
-
     const joinedText = args.join(' ').trim();
 
+    // Mostrar solo packname si no hay texto ni multimedia
+    if (noMedia && !joinedText && ['wm', 'take', 's', 'sticker'].includes(command)) {
+      return await conn.sendMessage2(msg.key.remoteJid, {
+        text: `✏️ *Packname actual:* ${packname}`
+      }, msg);
+    }
+
+    // Aplicar personalización si hay texto
     if (command === 'wm' || command === 'take') {
       if (joinedText.includes('|')) {
         const [p, a] = joinedText.split('|');
@@ -55,6 +38,9 @@ const handler = async (msg, { conn, args, command }) => {
         author = '';
       }
     }
+
+    let mediaMsg = null;
+    let mediaType = null;
 
     // Detectar multimedia directa
     if (m.imageMessage && m.imageMessage.caption?.toLowerCase().includes('s')) {
@@ -86,7 +72,7 @@ const handler = async (msg, { conn, args, command }) => {
     if (!mediaMsg || !mediaType) {
       return await conn.sendMessage2(msg.key.remoteJid, {
         text: `❌ Responde a una imagen, video o sticker estático, o inclúyelo con el comando.`
-      },  msg );
+      }, msg);
     }
 
     await conn.sendMessage(msg.key.remoteJid, {
