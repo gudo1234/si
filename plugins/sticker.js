@@ -5,63 +5,58 @@ const handler = async (msg, { conn, args, command }) => {
   try {
     const m = msg.message;
 
-    // Mostrar explicación según el comando sin contenido multimedia
     const noMedia =
       !m.imageMessage &&
       !m.videoMessage &&
       !m.stickerMessage &&
       !m.extendedTextMessage?.contextInfo?.quotedMessage;
 
+    // Mostrar ayuda según el comando
     if (noMedia) {
       if (command === 's' || command === 'sticker') {
-        return await conn.sendMessage(msg.key.remoteJid, {
-          text: `✂️ *Generar Sticker*
-
-Usa el comando así:
-.s (respondiendo a una imagen, video o sticker estático)
-
-Ejemplo:
-1. Envía una imagen
-2. Responde a ella con: *.s*`
-        }, { quoted: msg });
+        return await conn.sendMessage2(msg.key.remoteJid, {
+          text: `${e} Responda a una imágen o video después para generar un sticker.`
+        }, msg );
       }
 
       if (command === 'wm' || command === 'take') {
         return await conn.sendMessage(msg.key.remoteJid, {
-          text: `✏️ *Personalizar Stickers*
+          text: `✏️ \`Personalizar Stickers\`
 
-Usa los comandos *.wm* o *.take* para personalizar el *packname* y el *autor* del sticker.
+> Usa los comandos *.wm* o *.take* para personalizar el *packname* y el *autor* del sticker.
 
-Formato:
-.wm Packname|Autor
-
-Ejemplo:
-.wm Memes Pro|MiBot
-
-Luego responde a una imagen, video o sticker estático para que se genere el sticker personalizado.`
+*Ejemplo*:
+.wm Packname|Autor → *Personaliza ambos*
+.take texto → *Solo packname*`
         }, { quoted: msg });
       }
     }
 
-    // === PROCESAMIENTO DE MULTIMEDIA ===
-
     let mediaMsg = null;
     let mediaType = null;
 
-    // Extraer packname y author según el comando
     let packname = `${msg.pushName || 'Usuario'} ✨`;
     let author = global.wm || 'Bot';
 
+    const joinedText = args.join(' ').trim();
+
     if (command === 'wm' || command === 'take') {
-      const txt = args.join(' ').split('|');
-      packname = txt[0]?.trim() || packname;
-      author = txt[1]?.trim() || author;
-    } else {
-      const customText = args.join(' ').trim();
-      if (customText) packname = customText;
+      if (joinedText.includes('|')) {
+        const [p, a] = joinedText.split('|');
+        packname = p?.trim() || packname;
+        author = a?.trim() || '';
+      } else if (joinedText) {
+        packname = joinedText;
+        author = '';
+      }
+    } else if (command === 's' || command === 'sticker') {
+      if (joinedText) {
+        packname = joinedText;
+        author = '';
+      }
     }
 
-    // Multimedia directa con caption
+    // Detectar multimedia directa
     if (m.imageMessage && m.imageMessage.caption?.toLowerCase().includes('s')) {
       mediaMsg = m.imageMessage;
       mediaType = 'image';
@@ -73,7 +68,7 @@ Luego responde a una imagen, video o sticker estático para que se genere el sti
       mediaType = 'image';
     }
 
-    // Multimedia respondida
+    // Detectar multimedia respondida
     if (!mediaMsg && m.extendedTextMessage?.contextInfo?.quotedMessage) {
       const quoted = m.extendedTextMessage.contextInfo.quotedMessage;
       if (quoted.imageMessage) {
