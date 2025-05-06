@@ -5,7 +5,7 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
     }, msg);
   }
   }
-handler.command = ['ppcouple', 'par'];
+handler.command = ['que'];
 //handler.customPrefix = /^(Audio|audio)/
 //handler.command = new RegExp
 module.exports = handler;
