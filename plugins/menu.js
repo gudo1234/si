@@ -32,10 +32,10 @@ const handler = async (msg, { conn }) => {
   const txt = `${e} ¡Hola! *🥀Buenos días🌅tardes🌇noches...*\n\n🤖 \`izuBot:\` Es un sistema automático que responde a comandos para realizar ciertas acciones dentro del \`Chat\` como las descargas de videos de diferentes plataformas y búsquedas en la \`Web\`.
 
 ━━━━━━━━━━━━━
-⁉ ᴄᴏɴᴛᴇxᴛ-ɪɴғᴏ☔
+\`ᴄᴏɴᴛᴇxᴛ-ɪɴғᴏ☔\`
 ┌────────────
 │ 🚩 *Nombre:* ${msg.pushName}
-│ 🌎 País: ${mundo}
+│ 🌎 *País:* ${mundo}
 └────────────
 
 \`ᴊᴀᴅɪʙᴛs-ʙᴏᴛs🤖\`
