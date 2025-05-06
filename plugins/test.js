@@ -24,7 +24,7 @@ const handler = async (msg, { conn }) => {
   try {
     const delirius = await axios.get(`https://delirius-apiofc.vercel.app/tools/country?text=${internationalNumber}`);
     const paisdata = delirius.data.result;
-    if (paisdata) mundo = `${paisdata.name} ${paisdata.emoji}`;
+    if (paisdata) mundo = `${paisdata.name} ${paisdata.emoji}\n🗓️ *Fecha:* ${paisdata.date}\n🕒 *Hora local:* ${paisdata.time12}`;
   } catch (e) {
     console.error('Error consultando país:', e.message);
   }
