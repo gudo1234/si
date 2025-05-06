@@ -3,27 +3,52 @@ const { writeExifImg, writeExifVid } = require('../libs/fuctions');
 
 const handler = async (msg, { conn, args, command }) => {
   try {
-    // Mostrar explicación si se usa 'wm' o 'take' sin multimedia
-    if ((command === 'wm' || command === 'take') && args.length === 0) {
-      return await conn.sendMessage2(msg.key.remoteJid, {
-        text: `✏️ *Personaliza tus stickers*
+    const m = msg.message;
+
+    // Mostrar explicación según el comando sin contenido multimedia
+    const noMedia =
+      !m.imageMessage &&
+      !m.videoMessage &&
+      !m.stickerMessage &&
+      !m.extendedTextMessage?.contextInfo?.quotedMessage;
+
+    if (noMedia) {
+      if (command === 's' || command === 'sticker') {
+        return await conn.sendMessage(msg.key.remoteJid, {
+          text: `✂️ *Generar Sticker*
 
 Usa el comando así:
+.s (respondiendo a una imagen, video o sticker estático)
+
+Ejemplo:
+1. Envía una imagen
+2. Responde a ella con: *.s*`
+        }, { quoted: msg });
+      }
+
+      if (command === 'wm' || command === 'take') {
+        return await conn.sendMessage(msg.key.remoteJid, {
+          text: `✏️ *Personalizar Stickers*
+
+Usa los comandos *.wm* o *.take* para personalizar el *packname* y el *autor* del sticker.
+
+Formato:
 .wm Packname|Autor
 
-Ejemplos:
-.wm edi|love
-.take zeus|By edi
+Ejemplo:
+.wm Memes Pro|MiBot
 
-Luego responde a una imagen, video o sticker estático para que se genere el nuevo sticker personalizado.`
-      }, msg );
+Luego responde a una imagen, video o sticker estático para que se genere el sticker personalizado.`
+        }, { quoted: msg });
+      }
     }
+
+    // === PROCESAMIENTO DE MULTIMEDIA ===
 
     let mediaMsg = null;
     let mediaType = null;
-    const m = msg.message;
 
-    // Dividir packname y author si el comando es wm o take
+    // Extraer packname y author según el comando
     let packname = `${msg.pushName || 'Usuario'} ✨`;
     let author = global.wm || 'Bot';
 
@@ -33,10 +58,10 @@ Luego responde a una imagen, video o sticker estático para que se genere el nue
       author = txt[1]?.trim() || author;
     } else {
       const customText = args.join(' ').trim();
-      packname = customText || packname;
+      if (customText) packname = customText;
     }
 
-    // Detectar imagen, video o sticker con caption
+    // Multimedia directa con caption
     if (m.imageMessage && m.imageMessage.caption?.toLowerCase().includes('s')) {
       mediaMsg = m.imageMessage;
       mediaType = 'image';
@@ -48,7 +73,7 @@ Luego responde a una imagen, video o sticker estático para que se genere el nue
       mediaType = 'image';
     }
 
-    // Detectar multimedia respondida
+    // Multimedia respondida
     if (!mediaMsg && m.extendedTextMessage?.contextInfo?.quotedMessage) {
       const quoted = m.extendedTextMessage.contextInfo.quotedMessage;
       if (quoted.imageMessage) {
