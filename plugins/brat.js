@@ -26,7 +26,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
     const red = await global.getRandomRed();
     const im = await global.getRandomIcon();
 
-    await conn.sendMessage2(msg.key.remoteJid, {
+    await conn.sendMessage(msg.key.remoteJid, {
       sticker: { url: stickerUrl },
       contextInfo: {
         forwardingScore: 200,
@@ -34,14 +34,14 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
         externalAdReply: {
           showAdAttribution: false,
           title: `${msg.pushName}`,
-          body: 'Aquí tienes tu sticker!',
+          body: textbot,
           mediaType: 1,
           sourceUrl: red,
           thumbnailUrl: red,
           thumbnail: im
         }
       }
-    }, msg );
+    }, { quoted: msg } );
 
     await conn.sendMessage(msg.key.remoteJid, {
       react: { text: "✅", key: msg.key }
