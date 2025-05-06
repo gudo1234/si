@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 const moment = require("moment-timezone");
 
 // Cargar country.json desde misma carpeta
-const countries = JSON.parse(fs.readFileSync(__dirname + '/country.json', 'utf-8'));
+const countries = JSON.parse(fs.readFileSync(__dirname + './country.json', 'utf-8'));
 
 // Mapas adicionales de zonas horarias y capitales
 const zonasHorarias = {
