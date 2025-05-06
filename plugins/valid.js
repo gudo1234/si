@@ -45,7 +45,7 @@ function getMainCommands() {
   }
 }
 
-export async function before(msg, { conn }) {
+const before = async (msg, { conn }) => {
   try {
     if (!msg.text || !global.prefix.test(msg.text)) return;
 
