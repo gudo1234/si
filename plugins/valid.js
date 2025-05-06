@@ -1,79 +1,75 @@
-const fs = require('fs');
-const path = require('path');
-const levenshtein = require('fast-levenshtein');
+const fs = require("fs");
+const path = require("path");
+const levenshtein = require("fast-levenshtein");
 
-// Escanea "case" desde main.js
-function getMainCaseCommands() {
+function getCaseCommands() {
   try {
-    const content = fs.readFileSync('main.js', 'utf8');
-    const regex = /case\s+['"]([^'"]+)['"]/g;
+    const mainPath = path.resolve('./main.js');
+    if (!fs.existsSync(mainPath)) return [];
+
+    const content = fs.readFileSync(mainPath, 'utf8');
+    const regex = /case\s+['"]([^'"]+)['"]/gi;
     const matches = [...content.matchAll(regex)].map(m => m[1].toLowerCase());
     return matches;
   } catch (e) {
-    console.error('[ERROR al leer main.js]:', e);
+    console.error('[ERROR leyendo main.js]:', e);
     return [];
   }
 }
 
-// Escanea handler.command en todos los archivos .js de una carpeta
-function getCommandsFromFolder(folderPath) {
+function getPluginCommands(dir) {
   const commands = [];
-
   try {
-    const files = fs.readdirSync(folderPath).filter(f => f.endsWith('.js'));
+    const files = fs.readdirSync(dir).filter(f => f.endsWith('.js'));
+
     for (const file of files) {
-      const content = fs.readFileSync(path.join(folderPath, file), 'utf8');
-      const matchArray = [
-        ...content.matchAll(/handler\.command\s*=\s*([^]+|['"`][^'"`]+['"`])/gi)
-      ];
+      const content = fs.readFileSync(path.join(dir, file), 'utf8');
+      const matchArray = [...content.matchAll(/handler\.command\s*=\s*([^]+|['"`][^'"`]+['"`])/gi)];
 
       for (const match of matchArray) {
-        const raw = match[1];
         try {
-          // Evalúa la cadena como array o string literal seguro
-          const cmds = eval(raw);
+          const raw = match[1];
+          const cmds = eval(raw); // eval para extraer los comandos como array
           if (Array.isArray(cmds)) {
             commands.push(...cmds.map(c => c.toLowerCase()));
           } else if (typeof cmds === 'string') {
             commands.push(cmds.toLowerCase());
           }
         } catch (err) {
-          console.warn(`[WARNING al parsear comando en ${file}]`, err.message);
+          console.warn(`[WARNING al analizar comando en ${file}]: ${err.message}`);
         }
       }
     }
   } catch (e) {
-    console.error(`[ERROR al leer carpeta ${folderPath}]:`, e);
+    console.error(`[ERROR leyendo carpeta ${dir}]:`, e);
   }
 
   return commands;
 }
 
-// MAIN HANDLER
 const handler = async (msg, { conn }) => {
   try {
-    const text = msg.message?.conversation || msg.message?.extendedTextMessage?.text || '';
-    if (!text) return;
+    const senderId = msg.key.participant || msg.key.remoteJid;
+    const senderClean = senderId.replace(/[^0-9]/g, '');
 
-    const usedPrefix = global.prefix.exec(text)?.[0];
+    const body = msg.message?.conversation || msg.message?.extendedTextMessage?.text || '';
+    const usedPrefix = global.prefix.exec(body)?.[0];
     if (!usedPrefix) return;
 
-    const command = text.slice(usedPrefix.length).trim().split(' ')[0].toLowerCase();
-    if (!command) return;
+    const command = body.slice(usedPrefix.length).trim().split(' ')[0].toLowerCase();
 
-    console.log('[COMANDO RECIBIDO]:', command);
+    // Escanear comandos
+    const caseCmds = getCaseCommands();
+    const plugin1 = getPluginCommands('./plugins');
+    const plugin2 = getPluginCommands('./plugins2');
+    const allCommands = [...new Set([...caseCmds, ...plugin1, ...plugin2])];
 
-    // Escanea todas las fuentes posibles
-    const caseCommands = getMainCaseCommands();
-    const plugin1 = getCommandsFromFolder('./plugins');
-    const plugin2 = getCommandsFromFolder('./plugins2');
-
-    const allCommands = [...new Set([...caseCommands, ...plugin1, ...plugin2])];
-    console.log('[TOTAL COMANDOS DETECTADOS]:', allCommands.length);
-
+    // Validar si el comando existe
     if (allCommands.includes(command)) {
-      console.log('[COMANDO VÁLIDO DETECTADO]');
-      return; // comando válido, continúa normalmente
+      // Aquí va tu lógica real si el comando existe
+      return conn.sendMessage(msg.key.remoteJid, {
+        text: `✅ El comando *${usedPrefix + command}* existe.`
+      }, { quoted: msg });
     }
 
     // Buscar sugerencia
@@ -87,19 +83,20 @@ const handler = async (msg, { conn }) => {
       }
     }
 
-    const maxLength = Math.max(command.length, closest.length);
-    const similarity = Math.round((1 - shortest / maxLength) * 100);
+    const similarity = Math.round((1 - shortest / Math.max(command.length, closest.length)) * 100);
 
-    const response = `❌ El comando *${usedPrefix + command}* no existe.\n` +
-                     `> Usa *${usedPrefix}menu* para ver los comandos disponibles.\n\n` +
-                     `*¿Quisiste decir?* ➤ \`${usedPrefix + closest}\` (${similarity}% de coincidencia)`;
+    // Enviar respuesta si no existe
+    return conn.sendMessage(msg.key.remoteJid, {
+      text: `❌ El comando *${usedPrefix + command}* no existe.\n` +
+            `> Usa *${usedPrefix}menu* para ver los comandos disponibles.\n\n` +
+            `*¿Quisiste decir?* ➤ \`${usedPrefix + closest}\` (${similarity}% de coincidencia)`
+    }, { quoted: msg });
 
-    await conn.sendMessage2(msg.key.remoteJid, { text: response }, msg);
-  } catch (err) {
-    console.error('[ERROR FATAL]:', err);
-    await conn.sendMessage2(msg.key.remoteJid, {
-      text: '⚠️ Error interno al procesar el comando.'
-    }, msg);
+  } catch (error) {
+    console.error('❌ Error en la detección de comandos:', error);
+    await conn.sendMessage(msg.key.remoteJid, {
+      text: '⚠️ Ocurrió un error al verificar el comando.'
+    }, { quoted: msg });
   }
 };
 
