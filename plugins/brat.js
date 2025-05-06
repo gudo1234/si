@@ -19,8 +19,8 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
     const response = await axios.get(apiUrl, { responseType: 'arraybuffer' });
     const buffer = Buffer.from(response.data);
 
-    // Genera el sticker con el packname como pushName
-    let stiker = await sticker(buffer, `${msg.pushName}`, '');
+    // Genera el sticker con el packname como el nombre del usuario
+    let stiker = await sticker(buffer, false, `${msg.pushName}`);
 
     await conn.sendMessage(msg.key.remoteJid, {
       react: { text: '🎨', key: msg.key }
@@ -34,7 +34,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
         externalAdReply: {
           showAdAttribution: false,
           title: `${msg.pushName}`,
-          body: textbot,
+          body: text,
           mediaType: 1,
           sourceUrl: await global.getRandomRed(),
           thumbnailUrl: await global.getRandomRed(),
