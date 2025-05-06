@@ -6,7 +6,7 @@ await conn.sendMessage2(msg.key.remoteJid, {
 handler.command = ['que'];
 module.exports = handler;*/
 
-const handler = async (msg, { conn }) => {
+const handler = async (msg, { conn, text }) => {
   const texto = msg.message?.conversation || msg.message?.extendedTextMessage?.text;
   if (!texto) return;
 
