@@ -21,19 +21,27 @@ const adivinanzas = [
   }
 ];
 
-// Para guardar la adivinanza activa por usuario
 const userAdivinanzas = {};
 
+// Handler para el comando `.que`
 const handler = async (msg, { conn }) => {
-  const texto = msg.body?.toLowerCase()?.trim();
   const user = msg.key.remoteJid;
+  const adivinanza = adivinanzas[Math.floor(Math.random() * adivinanzas.length)];
+  userAdivinanzas[user] = adivinanza;
+  await conn.sendMessage2(user, { text: `Adivina: ${adivinanza.pregunta}` }, msg);
+};
 
-  if (!userAdivinanzas[user]) {
-    // Si no hay adivinanza activa, enviar una nueva
-    const adivinanza = adivinanzas[Math.floor(Math.random() * adivinanzas.length)];
-    userAdivinanzas[user] = adivinanza;
-    await conn.sendMessage2(user, { text: `Adivina: ${adivinanza.pregunta}` }, msg);
-  } else {
+handler.command = ['que', 'q'];
+module.exports = handler;
+
+// Handler separado para detectar respuestas normales
+const respuestaHandler = async (msg, { conn }) => {
+  const user = msg.key.remoteJid;
+  const texto = msg.body?.toLowerCase()?.trim();
+
+  if (!texto || texto.startsWith('.')) return; // Ignorar comandos
+
+  if (userAdivinanzas[user]) {
     const correcta = userAdivinanzas[user].respuesta;
     if (texto === correcta) {
       await conn.sendMessage2(user, { text: "¡Correcto! Bien hecho." }, msg);
@@ -44,5 +52,6 @@ const handler = async (msg, { conn }) => {
   }
 };
 
-handler.command = ['que', 'q'];
-module.exports = handler;
+respuestaHandler.customPrefix = /^[^\.]/; // Solo mensajes que no empiezan con punto
+respuestaHandler.command = new RegExp; // Para que se ejecute siempre
+module.exports = [handler, respuestaHandler];
