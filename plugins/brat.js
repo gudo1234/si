@@ -3,7 +3,7 @@ const axios = require("axios");
 const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* hola`
+      text: `❗ Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* hola`
     }, msg);
   }
 
@@ -15,19 +15,19 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
     const inputText = encodeURIComponent(args.join(" "));
     const apiUrl = `https://api.siputzx.my.id/api/m/brat?text=${inputText}`;
 
-    // Usamos axios en lugar de fetch
-    const response = await axios.get(apiUrl);
-    const stickerUrl = response.data?.url || apiUrl; // Usa la URL directa o la del API si la respuesta tiene formato
+    // Descarga la imagen como buffer
+    const response = await axios.get(apiUrl, { responseType: 'arraybuffer' });
+    const buffer = Buffer.from(response.data);
+
+    // Genera el sticker con el packname como pushName
+    let stiker = await sticker(buffer, `${msg.pushName}`, '');
 
     await conn.sendMessage(msg.key.remoteJid, {
       react: { text: '🎨', key: msg.key }
     });
 
-    const red = await global.getRandomRed();
-    const im = await global.getRandomIcon();
-
     await conn.sendMessage(msg.key.remoteJid, {
-      sticker: { url: stickerUrl },
+      sticker: stiker,
       contextInfo: {
         forwardingScore: 200,
         isForwarded: false,
@@ -36,12 +36,12 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
           title: `${msg.pushName}`,
           body: textbot,
           mediaType: 1,
-          sourceUrl: red,
-          thumbnailUrl: red,
-          thumbnail: im
+          sourceUrl: await global.getRandomRed(),
+          thumbnailUrl: await global.getRandomRed(),
+          thumbnail: await global.getRandomIcon()
         }
       }
-    }, { quoted: msg } );
+    }, { quoted: msg });
 
     await conn.sendMessage(msg.key.remoteJid, {
       react: { text: "✅", key: msg.key }
