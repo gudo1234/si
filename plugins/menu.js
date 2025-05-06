@@ -129,6 +129,7 @@ const handler = async (msg, { conn }) => {
 ┃ ⎔ ${global.prefix}addsticker
 ┃ ⎔ ${global.prefix}listpacks
 ┃ ⎔ ${global.prefix}sendpack
+┃ ⎔ ${global.prefix}brat → título
 ┃ ⎔ ${global.prefix}bratvid → título
 ╰━⊰══❖══⊱━╯
 
