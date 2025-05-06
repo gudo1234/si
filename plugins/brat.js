@@ -26,7 +26,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
     const red = await global.getRandomRed();
     const im = await global.getRandomIcon();
 
-    await conn.sendMessage(msg.key.remoteJid, {
+    await conn.sendMessage2(msg.key.remoteJid, {
       sticker: { url: stickerUrl },
       contextInfo: {
         forwardingScore: 200,
@@ -41,7 +41,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
           thumbnail: im
         }
       }
-    }, { quoted: msg });
+    }, msg );
 
     await conn.sendMessage(msg.key.remoteJid, {
       react: { text: "✅", key: msg.key }
