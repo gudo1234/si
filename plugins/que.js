@@ -3,7 +3,5 @@ await conn.sendMessage2(msg.key.remoteJid, {
       text: `zo🧀`
     }, msg);
   }
-//handler.command = ['que'];
-handler.customPrefix = /^(que)/
-handler.command = new RegExp
+handler.command = ['que'];
 module.exports = handler;
