@@ -67,7 +67,7 @@ const handler = async (msg, { conn }) => {
 
   limpiarSesiones();
 
-  await conn.sendMessage(msg.chat, {
+  await conn.sendMessage(msg.key.remoteJid, {
     text: reportes.length > 0 ? reportes.join('\n') : 'No se encontró nada para limpiar.'
   });
 };
