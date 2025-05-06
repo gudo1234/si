@@ -12752,7 +12752,7 @@ case "perfil": {
 case 'creador': {
     const ownerNumber = "50492280729@s.whatsapp.net"; // Número del dueño en formato WhatsApp
     const ownerName = "―͟͞🍁͓̽𝆥⟅᮫ₑᵤ⟆𝇂𝇃𝇄͓⳻֟፝͜⳺𝇄𝇃𝇂͓"; // Nombre del dueño
-    const messageText = "📞 *Contacto del Creador:*\n\nSi tienes dudas, preguntas o sugerencias sobre el bot, puedes contactar a mi creador.\n\n📌 *Nombre:* Russell\n📌 *Número:* +504 9228-0729\n💬 *Mensaje directo:* Pulsa sobre el contacto y chatea con él.";
+    const messageText = "📞 *Contacto del Creador:*\n\nSi tienes dudas, preguntas o sugerencias sobre el bot, puedes contactar a mi creador.\n\n📌 *Nombre:* ${author}\n📌 *Número:* +504 9228-0729\n💬 *Mensaje directo:* Pulsa sobre el contacto y chatea con él.";
 
     // Enviar mensaje con el contacto del dueño
     await sock.sendMessage(msg.key.remoteJid, {
@@ -13198,10 +13198,10 @@ case "kick": {
 
     await sock.groupParticipantsUpdate(chatId, [userToKick], "remove");
 
-    await sock.sendMessage(chatId, {
+    await sock.sendMessage2(chatId, {
       text: `🚷 *El usuario @${userToKick.split("@")[0]} ha sido expulsado del grupo.*`,
       mentions: [userToKick]
-    }, { quoted: msg });
+    }, null );
 
   } catch (error) {
     console.error("❌ Error en el comando kick:", error);
