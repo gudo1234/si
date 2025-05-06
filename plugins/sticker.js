@@ -15,7 +15,7 @@ const handler = async (msg, { conn, args, command }) => {
     if (noMedia) {
       if (command === 's' || command === 'sticker') {
         return await conn.sendMessage2(msg.key.remoteJid, {
-          text: `${e} Responda a una imágen o video después para generar un sticker.`
+          text: `${e} Responda a una imágen o video para generar un sticker.`
         }, msg );
       }
 
