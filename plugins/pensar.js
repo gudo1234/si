@@ -5,12 +5,12 @@ const handler = async (msg, { conn, usedPrefix }) => {
     const who = msg.mentionedJid?.[0] || (msg.quoted ? msg.quoted.sender : msg.sender);
 
     // Alternativa para obtener el nombre del usuario mencionado
-    const name = await conn.getName(who);  // Este es igual al original
+   // const name = await conn.getName(who);  // Este es igual al original
     // Alternativa para obtener el nombre del remitente del mensaje
     const name2 = await conn.getName(msg.sender);  // Este también es igual al original
 
     const text = msg.mentionedJid?.length > 0 || msg.quoted   
-        ? `\`${name2}\` está pensando en \`${name || who}\` (⸝⸝╸-╺⸝⸝)`   
+        ? `\`${name2}\` está pensando en \`${msg.pushName}\` (⸝⸝╸-╺⸝⸝)`   
         : `\`${name2}\` está pensando (⸝⸝╸-╺⸝⸝)`;
 
     if (msg.isGroup) {
