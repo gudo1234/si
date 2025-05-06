@@ -98,8 +98,10 @@ const handler = async (msg, { conn }) => {
 
 \`sᴛɪᴄᴋᴇʀs - ғғᴘᴇɢ🧩\`
 ╭━⊰══❖══⊱━╮
-┃ ⎔ ${global.prefix}s
-┃ ⎔ ${global.prefix}qc
+┃ ⎔ ${global.prefix}sticker → título
+┃ ⎔ ${global.prefix}qc → título
+┃ ⎔ ${global.prefix}wm → título
+┃ ⎔ ${global.prefix}take → título
 ┃ ⎔ ${global.prefix}newpack
 ┃ ⎔ ${global.prefix}addsticker
 ┃ ⎔ ${global.prefix}listpacks
