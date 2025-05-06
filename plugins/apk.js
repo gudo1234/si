@@ -3,7 +3,7 @@ const { search, download } = require("aptoide-scraper");
 const handler = async (msg, { conn, text, usedPrefix, command }) => {
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
-      text: `Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* unicode pad`
+      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* unicode pad`
     }, msg);
   }
 await conn.sendMessage(msg.key.remoteJid, {
