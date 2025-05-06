@@ -20,7 +20,7 @@ const handler = async (msg, { conn, args, command }) => {
       }
 
       if (command === 'wm' || command === 'take') {
-        return await conn.sendMessage(msg.key.remoteJid, {
+        return await conn.sendMessage2(msg.key.remoteJid, {
           text: `✏️ \`Personalizar Stickers\`
 
 > Usa los comandos *.wm* o *.take* para personalizar el *packname* y el *autor* del sticker.
@@ -28,7 +28,7 @@ const handler = async (msg, { conn, args, command }) => {
 *Ejemplo*:
 .wm Packname|Autor → *Personaliza ambos*
 .take texto → *Solo packname*`
-        }, { quoted: msg });
+        }, msg );
       }
     }
 
@@ -84,9 +84,9 @@ const handler = async (msg, { conn, args, command }) => {
     }
 
     if (!mediaMsg || !mediaType) {
-      return await conn.sendMessage(msg.key.remoteJid, {
+      return await conn.sendMessage2(msg.key.remoteJid, {
         text: `❌ Responde a una imagen, video o sticker estático, o inclúyelo con el comando.`
-      }, { quoted: msg });
+      },  msg );
     }
 
     await conn.sendMessage(msg.key.remoteJid, {
