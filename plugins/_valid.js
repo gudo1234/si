@@ -10,15 +10,32 @@ function getCommandsFromPluginsAsText(dir) {
         if (!file.endsWith(".js")) continue;
 
         const content = fs.readFileSync(filePath, "utf-8");
-        const regex = /handler\.command\s*=\s*([^]+)/g;
+
+        // Captura tanto arrays como strings individuales
+        const regex = /handler\.command\s*=\s*([^]*|["'`](.*?)["'`])/g;
         const matches = [...content.matchAll(regex)];
 
         for (const match of matches) {
-            const listRaw = match[1];
-            const items = [...listRaw.matchAll(/["'`](.*?)["'`]/g)];
-            for (const item of items) {
-                const cmd = item[1].trim();
-                if (cmd) commands.push(cmd.toLowerCase());
+            let raw = match[1];
+
+            try {
+                // Si es un array, evalúa como JSON seguro
+                if (raw.startsWith("[")) {
+                    const jsonArray = eval(raw); // aceptable porque es código local controlado
+                    jsonArray.forEach(cmd => {
+                        if (typeof cmd === "string" && cmd.trim()) {
+                            commands.push(cmd.trim().toLowerCase());
+                        }
+                    });
+                } else {
+                    // Si es string suelto
+                    const single = match[2];
+                    if (single && typeof single === "string") {
+                        commands.push(single.trim().toLowerCase());
+                    }
+                }
+            } catch (err) {
+                console.error(`Error analizando handler.command en ${file}:`, err);
             }
         }
     }
