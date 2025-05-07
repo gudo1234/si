@@ -73,6 +73,7 @@ const chatId = msg.key.remoteJid;
 ⟢ ${usedPrefix}apk
 ⟢ ${usedPrefix}instagram / ${usedPrefix}ig
 ⟢ ${usedPrefix}tiktok / ${usedPrefix}tt
+⟢ ${usedPrefix}tiktokvid
 ⟢ ${usedPrefix}facebook / ${usedPrefix}fb
 
 〔 Stickers & Multimedia 〕
