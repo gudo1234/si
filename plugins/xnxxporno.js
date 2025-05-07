@@ -61,9 +61,7 @@ const handler = async (msg, { text, usedPrefix, command }) => {
 };
 
 handler.command = ['xnxx', 'porno', 'sexo'];
-handler.group = true;
-
-export default handler;
+module.exports = handler;
 
 const xnxxsearch = async (query) => {
   return new Promise((resolve, reject) => {
