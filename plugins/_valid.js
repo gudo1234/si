@@ -33,7 +33,7 @@ function getCommandsFromMainJS(filePath) {
     const matches = [...content.matchAll(regex)];
     return matches
         .map(match => match[1].trim().toLowerCase())
-        .filter(cmd => cmd); // Elimina los vacíos como case ""
+        .filter(cmd => cmd);
 }
 
 module.exports = {
@@ -41,36 +41,44 @@ module.exports = {
     command: /^.([^\s]+)/i,
     tags: ["sistema"],
     disabled: false,
-    run: async ({ sock, msg, command }) => {
-        const pluginsPath = path.join(__dirname);
-        const mainJSPath = path.join(__dirname, "..", "main.js");
+    run: async ({ conn, msg, command }) => {
+        try {
+            const pluginsPath = path.join(__dirname);
+            const mainJSPath = path.join(__dirname, "..", "main.js");
 
-        const pluginCommands = getCommandsFromPluginsAsText(pluginsPath);
-        const mainJSCommands = getCommandsFromMainJS(mainJSPath);
-        const validCommands = [...new Set([...pluginCommands, ...mainJSCommands])];
+            const pluginCommands = getCommandsFromPluginsAsText(pluginsPath);
+            const mainJSCommands = getCommandsFromMainJS(mainJSPath);
+            const validCommands = [...new Set([...pluginCommands, ...mainJSCommands])];
 
-        if (validCommands.includes(command)) return;
+            if (validCommands.includes(command)) return;
 
-        let closest = null;
-        let minDistance = Infinity;
+            let closest = null;
+            let minDistance = Infinity;
 
-        for (const cmd of validCommands) {
-            const dist = levenshtein.get(command, cmd);
-            if (dist < minDistance) {
-                minDistance = dist;
-                closest = cmd;
+            for (const cmd of validCommands) {
+                const dist = levenshtein.get(command, cmd);
+                if (dist < minDistance) {
+                    minDistance = dist;
+                    closest = cmd;
+                }
             }
+
+            const similarity = Math.max(0, 100 - Math.floor((minDistance / command.length) * 100));
+            let response = `🪐 El comando *.${command}* no existe.\n> 🧮 Usa *.menu* para ver los comandos disponibles.`;
+
+            if (similarity >= 40 && closest) {
+                response += `\n\n*¿Quisiste decir?* ➤ *.${closest}* (${similarity}% de coincidencia)`;
+            }
+
+            await conn.sendMessage(msg.key.remoteJid, {
+                text: response
+            }, { quoted: msg });
+
+        } catch (err) {
+            console.error("Error en plugin notfound.js:", err);
+            await conn.sendMessage(msg.key.remoteJid, {
+                text: "⚠️ Ocurrió un error al procesar tu comando. Intenta de nuevo más tarde."
+            }, { quoted: msg });
         }
-
-        const similarity = Math.max(0, 100 - Math.floor((minDistance / command.length) * 100));
-        let response = `🪐 El comando *.${command}* no existe.\n> 🧮 Usa *.menu* para ver los comandos disponibles.`;
-
-        if (similarity >= 40 && closest) {
-            response += `\n\n*¿Quisiste decir?* ➤ *.${closest}* (${similarity}% de coincidencia)`;
-        }
-
-        await sock.sendMessage(msg.key.remoteJid, {
-            text: response
-        }, { quoted: msg });
     },
 };
