@@ -41,7 +41,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, textbot }) => {
 
     const videoDetails = `
 ╭───── • ─────╮
-  𖤐 *YOUTUBE EXTRACTOR* 𖤐
+  𖤐 \`*YOUTUBE EXTRACTOR*\` 𖤐
 ╰───── • ─────╯
 
 ✦ *🎶 Título:* ${video.title}
