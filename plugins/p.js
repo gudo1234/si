@@ -3,11 +3,10 @@ const axios = require('axios');
 
 const handler = async (msg, { conn, text, usedPrefix, command, textbot }) => {
   const chatId = msg.key.remoteJid;
-  const errorEmoji = '❌';
 
   if (!text) {
     return await conn.sendMessage2(chatId, {
-      text: `${errorEmoji} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command} música* o *${usedPrefix + command} https://youtube.com/...*`
+      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command} música* o *${usedPrefix + command} https://youtube.com/...*`
     }, msg);
   }
 
@@ -50,7 +49,6 @@ const handler = async (msg, { conn, text, usedPrefix, command, textbot }) => {
 ✦ *⏳ Duración:* ${video.timestamp || 'N/A'}
 ✦ *👀 Vistas:* ${video.views?.toLocaleString() || 'N/A'}
 ✦ *📅 Publicado:* ${video.ago || 'N/A'}
-
 🌐 *Enlace:* ${video.url}
 
 ╭───── • ─────╮
@@ -69,7 +67,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, textbot }) => {
 
     if (!downloadData?.result?.download?.url) {
       return await conn.sendMessage2(chatId, {
-        text: `${errorEmoji} No se pudo obtener el audio.`
+        text: `${e} No se pudo obtener el audio.`
       }, msg);
     }
 
