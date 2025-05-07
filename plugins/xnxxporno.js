@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const cheerio = require('cheerio');
 const Starlights = require('@StarlightsTeam/Scraper');
 
-const handler = async (msg, { text, usedPrefix, command }) => {
+const handler = async (msg, { conn, text, usedPrefix, command }) => {
   if (!text) {
     await conn.sendMessage2(msg.key.remoteJid, {
       text: `Por favor, ingrese la búsqueda de un video *porno* de xnxx.\n\n> Ejemplo de uso: ${usedPrefix + command} Con mi prima`
