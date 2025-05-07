@@ -64,14 +64,12 @@ const chatId = msg.key.remoteJid;
 ⟢ ${usedPrefix}geminis
 
 〔 Descargas 〕
-⟢ ${usedPrefix}play / ${usedPrefix}playdoc
-⟢ ${usedPrefix}play2 / ${usedPrefix}play2doc
-⟢ ${usedPrefix}play5
-⟢ ${usedPrefix}play6
-⟢ ${usedPrefix}ytmp3 / ${usedPrefix}ytmp3doc
-⟢ ${usedPrefix}ytmp35
-⟢ ${usedPrefix}ytmp4 / ${usedPrefix}ytmp4doc
-⟢ ${usedPrefix}ytmp45
+⟢ ${usedPrefix}play
+⟢ ${usedPrefix}play2
+⟢ ${usedPrefix}play3
+⟢ ${usedPrefix}play4
+⟢ ${usedPrefix}ytmp3 
+⟢ ${usedPrefix}ytmp4
 ⟢ ${usedPrefix}apk
 ⟢ ${usedPrefix}instagram / ${usedPrefix}ig
 ⟢ ${usedPrefix}tiktok / ${usedPrefix}tt
