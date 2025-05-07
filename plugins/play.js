@@ -87,15 +87,15 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
       caption: videoDetails
     }, msg);
 
-    // Obtener el enlace de descarga usando la primera API
-    const downloadUrl = `https://api.vreden.my.id/api/ytmp3?url=${encodeURIComponent(video.url)}`;
+    // Obtener el enlace de descarga usando la segunda API
+    const downloadUrlFallback = `https://api.siputzx.my.id/api/d/ytmp4?url=${encodeURIComponent(video.url)}`;
     try {
-      const downloadRes = await axios.get(downloadUrl);
-      const downloadData = downloadRes.data;
+      const downloadResFallback = await axios.get(downloadUrlFallback);
+      const downloadDataFallback = downloadResFallback.data;
 
-      if (!downloadData?.result?.download?.url) {
+      if (!downloadDataFallback?.data?.dl) {
         return await conn.sendMessage2(chatId, {
-          text: `${e} No se pudo obtener el archivo desde la primera API.`
+          text: `⚠️ No se pudo obtener el archivo desde la segunda API.`
         }, msg);
       }
 
@@ -103,21 +103,21 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
       if (isAudioDoc) {
         // Enviar como documento de audio
         await conn.sendMessage2(chatId, {
-          document: { url: downloadData.result.download.url },
+          document: { url: downloadDataFallback.data.dl },
           mimetype: 'audio/mpeg',
           fileName: `${video.title || 'audio'}.mp3`
         }, msg);
       } else if (isVideo || isVideoDoc) {
-        // Enviar como video
+        // Enviar como video (esto es lo que permite la reproducción directa en WhatsApp)
         await conn.sendMessage2(chatId, {
-          [isVideoDoc ? 'document' : 'video']: { url: downloadData.result.download.url },
+          video: { url: downloadDataFallback.data.dl },
           mimetype: 'video/mp4',
           fileName: `${video.title}.mp4`
         }, msg);
       } else {
         // Enviar como audio
         await conn.sendMessage2(chatId, {
-          audio: { url: downloadData.result.download.url },
+          audio: { url: downloadDataFallback.data.dl },
           mimetype: 'audio/mpeg',
           fileName: `${video.title || 'audio'}.mp3`
         }, msg);
@@ -127,18 +127,21 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
         react: { text: "✅", key: msg.key }
       });
 
-    } catch (err) {
-      console.error('Error con la primera API de audio:', err);
-
-      // Si la primera API falla, usar la segunda API
+    } catch (fallbackError) {
+      console.error('Error con la segunda API de audio:', fallbackError);
+      await conn.sendMessage2(chatId, {
+        text: `❗ Ocurrió un error al intentar obtener el archivo de la segunda API.`
+      }, msg);
+      
+      // Si la segunda API falla, usar la primera API
       try {
-        const downloadUrlFallback = `https://api.siputzx.my.id/api/d/ytmp4?url=${encodeURIComponent(video.url)}`;
-        const downloadResFallback = await axios.get(downloadUrlFallback);
-        const downloadDataFallback = downloadResFallback.data;
+        const downloadUrl = `https://api.vreden.my.id/api/ytmp3?url=${encodeURIComponent(video.url)}`;
+        const downloadRes = await axios.get(downloadUrl);
+        const downloadData = downloadRes.data;
 
-        if (!downloadDataFallback?.data?.dl) {
+        if (!downloadData?.result?.download?.url) {
           return await conn.sendMessage2(chatId, {
-            text: `⚠️ No se pudo obtener el archivo desde la segunda API.`
+            text: `${e} No se pudo obtener el archivo desde la primera API.`
           }, msg);
         }
 
@@ -146,21 +149,21 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
         if (isAudioDoc) {
           // Enviar como documento de audio
           await conn.sendMessage2(chatId, {
-            document: { url: downloadDataFallback.data.dl },
+            document: { url: downloadData.result.download.url },
             mimetype: 'audio/mpeg',
             fileName: `${video.title || 'audio'}.mp3`
           }, msg);
         } else if (isVideo || isVideoDoc) {
-          // Enviar como video
+          // Enviar como video (esto es lo que permite la reproducción directa en WhatsApp)
           await conn.sendMessage2(chatId, {
-            [isVideoDoc ? 'document' : 'video']: { url: downloadDataFallback.data.dl },
+            video: { url: downloadData.result.download.url },
             mimetype: 'video/mp4',
             fileName: `${video.title}.mp4`
           }, msg);
         } else {
           // Enviar como audio
           await conn.sendMessage2(chatId, {
-            audio: { url: downloadDataFallback.data.dl },
+            audio: { url: downloadData.result.download.url },
             mimetype: 'audio/mpeg',
             fileName: `${video.title || 'audio'}.mp3`
           }, msg);
@@ -170,10 +173,10 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
           react: { text: "✅", key: msg.key }
         });
 
-      } catch (fallbackError) {
-        console.error('Error con la segunda API de audio:', fallbackError);
+      } catch (error) {
+        console.error('Error con la primera API de audio:', error);
         await conn.sendMessage2(chatId, {
-          text: `❗ Ocurrió un error al intentar obtener el archivo.`
+          text: `❗ Ocurrió un error al intentar obtener el archivo de la primera API.`
         }, msg);
       }
     }
