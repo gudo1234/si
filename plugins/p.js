@@ -52,7 +52,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, textbot }) => {
 🌐 *Enlace:* ${video.url}
 
 ╭───── • ─────╮
-> *${textbot}*
+> *Enviando el audio, espere un momento*
 ╰───── • ─────╯
 `.trim();
 
