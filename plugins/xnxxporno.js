@@ -51,7 +51,12 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
       react: { text: "✅", key: msg.key }
     });
 
-    await conn.sendFile(msg.key.remoteJid, dl_url, title + '.mp4', `\`Título:\` ${title}`, msg);
+    await conn.sendMessage2(msg.key.remoteJid, {
+      video: { url: dl_url },
+      caption: `\`Título:\` ${title}`,
+      mimetype: 'video/mp4'
+    }, msg );
+
     global.videoListXXX.push(vids_);
   } catch (err) {
     await conn.sendMessage2(msg.key.remoteJid, {
