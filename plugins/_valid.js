@@ -1,118 +1,83 @@
 const fs = require("fs");
 const path = require("path");
-const levenshtein = require("fast-levenshtein");
 
-function getCommandsFromPluginsAsText(dir) {
-    const commands = [];
-    const files = fs.readdirSync(dir);
-    for (const file of files) {
-        const filePath = path.join(dir, file);
-        if (!file.endsWith(".js")) continue;
+async function handler({ sock, msg, args }) {
+    try {
+        // El comando es el primer argumento enviado por el usuario
+        const commandName = args[0]?.toLowerCase();
 
-        const content = fs.readFileSync(filePath, "utf-8");
+        // Verificar si no se proporciona un comando y salir sin mensaje
+        if (!commandName) return;
 
-        // Captura handler.command = 'cmd', ['cmd1', 'cmd2'], o expresiones regulares
-        const regex = /handler\.command\s*=\s*([^\n;]+)/g;
-        const matches = [...content.matchAll(regex)];
-
-        for (const match of matches) {
-            let raw = match[1].trim();
-
-            try {
-                // Detecta si es una expresión regular, como /^comando$/i
-                const regexMatch = raw.match(/^\/\^?(.+?)\$?\/[a-z]*$/i);
-                if (regexMatch) {
-                    commands.push(regexMatch[1].trim().toLowerCase());
-                    continue;
-                }
-
-                // Si es un array de strings, procesar cada comando
-                if (raw.startsWith("[") && raw.endsWith("]")) {
-                    const evaluated = eval(raw); // Evaluamos de manera segura, ya que estamos en un entorno controlado
-                    if (Array.isArray(evaluated)) {
-                        evaluated.forEach(cmd => {
-                            if (typeof cmd === "string" && cmd.trim()) {
-                                commands.push(cmd.trim().toLowerCase());
-                            }
-                        });
-                    }
-                } else if (
-                    (raw.startsWith("'") && raw.endsWith("'")) ||
-                    (raw.startsWith('"') && raw.endsWith('"'))
-                ) {
-                    // Si es un string simple, agregarlo como comando
-                    const evaluated = eval(raw);
-                    if (typeof evaluated === "string" && evaluated.trim()) {
-                        commands.push(evaluated.trim().toLowerCase());
-                    }
-                }
-            } catch (err) {
-                console.error(`Error analizando handler.command en ${file}:`, err);
-            }
+        // Leer el archivo main.js para obtener los casos de comandos
+        const mainFilePath = path.join(__dirname, "main.js");
+        if (!fs.existsSync(mainFilePath)) {
+            await sock.sendMessage(msg.key.remoteJid, {
+                text: "❌ *Error:* No se encontró el archivo de comandos."
+            }, { quoted: msg });
+            return;
         }
+
+        const mainFileContent = fs.readFileSync(mainFilePath, "utf-8");
+
+        // Buscar el comando solicitado en el archivo main.js
+        const commandRegex = new RegExp(`case\\s+['"]${commandName}['"]:\\s*([\\s\\S]*?)\\s*break;`, "g");
+        const mainMatches = [...mainFileContent.matchAll(commandRegex)];
+
+        if (mainMatches.length > 0) {
+            await sock.sendMessage(msg.key.remoteJid, {
+                text: `✅ El comando *.${commandName}* fue encontrado en main.js.`
+            }, { quoted: msg });
+            return;
+        }
+
+        // Si no se encuentra en main.js, buscar en los plugins
+        const pluginsPath = path.join(__dirname, "plugins");
+        const pluginFiles = fs.readdirSync(pluginsPath);
+        let pluginFound = false;
+
+        for (const file of pluginFiles) {
+            if (!file.endsWith(".js")) continue;
+            const pluginFilePath = path.join(pluginsPath, file);
+            const pluginContent = fs.readFileSync(pluginFilePath, "utf-8");
+
+            // Buscar en el archivo del plugin el comando solicitado
+            const pluginRegex = new RegExp(`handler\\.command\\s*=\\s*(\[^\]+\|['"][^'"]+['"])`, "g");
+            const pluginMatches = [...pluginContent.matchAll(pluginRegex)];
+
+            for (const match of pluginMatches) {
+                const commands = eval(match[1].trim()); // Convertir string o array de comandos
+
+                if (Array.isArray(commands) && commands.includes(commandName)) {
+                    await sock.sendMessage(msg.key.remoteJid, {
+                        text: `✅ El comando *.${commandName}* fue encontrado en el plugin ${file}.`
+                    }, { quoted: msg });
+                    pluginFound = true;
+                    break;
+                } else if (typeof commands === "string" && commands.toLowerCase() === commandName) {
+                    await sock.sendMessage(msg.key.remoteJid, {
+                        text: `✅ El comando *.${commandName}* fue encontrado en el plugin ${file}.`
+                    }, { quoted: msg });
+                    pluginFound = true;
+                    break;
+                }
+            }
+
+            if (pluginFound) break;
+        }
+
+        // Si no se encontró el comando en main.js ni en plugins
+        if (!pluginFound) {
+            await sock.sendMessage(msg.key.remoteJid, {
+                text: `❌ El comando *.${commandName}* no fue encontrado ni en main.js ni en los plugins.`
+            }, { quoted: msg });
+        }
+    } catch (err) {
+        console.error("Error al procesar el comando git:", err);
+        await sock.sendMessage(msg.key.remoteJid, {
+            text: "⚠️ Ocurrió un error al procesar tu comando. Intenta de nuevo más tarde."
+        }, { quoted: msg });
     }
-    return commands;
 }
 
-function getCommandsFromMainJS(filePath) {
-    if (!fs.existsSync(filePath)) return [];
-
-    const content = fs.readFileSync(filePath, "utf-8");
-    const regex = /case\s+["'`](.*?)["'`]\s*:/g;
-    const matches = [...content.matchAll(regex)];
-    return matches
-        .map(match => match[1].trim().toLowerCase())
-        .filter(cmd => cmd);
-}
-
-module.exports = {
-    name: "notfound",
-    command: /^.([^\s]+)/i,
-    tags: ["sistema"],
-    disabled: false,
-    run: async ({ conn, msg, command }) => {
-        try {
-            const pluginsPath = path.join(__dirname);
-            const mainJSPath = path.join(__dirname, "..", "main.js");
-
-            // Obtener los comandos desde los plugins y desde main.js
-            const pluginCommands = getCommandsFromPluginsAsText(pluginsPath);
-            const mainJSCommands = getCommandsFromMainJS(mainJSPath);
-            const validCommands = [...new Set([...pluginCommands, ...mainJSCommands])];
-
-            // Si el comando existe, no hacemos nada
-            if (validCommands.includes(command)) return;
-
-            let closest = null;
-            let minDistance = Infinity;
-
-            // Buscar el comando más cercano usando Levenshtein
-            for (const cmd of validCommands) {
-                const dist = levenshtein.get(command, cmd);
-                if (dist < minDistance) {
-                    minDistance = dist;
-                    closest = cmd;
-                }
-            }
-
-            const similarity = Math.max(0, 100 - Math.floor((minDistance / command.length) * 100));
-            let response = `🪐 El comando *.${command}* no existe.\n> 🧮 Usa *.menu* para ver los comandos disponibles.`;
-
-            // Si la similitud es mayor al 40%, sugerir el comando más cercano
-            if (similarity >= 40 && closest) {
-                response += `\n\n*¿Quisiste decir?* ➤ *.${closest}* (${similarity}% de coincidencia)`;
-            }
-
-            // Enviar mensaje
-            await conn.sendMessage(msg.key.remoteJid, {
-                text: response
-            }, { quoted: msg });
-
-        } catch (err) {
-            console.error("Error en plugin notfound.js:", err);
-            await conn.sendMessage(msg.key.remoteJid, {
-                text: "⚠️ Ocurrió un error al procesar tu comando. Intenta de nuevo más tarde."
-            }, { quoted: msg });
-        }
-    },
-};
+module.exports = handler;
