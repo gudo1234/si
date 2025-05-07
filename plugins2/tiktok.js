@@ -24,9 +24,9 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
       dl_url = result.dl_url;
     }
 
-    txt = `╔═━━━━━◎━━━━━═╗\n`;
+    txt = `╭───── • ─────╮\n`;
     txt += `  𖤐 \`TIKTOK EXTRACTOR\` 𖤐\n`;
-    txt += `╚═━━━━━◎━━━━══╝\n\n`;
+    txt += `╰───── • ─────╯\n\n`;
 
     txt += `✦ *Título* : ${result.title}\n`;
     txt += `✦ *Autor* : ${result.author}\n`;
