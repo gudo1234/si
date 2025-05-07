@@ -13271,9 +13271,9 @@ case "ig":
 case "tiktok":
 case "tt":
     if (!text) {
-        return sock.sendMessage(msg.key.remoteJid, {
-            text: `${e} *Ejemplo de uso:*\n📌 ${global.prefix + command} https://vm.tiktok.com/ZMjdrFCtg/`
-        });
+        return sock.sendMessage2(msg.key.remoteJid, { 
+            text: `${e} Ingrese un enlace de TikTok junto al comando.\n\n*Ejemplo:* .tt https://vm.tiktok.com/ZMjdrFCtg/`
+        }, msg );
     }
 
     if (!isUrl(args[0]) || !args[0].includes('tiktok')) {
