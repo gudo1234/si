@@ -1,7 +1,8 @@
 const { getDevice } = require("@whiskeysockets/baileys");
 const PhoneNumber = require("awesome-phonenumber");
 const fs = require("fs");
-const path = require("path");
+const axios = require("axios");
+const fetch = require("node-fetch");
 
 const handler = async (msg, { conn }) => {
 const chatId = msg.key.remoteJid;
