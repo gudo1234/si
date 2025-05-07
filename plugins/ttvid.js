@@ -27,7 +27,7 @@ const handler = async (msg, { conn, text, usedPrefix }) => {
     txt += `    ✩  *Compartidos* : ${share_count}\n`;
     txt += `    ✩  *Publicado* : ${published}\n`;
     txt += `    ✩  *Descargas* : ${download_count}\n\n`;
-    txt += `> ${wm}`;
+    txt += `> ${textbot}`;
 await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "✅", key: msg.key} 
         });
