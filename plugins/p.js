@@ -41,7 +41,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, textbot }) => {
 
     const videoDetails = `
 ╭───── • ─────╮
-  𖤐 \`*YOUTUBE EXTRACTOR*\` 𖤐
+  𖤐 *YOUTUBE EXTRACTOR* 𖤐
 ╰───── • ─────╯
 
 ✦ *🎶 Título:* ${video.title}
@@ -56,11 +56,13 @@ const handler = async (msg, { conn, text, usedPrefix, command, textbot }) => {
 ╰───── • ─────╯
 `.trim();
 
+    // Enviar la imagen con detalles en un solo mensaje
     await conn.sendMessage2(chatId, {
       image: { url: video.thumbnail },
       caption: videoDetails
     }, msg);
 
+    // Obtener el enlace para la descarga del audio
     const downloadUrl = `https://api.vreden.my.id/api/ytmp3?url=${encodeURIComponent(video.url)}`;
     const downloadRes = await axios.get(downloadUrl);
     const downloadData = downloadRes.data;
@@ -71,12 +73,14 @@ const handler = async (msg, { conn, text, usedPrefix, command, textbot }) => {
       }, msg);
     }
 
+    // Enviar el audio con solo un mensaje
     await conn.sendMessage2(chatId, {
       audio: { url: downloadData.result.download.url },
       mimetype: 'audio/mpeg',
       fileName: `${video.title || 'audio'}.mp3`
     }, msg);
 
+    // Enviar una reacción para indicar que todo ha ido bien
     await conn.sendMessage(chatId, {
       react: { text: "✅", key: msg.key }
     });
