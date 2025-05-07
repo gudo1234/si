@@ -89,6 +89,7 @@ const handler = async (msg, { conn }) => {
 ┃ ⎔ ${global.prefix}tiktokimg → link
 ┃ ⎔ ${global.prefix}twitter → link
 ┃ ⎔ ${global.prefix}imagen → título
+┃ ⎔ ${global.prefix}porno → título
 ┃ ⎔ ${global.prefix}xnxxdl → link
 ┃ ⎔ ${global.prefix}xvideosdl → link
 ┃ ⎔ ${global.prefix}fb → link
