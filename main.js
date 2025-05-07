@@ -238,7 +238,7 @@ async function handleCommand(sock, msg, command, args, sender) {
         return buffer;
     };
 
-    const plugin = plugins.find(p => p.command.includes(lowerCommand));
+    /*const plugin = plugins.find(p => p.command.includes(lowerCommand));
     if (plugin) {
         return plugin(msg, {
             conn: sock,
@@ -247,8 +247,23 @@ async function handleCommand(sock, msg, command, args, sender) {
             command: lowerCommand,
             usedPrefix: global.prefix
         });
-    }
+    }*/
+const plugin = plugins.find(p => {
+    // Aseguramos que command sea un array antes de hacer la comparación
+    const cmds = Array.isArray(p.command) ? p.command : [p.command];
+    return cmds.includes(lowerCommand);
+});
 
+if (plugin) {
+    return plugin(msg, {
+        conn: sock,
+        text,
+        args,
+        command: lowerCommand,
+        usedPrefix: global.prefix
+    });
+}
+  
     switch (lowerCommand) {
 
 case "menuaudio": {
