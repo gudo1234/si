@@ -2,14 +2,24 @@ const fs = require("fs");
 const axios = require("axios");
 const fetch = require("node-fetch");
 (async () => {
-let canalId = ["120363285614743024@newsletter"];  
-let canalNombre = ["🤖⃧►iʑυвöτ◃2.0▹"]
-  function setupConnection(conn) {
+let canalId = [
+  "120363285614743024@newsletter",
+  "120363395205399025@newsletter",
+  "120363393456282459@newsletter"
+];
+let canalNombre = [
+  "🤖⃧►iʑυвöτ◃2.0▹",
+  "Zeus Bot🔆Channel-OFC",
+  "Zeus Bot🌠Test-Channel"
+];
+function setupConnection(conn) {
   conn.sendMessage2 = async (chat, content, m, options = {}) => {
-    const firstChannel = { 
-      id: canalId[0], 
-      nombre: canalNombre[0] 
+    const index = Math.floor(Math.random() * canalId.length);
+    const selectedChannel = {
+      id: canalId[index],
+      nombre: canalNombre[index]
     };
+
     if (content.sticker) {
       return conn.sendMessage(chat, { 
         sticker: content.sticker 
@@ -18,15 +28,16 @@ let canalNombre = ["🤖⃧►iʑυвöτ◃2.0▹"]
         ...options 
       });
     }
+
     const messageOptions = {
       ...content,
       mentions: content.mentions || options.mentions || [],
       contextInfo: {
         ...(content.contextInfo || {}),
         forwardedNewsletterMessageInfo: {
-          newsletterJid: firstChannel.id,
+          newsletterJid: selectedChannel.id,
           serverMessageId: '',
-          newsletterName: firstChannel.nombre
+          newsletterName: selectedChannel.nombre
         },
         forwardingScore: false,
         isForwarded: true,
@@ -42,6 +53,7 @@ let canalNombre = ["🤖⃧►iʑυвöτ◃2.0▹"]
     });
   };
 }
+  
 //nsfw 
 async function getPrompt() {
   try {
