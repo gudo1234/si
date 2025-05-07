@@ -4,6 +4,7 @@ const path = require("path");
 async function handler({ sock, msg, args }) {
     try {
         const commandName = args[0]?.toLowerCase(); // El primer argumento del comando
+        console.log(`Buscando comando: ${commandName}`); // Depuración: Ver el comando que estamos buscando
 
         // Si no hay comando, no hacemos nada
         if (!commandName) return;
@@ -22,6 +23,7 @@ async function handler({ sock, msg, args }) {
         // Buscar el comando en el archivo main.js
         const mainRegex = new RegExp(`case\\s+['"]${commandName}['"]\\s*:`, "g");
         const mainMatches = mainFileContent.match(mainRegex);
+        console.log(`Comando encontrado en main.js: ${mainMatches ? mainMatches.length : 0}`); // Depuración: Ver cuántos comandos fueron encontrados en main.js
 
         // Si el comando está en main.js, no hacemos nada
         if (mainMatches && mainMatches.length > 0) return;
@@ -30,6 +32,8 @@ async function handler({ sock, msg, args }) {
         const pluginsPath = path.join(__dirname, "plugins");
         const pluginFiles = fs.readdirSync(pluginsPath);
         let pluginFound = false;
+
+        console.log(`Buscando en plugins...`); // Depuración: Comenzamos a buscar en los plugins
 
         for (const file of pluginFiles) {
             if (!file.endsWith(".js")) continue; // Solo archivos .js
@@ -40,6 +44,8 @@ async function handler({ sock, msg, args }) {
             // Buscar la propiedad handler.command en el plugin
             const pluginRegex = /handler\.command\s*=\s*([^]+|['"][^'"]+['"])/g;
             const pluginMatches = [...pluginContent.matchAll(pluginRegex)];
+
+            console.log(`Comprobando plugin: ${file}, coincidencias encontradas: ${pluginMatches.length}`); // Depuración: Ver cuántas coincidencias encontramos en el plugin
 
             for (const match of pluginMatches) {
                 const rawCommands = match[1].trim();
@@ -55,6 +61,8 @@ async function handler({ sock, msg, args }) {
                 } catch (e) {
                     console.error(`Error al evaluar los comandos en ${file}:`, e);
                 }
+
+                console.log(`Comandos en ${file}: ${commands.join(", ")}`); // Depuración: Ver qué comandos tiene el plugin
 
                 // Comprobar si el comando está en el array de comandos
                 if (commands.includes(commandName)) {
