@@ -1,6 +1,7 @@
 const levenshtein = require("fast-levenshtein");
 
 const handler = async (msg, { command, usedPrefix, conn }) => {
+  // Obtener todos los comandos válidos de los plugins
   const allCommands = Object.entries(global.plugins)
     .filter(([_, plugin]) => plugin?.command)
     .flatMap(([_, plugin]) => {
@@ -8,8 +9,10 @@ const handler = async (msg, { command, usedPrefix, conn }) => {
       return cmds.map(c => c.toLowerCase());
     });
 
-  if (allCommands.includes(command)) return; // Comando válido, no hacer nada
+  // Si el comando es válido, no hacer nada
+  if (allCommands.includes(command)) return;
 
+  // Buscar el comando más cercano usando Levenshtein
   let closest = "";
   let shortest = Infinity;
 
@@ -31,7 +34,7 @@ const handler = async (msg, { command, usedPrefix, conn }) => {
     msgText += `\n\n*¿Quisiste decir?* ➤ *${usedPrefix + closest}* (${similarity}% de coincidencia)`;
   }
 
-  // Usamos conn.sendMessage con sms
+  // Usar sendMessage para enviar el mensaje
   await conn.sendMessage(msg.key.remoteJid, { text: msgText }, { quoted: msg });
 };
 
