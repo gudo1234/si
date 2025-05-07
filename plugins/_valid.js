@@ -1,38 +1,18 @@
-const levenshtein = require('fast-levenshtein');
+const levenshtein = require("fast-levenshtein");
 
-const handler = async (msg, { conn }) => {
-  if (!msg.message || !msg.message.conversation) return;
-
-  const text = msg.message.conversation;
-  const prefixMatch = text.match(global.prefix);
-  if (!prefixMatch) return;
-
-  const usedPrefix = prefixMatch[0];
-  const command = text.slice(usedPrefix.length).trim().split(' ')[0].toLowerCase();
-  if (!command || command === 'bot') return;
-
-  // Función para verificar si el comando existe
-  const isValidCommand = (cmd, plugins) => {
-    for (const plugin of Object.values(plugins)) {
-      if (!plugin.command) continue;
+const handler = async (msg, { command, usedPrefix, conn }) => {
+  const allCommands = Object.entries(global.plugins)
+    .filter(([_, plugin]) => plugin?.command)
+    .flatMap(([_, plugin]) => {
       const cmds = Array.isArray(plugin.command) ? plugin.command : [plugin.command];
-      if (cmds.includes(cmd)) return true;
-    }
-    return false;
-  };
+      return cmds.map(c => c.toLowerCase());
+    });
 
-  if (isValidCommand(command, global.plugins)) return;
+  if (allCommands.includes(command)) return; // Comando válido, no hacer nada
 
-  // Si no existe, buscar sugerencia
-  let allCommands = [];
-  for (const plugin of Object.values(global.plugins)) {
-    if (!plugin.command) continue;
-    const cmds = Array.isArray(plugin.command) ? plugin.command : [plugin.command];
-    allCommands.push(...cmds);
-  }
-
-  let closest = '';
+  let closest = "";
   let shortest = Infinity;
+
   for (const cmd of allCommands) {
     const dist = levenshtein.get(command, cmd);
     if (dist < shortest) {
@@ -44,14 +24,21 @@ const handler = async (msg, { conn }) => {
   const maxLen = Math.max(command.length, closest.length);
   const similarity = Math.round((1 - shortest / maxLen) * 100);
 
-  const response = 
-    `❌ El comando *${usedPrefix + command}* no existe.\n` +
-    `> Usa *${usedPrefix}menu* para ver los comandos disponibles.` +
-    (similarity >= 40 ? `\n\n*¿Quisiste decir?* ➤ \`${usedPrefix + closest}\` (${similarity}% de coincidencia)` : '');
+  let msgText = `❌ El comando *${usedPrefix + command}* no existe.\n`;
+  msgText += `> Usa *${usedPrefix}menu* para ver los comandos disponibles.`;
 
-  await conn.sendMessage(msg.key.remoteJid, {
-    text: response
-  }, { quoted: msg });
+  if (similarity >= 40 && closest) {
+    msgText += `\n\n*¿Quisiste decir?* ➤ *${usedPrefix + closest}* (${similarity}% de coincidencia)`;
+  }
+
+  // Usamos conn.sendMessage con sms
+  await conn.sendMessage(msg.key.remoteJid, { text: msgText }, { quoted: msg });
 };
+
+handler.command = new RegExp('.*'); // Captura cualquier texto como comando
+handler.customPrefix = /^[/!#.\$%&=?¿¡+<>~^°]/i;
+handler.before = true;
+handler.group = true;
+handler.private = true;
 
 module.exports = handler;
