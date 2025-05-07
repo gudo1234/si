@@ -5,12 +5,6 @@ const axios = require('axios');
 
 let limit = 100;
 
-function extractYouTubeID(url) {
-  const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-  const match = url.match(regex);
-  return match ? match[1] : null;
-}
-
 const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
@@ -24,14 +18,16 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
 
   try {
     let query = args.join(' ');
-    let videoId = extractYouTubeID(query);
+    const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const ytMatch = query.match(ytRegex);
 
     let video;
-    if (videoId) {
-      let ytres = await yts({ videoId });
-      video = ytres.video || ytres.videos?.[0];
+    if (ytMatch) {
+      const videoId = ytMatch[1];
+      const ytres = await yts({ videoId });
+      video = ytres;
     } else {
-      let ytres = await yts(query);
+      const ytres = await yts(query);
       video = ytres.videos[0];
       if (!video) {
         return await conn.sendMessage2(msg.key.remoteJid, {
@@ -89,37 +85,27 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
       caption: txt
     }, msg);
 
-    // Intentar descarga con API principal
+    // Primera API (principal)
     let downloadUrl;
-
     try {
-      const res = await axios.get(`https://api.siputzx.my.id/api/d/ytmp4?url=${url}`);
-      if (res.data?.data?.dl) {
-        downloadUrl = res.data.data.dl;
+      const api1 = await axios.get(`https://api.siputzx.my.id/api/d/ytmp4?url=${url}`);
+      if (api1.data?.data?.dl) {
+        downloadUrl = api1.data.data.dl;
+      } else {
+        throw new Error('No válido');
       }
     } catch (e) {
-      console.warn('API siputzx falló, intentando respaldo...');
-    }
-
-    // API de respaldo (vreden)
-    if (!downloadUrl) {
-      try {
-        const fallbackRes = await axios.get(`https://api.vreden.my.id/api/ytmp3?url=${url}`);
-        if (fallbackRes.data?.data?.url) {
-          downloadUrl = fallbackRes.data.data.url;
-        }
-      } catch (e) {
-        console.error('API de respaldo también falló:', e);
+      // API de respaldo
+      const api2 = await axios.get(`https://api.vreden.my.id/api/ytmp3?url=${encodeURIComponent(url)}`);
+      if (api2.data?.result?.download?.url) {
+        downloadUrl = api2.data.result.download.url;
+      } else {
+        return await conn.sendMessage2(msg.key.remoteJid, {
+          text: `❗ *Error: Ninguna API respondió correctamente.*`
+        }, msg);
       }
     }
 
-    if (!downloadUrl) {
-      return await conn.sendMessage2(msg.key.remoteJid, {
-        text: `❗ *Error al obtener el enlace de descarga desde ambas APIs.*`
-      }, msg);
-    }
-
-    // Envío del archivo
     if (isVideo || isVideoDoc) {
       await conn.sendMessage2(msg.key.remoteJid, {
         [isVideoDoc ? 'document' : 'video']: { url: downloadUrl },
