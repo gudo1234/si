@@ -4,7 +4,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
 
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo:\n*${usedPrefix + command}* La Vaca Lola\n*${usedPrefix + command}* https://vt.tiktok.com/ZShhtdsRh/`
+      text: `⚠️ Usa el comando correctamente:\n\n📌 Ejemplo:\n*${usedPrefix + command}* La Vaca Lola\n*${usedPrefix + command}* https://vt.tiktok.com/ZShhtdsRh/`
     }, msg );
   }
 
@@ -14,38 +14,33 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
 
   try {
     let data, txt, dl_url;
+    let result;
 
     if (text.match(/tiktok\.com\/[^\s]+/gi)) {
-      // Si es un enlace de TikTok
-      let result = await Starlights.tiktokdl(text);
+      result = await Starlights.tiktokdl(text);
       dl_url = result.dl_url;
-      txt = '`乂  T I K T O K  -  D O W N L O A D`\n\n';
-      txt += `    ✩  *Título* : ${result.title}\n`;
-      txt += `    ✩  *Autor* : ${result.author}\n`;
-      txt += `    ✩  *Duración* : ${result.duration} segundos\n`;
-      txt += `    ✩  *Vistas* : ${result.views}\n`;
-      txt += `    ✩  *Likes* : ${result.likes}\n`;
-      txt += `    ✩  *Comentarios* : ${result.comment}\n`;
-      txt += `    ✩  *Compartidos* : ${result.share}\n`;
-      txt += `    ✩  *Publicado* : ${result.published}\n`;
-      txt += `    ✩  *Descargas* : ${result.downloads}\n\n`;
     } else {
-      // Si es texto (búsqueda)
-      let result = await Starlights.tiktokvid(text);
+      result = await Starlights.tiktokvid(text);
       dl_url = result.dl_url;
-      txt = '`乂  T I K T O K  -  D O W N L O A D`\n\n';
-      txt += `    ✩  *Título* : ${result.title}\n`;
-      txt += `    ✩  *Autor* : ${result.author}\n`;
-      txt += `    ✩  *Duración* : ${result.duration} segundos\n`;
-      txt += `    ✩  *Vistas* : ${result.views}\n`;
-      txt += `    ✩  *Likes* : ${result.likes}\n`;
-      txt += `    ✩  *Comentarios* : ${result.comments_count}\n`;
-      txt += `    ✩  *Compartidos* : ${result.share_count}\n`;
-      txt += `    ✩  *Publicado* : ${result.published}\n`;
-      txt += `    ✩  *Descargas* : ${result.download_count}\n\n`;
     }
 
-    txt += `> *${textbot}*`;
+    txt = `╔═━━━━━◎━━━━━═╗\n`;
+    txt += `  𖤐 \`TIKTOK EXTRACTOR\` 𖤐\n`;
+    txt += `╚═━━━━━◎━━━━══╝\n\n`;
+
+    txt += `✦ *Título* : ${result.title}\n`;
+    txt += `✦ *Autor* : ${result.author}\n`;
+    txt += `✦ *Duración* : ${result.duration} segundos\n`;
+    txt += `✦ *Vistas* : ${result.views}\n`;
+    txt += `✦ *Likes* : ${result.likes}\n`;
+    txt += `✦ *Comentarios* : ${result.comment || result.comments_count}\n`;
+    txt += `✦ *Compartidos* : ${result.share || result.share_count}\n`;
+    txt += `✦ *Publicado* : ${result.published}\n`;
+    txt += `✦ *Descargas* : ${result.downloads || result.download_count}\n\n`;
+
+    txt += `╭───── • ─────╮\n`;
+    txt += `> *${textbot}*\n`;
+    txt += `╰───── • ─────╯\n`;
 
     await conn.sendMessage(msg.key.remoteJid, {
       react: { text: "✅", key: msg.key }
@@ -61,7 +56,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   } catch (err) {
     console.error(err);
     await conn.sendMessage(msg.key.remoteJid, {
-      text: `${e} Ocurrió un error al procesar el video.`
+      text: `❌ Ocurrió un error al procesar el video.`
     }, { quoted: msg });
   }
 };
