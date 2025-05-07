@@ -1,7 +1,7 @@
 const yts = require('yt-search');
 const axios = require('axios');
 
-const handler = async (msg, { conn, text, usedPrefix, command }) => {
+const handler = async (msg, { conn, text, usedPrefix, command, textbot }) => {
   const chatId = msg.key.remoteJid;
   const errorEmoji = '❌';
 
@@ -41,17 +41,26 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
     }
 
     const videoDetails = `
-🎵 *Título:* ${video.title}
-📺 *Canal:* ${video.author?.name || 'Desconocido'}
-⏱️ *Duración:* ${video.timestamp || 'N/A'}
-👀 *Vistas:* ${video.views || 'N/A'}
-📅 *Publicado:* ${video.ago || 'N/A'}
+╭───── • ─────╮
+  𖤐 *YOUTUBE EXTRACTOR* 𖤐
+╰───── • ─────╯
+
+✦ *🎶 Título:* ${video.title}
+✦ *📹 Canal:* ${video.author?.name || 'Desconocido'}
+✦ *⏳ Duración:* ${video.timestamp || 'N/A'}
+✦ *👀 Vistas:* ${video.views?.toLocaleString() || 'N/A'}
+✦ *📅 Publicado:* ${video.ago || 'N/A'}
+
 🌐 *Enlace:* ${video.url}
-    `;
+
+╭───── • ─────╮
+> *${textbot}*
+╰───── • ─────╯
+`.trim();
 
     await conn.sendMessage2(chatId, {
       image: { url: video.thumbnail },
-      caption: videoDetails.trim()
+      caption: videoDetails
     }, msg);
 
     const downloadUrl = `https://api.vreden.my.id/api/ytmp3?url=${encodeURIComponent(video.url)}`;
