@@ -1,9 +1,8 @@
-const stringSimilarity = require("string-similarity");
+const levenshtein = require("fast-levenshtein");
 
-// Lista de comandos válidos
 const validCommands = [
     "menu", "git", "on", "off", "help", "start", "ping"
-    // Agrega aquí todos tus comandos reales
+    // Agrega aquí tus comandos válidos
 ];
 
 module.exports = {
@@ -12,13 +11,27 @@ module.exports = {
     tags: ["sistema"],
     disabled: false,
     run: async ({ sock, msg, command }) => {
-        const matches = stringSimilarity.findBestMatch(command, validCommands);
-        const bestMatch = matches.bestMatch;
+        // Si el comando es válido, no hacer nada
+        if (validCommands.includes(command)) return;
+
+        // Buscar el comando más parecido
+        let closest = null;
+        let minDistance = Infinity;
+
+        for (const cmd of validCommands) {
+            const distance = levenshtein.get(command, cmd);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closest = cmd;
+            }
+        }
+
+        const similarityPercent = Math.max(0, 100 - Math.floor((minDistance / command.length) * 100));
 
         let response = `🪐 El comando *.${command}* no existe.\n> 🧮 Usa *.menu* para ver los comandos disponibles.`;
 
-        if (bestMatch.rating >= 0.4) {
-            response += `\n\n*¿Quisiste decir?* ➤ *.${bestMatch.target}* (${Math.round(bestMatch.rating * 100)}% de coincidencia)`;
+        if (similarityPercent >= 40 && closest) {
+            response += `\n\n*¿Quisiste decir?* ➤ *.${closest}* (${similarityPercent}% de coincidencia)`;
         }
 
         await sock.sendMessage(msg.key.remoteJid, {
