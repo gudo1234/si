@@ -1,190 +1,129 @@
+const fetch = require("node-fetch");
+const { youtubedl, youtubedlv2 } = require("@bochilteam/scraper");
 const yts = require('yt-search');
 const axios = require('axios');
-const { youtubedl, youtubedlv2 } = require('@bochilteam/scraper');
+
+let limit = 100;
+
+function extractYouTubeID(url) {
+  const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
+}
 
 const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
-  const chatId = msg.key.remoteJid;
-
   if (!text) {
-    return await conn.sendMessage2(chatId, {
-      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command} música* o *${usedPrefix + command} https://youtube.com/...*`
+    return await conn.sendMessage2(msg.key.remoteJid, {
+      text: `❗ Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* diles`
     }, msg);
   }
 
-  await conn.sendMessage(chatId, {
+  await conn.sendMessage(msg.key.remoteJid, {
     react: { text: "🕒", key: msg.key }
   });
 
   try {
     let query = args.join(' ');
+    let videoId = extractYouTubeID(query);
+
     let video;
-
-    // Detectar si el texto es una URL de YouTube
-    const ytLinkRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([^\s&]+)/i;
-    const ytMatch = query.match(ytLinkRegex);
-
-    if (ytMatch) {
-      // Si es una URL, extraer el ID del video
-      const videoId = ytMatch[1];
-      const result = await yts({ videoId });
-      if (!result) {
-        return await conn.sendMessage2(chatId, {
-          text: `⚠️ No se pudo obtener información del video.`
-        }, msg);
-      }
-      video = result;
+    if (videoId) {
+      let ytres = await yts({ videoId });
+      video = ytres.video || ytres.videos?.[0];
     } else {
-      // Si no es una URL, buscar por texto
-      const searchResults = await yts(query);
-      video = searchResults.videos[0];
+      let ytres = await yts(query);
+      video = ytres.videos[0];
       if (!video) {
-        return await conn.sendMessage2(chatId, {
-          text: `⚠️ No se encontraron resultados para "${query}".`
+        return await conn.sendMessage2(msg.key.remoteJid, {
+          text: `❗ *Video no encontrado.*`
         }, msg);
       }
     }
 
-    // Detectar el tipo de archivo según el comando
-    let sendingMessage;
-    let isAudio = false;
-    let isVideo = false;
-    let isAudioDoc = false;
-    let isVideoDoc = false;
+    let { title, thumbnail, timestamp, views, ago, url } = video;
 
-    if (['play3', 'ytadoc', 'mp3doc', 'ytmp3doc'].includes(command)) {
-      sendingMessage = '📂 Enviando audio como documento...';
-      isAudioDoc = true;
-    } else if (['play2', 'ytv', 'mp4', 'ytmp4'].includes(command)) {
-      sendingMessage = '🎞️ Enviando video...';
-      isVideo = true;
-    } else if (['play4', 'ytvdoc', 'mp4doc', 'ytmp4doc'].includes(command)) {
-      sendingMessage = '📂 Enviando video como documento...';
-      isVideoDoc = true;
-    } else {
-      sendingMessage = '🔊 Enviando audio...';
-      isAudio = true;
+    let yt = await youtubedl(url).catch(async () => await youtubedlv2(url));
+    let videoInfo = yt.video['360p'];
+
+    if (!videoInfo) {
+      return await conn.sendMessage2(msg.key.remoteJid, {
+        text: `❗ *No se encontró una calidad compatible para el video.*`
+      }, msg);
     }
 
-    const videoDetails = `
-╭───── • ─────╮
-  𖤐 *YOUTUBE EXTRACTOR* 𖤐
-╰───── • ─────╯
+    let { fileSizeH: sizeHumanReadable, fileSize } = videoInfo;
+    let sizeMB = fileSize / (1024 * 1024);
 
-✦ *🎶 Título:* ${video.title}
-✦ *📹 Canal:* ${video.author?.name || 'Desconocido'}
-✦ *⏳ Duración:* ${video.timestamp || 'N/A'}
-✦ *👀 Vistas:* ${video.views?.toLocaleString() || 'N/A'}
-✦ *📅 Publicado:* ${video.ago || 'N/A'}
-🌐 *Enlace:* ${video.url}
+    if (sizeMB >= 700) {
+      return await conn.sendMessage2(msg.key.remoteJid, {
+        text: `❗ *El archivo es demasiado pesado (más de 700 MB). Se canceló la descarga.*`
+      }, msg);
+    }
 
-╭───── • ─────╮
-> *${sendingMessage}*
-╰───── • ─────╯
-`.trim();
+    const docAudioCommands = ['play3', 'ytadoc', 'mp3doc', 'ytmp3doc'];
+    const videoCommands = ['play2', 'ytv', 'mp4', 'ytmp4'];
+    const docVideoCommands = ['play4', 'ytvdoc', 'mp4doc', 'ytmp4doc'];
 
-    await conn.sendMessage2(chatId, {
-      image: { url: video.thumbnail },
-      caption: videoDetails
+    const isAudioDoc = docAudioCommands.includes(command);
+    const isVideo = videoCommands.includes(command);
+    const isVideoDoc = docVideoCommands.includes(command);
+
+    let txt = `┏━━━━━━━⊱\n`;
+    txt += `┃ *🎧 TÍTULO:* ${title}\n`;
+    txt += `┃ *📺 CANAL:* ${video.author.name}\n`;
+    txt += `┃ *⏱️ DURACIÓN:* ${timestamp}\n`;
+    txt += `┃ *👀 VISTAS:* ${views}\n`;
+    txt += `┃ *📆 PUBLICACIÓN:* ${ago}\n`;
+    txt += `┃ *💾 TAMAÑO:* ${sizeHumanReadable}\n`;
+    txt += `┃ *🔗 LINK:* ${url}\n`;
+    txt += `┗━━━━━━━━━━━━\n\n`;
+    txt += `> ${
+      isAudioDoc ? '📂 Enviando audio como documento...' :
+      isVideo ? '🎞️ Enviando video...' :
+      isVideoDoc ? '📂 Enviando video como documento...' :
+      '🔊 Enviando audio...'
+    }`;
+
+    await conn.sendMessage2(msg.key.remoteJid, {
+      image: { url: thumbnail },
+      caption: txt
     }, msg);
 
-    // Obtener el enlace de descarga usando la segunda API
-    const downloadUrlFallback = `https://api.siputzx.my.id/api/d/ytmp4?url=${encodeURIComponent(video.url)}`;
-    try {
-      const downloadResFallback = await axios.get(downloadUrlFallback);
-      const downloadDataFallback = downloadResFallback.data;
+    const apiURL = `https://api.siputzx.my.id/api/d/ytmp4?url=${url}`;
+    const res = await axios.get(apiURL);
+    const json = res.data;
+    const { data } = json;
 
-      if (!downloadDataFallback?.data?.dl) {
-        return await conn.sendMessage2(chatId, {
-          text: `⚠️ No se pudo obtener el archivo desde la segunda API.`
-        }, msg);
-      }
-
-      // Enviar el archivo según el tipo de archivo detectado
-      if (isAudioDoc) {
-        // Enviar como documento de audio
-        await conn.sendMessage2(chatId, {
-          document: { url: downloadDataFallback.data.dl },
-          mimetype: 'audio/mpeg',
-          fileName: `${video.title || 'audio'}.mp3`
-        }, msg);
-      } else if (isVideo || isVideoDoc) {
-        // Enviar como video (esto es lo que permite la reproducción directa en WhatsApp)
-        await conn.sendMessage2(chatId, {
-          video: { url: downloadDataFallback.data.dl },
-          mimetype: 'video/mp4',
-          fileName: `${video.title}.mp4`
-        }, msg);
-      } else {
-        // Enviar como audio
-        await conn.sendMessage2(chatId, {
-          audio: { url: downloadDataFallback.data.dl },
-          mimetype: 'audio/mpeg',
-          fileName: `${video.title || 'audio'}.mp3`
-        }, msg);
-      }
-
-      await conn.sendMessage(chatId, {
-        react: { text: "✅", key: msg.key }
-      });
-
-    } catch (fallbackError) {
-      console.error('Error con la segunda API de audio:', fallbackError);
-      await conn.sendMessage2(chatId, {
-        text: `❗ Ocurrió un error al intentar obtener el archivo de la segunda API.`
+    if (!data || !data.dl) {
+      return await conn.sendMessage2(msg.key.remoteJid, {
+        text: `❗ *Error al obtener el enlace de descarga desde la API.*`
       }, msg);
-      
-      // Si la segunda API falla, usar la primera API
-      try {
-        const downloadUrl = `https://api.vreden.my.id/api/ytmp3?url=${encodeURIComponent(video.url)}`;
-        const downloadRes = await axios.get(downloadUrl);
-        const downloadData = downloadRes.data;
-
-        if (!downloadData?.result?.download?.url) {
-          return await conn.sendMessage2(chatId, {
-            text: `${e} No se pudo obtener el archivo desde la primera API.`
-          }, msg);
-        }
-
-        // Enviar el archivo según el tipo de archivo detectado
-        if (isAudioDoc) {
-          // Enviar como documento de audio
-          await conn.sendMessage2(chatId, {
-            document: { url: downloadData.result.download.url },
-            mimetype: 'audio/mpeg',
-            fileName: `${video.title || 'audio'}.mp3`
-          }, msg);
-        } else if (isVideo || isVideoDoc) {
-          // Enviar como video (esto es lo que permite la reproducción directa en WhatsApp)
-          await conn.sendMessage2(chatId, {
-            video: { url: downloadData.result.download.url },
-            mimetype: 'video/mp4',
-            fileName: `${video.title}.mp4`
-          }, msg);
-        } else {
-          // Enviar como audio
-          await conn.sendMessage2(chatId, {
-            audio: { url: downloadData.result.download.url },
-            mimetype: 'audio/mpeg',
-            fileName: `${video.title || 'audio'}.mp3`
-          }, msg);
-        }
-
-        await conn.sendMessage(chatId, {
-          react: { text: "✅", key: msg.key }
-        });
-
-      } catch (error) {
-        console.error('Error con la primera API de audio:', error);
-        await conn.sendMessage2(chatId, {
-          text: `❗ Ocurrió un error al intentar obtener el archivo de la primera API.`
-        }, msg);
-      }
     }
 
+    const { dl: downloadUrl } = data;
+
+    if (isVideo || isVideoDoc) {
+      await conn.sendMessage2(msg.key.remoteJid, {
+        [isVideoDoc ? 'document' : 'video']: { url: downloadUrl },
+        mimetype: 'video/mp4',
+        fileName: `${title}.mp4`
+      }, msg);
+    } else {
+      await conn.sendMessage2(msg.key.remoteJid, {
+        [isAudioDoc ? 'document' : 'audio']: { url: downloadUrl },
+        mimetype: 'audio/mpeg',
+        fileName: `${title}.mp3`
+      }, msg);
+    }
+
+    await conn.sendMessage(msg.key.remoteJid, {
+      react: { text: "✅", key: msg.key }
+    });
+
   } catch (err) {
-    console.error('Error en el comando:', err);
-    await conn.sendMessage2(chatId, {
-      text: `${errorEmoji} Ocurrió un error al procesar el archivo.`
+    console.error('Error al descargar el video:', err);
+    await conn.sendMessage2(msg.key.remoteJid, {
+      text: `❗ Ocurrió un error al intentar descargar el video.`
     }, msg);
   }
 };
