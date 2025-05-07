@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const axios = require('axios');
 const cheerio = require('cheerio');
 const Starlights = require('@StarlightsTeam/Scraper');
 
@@ -55,7 +55,7 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
     global.videoListXXX.push(vids_);
   } catch (err) {
     await conn.sendMessage2(msg.key.remoteJid, {
-      text: `Ocurrió un error: ${err.message}`
+      text: `Ocurrió un error: ${err.message || err}`
     }, msg);
   }
 };
@@ -64,36 +64,39 @@ handler.command = ['xnxx', 'porno', 'sexo'];
 module.exports = handler;
 
 const xnxxsearch = async (query) => {
-  return new Promise((resolve, reject) => {
+  try {
     const baseurl = 'https://www.xnxx.com';
+    const url = `${baseurl}/search/${encodeURIComponent(query)}/${Math.floor(Math.random() * 3) + 1}`;
+    const { data } = await axios.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0',
+      }
+    });
 
-    fetch(`${baseurl}/search/${query}/${Math.floor(Math.random() * 3) + 1}`, { method: 'get' })
-      .then((res) => res.text())
-      .then((res) => {
-        const $ = cheerio.load(res);
-        const results = [];
+    const $ = cheerio.load(data);
+    const results = [];
 
-        $('div.mozaique').each((_, b) => {
-          const thumbs = $(b).find('div.thumb');
-          const infos = $(b).find('div.thumb-under');
+    $('div.mozaique').each((_, b) => {
+      const thumbs = $(b).find('div.thumb');
+      const infos = $(b).find('div.thumb-under');
 
-          thumbs.each((i, el) => {
-            const link = $(el).find('a').attr('href');
-            const title = $(infos[i]).find('a').attr('title');
-            const info = $(infos[i]).find('p.metadata').text();
+      thumbs.each((i, el) => {
+        const link = $(el).find('a').attr('href');
+        const title = $(infos[i]).find('a').attr('title');
+        const info = $(infos[i]).find('p.metadata').text();
 
-            if (link && title) {
-              results.push({
-                title,
-                info,
-                link: baseurl + link.replace('/THUMBNUM/', '/'),
-              });
-            }
+        if (link && title) {
+          results.push({
+            title,
+            info,
+            link: baseurl + link.replace('/THUMBNUM/', '/'),
           });
-        });
+        }
+      });
+    });
 
-        resolve({ code: 200, status: true, result: results });
-      })
-      .catch((err) => reject({ code: 503, status: false, result: err }));
-  });
+    return { code: 200, status: true, result: results };
+  } catch (err) {
+    return { code: 503, status: false, result: [], message: err.message || 'Error al hacer scraping' };
+  }
 };
