@@ -2,25 +2,24 @@ const fs = require("fs");
 const path = require("path");
 const levenshtein = require("fast-levenshtein");
 
-function getCommandsFromPlugins(dir) {
+function getCommandsFromPluginsAsText(dir) {
     const commands = [];
     const files = fs.readdirSync(dir);
     for (const file of files) {
         const filePath = path.join(dir, file);
         if (!file.endsWith(".js")) continue;
 
-        try {
-            const plugin = require(filePath);
-            const cmdList = plugin.command || plugin.commands || [];
-            if (Array.isArray(cmdList)) {
-                for (const cmd of cmdList) {
-                    if (typeof cmd === "string") {
-                        commands.push(cmd.toLowerCase());
-                    }
-                }
+        const content = fs.readFileSync(filePath, "utf-8");
+        const regex = /handler\.command\s*=\s*([^]+)/g;
+        const matches = [...content.matchAll(regex)];
+
+        for (const match of matches) {
+            const listRaw = match[1];
+            const items = [...listRaw.matchAll(/["'`](.*?)["'`]/g)];
+            for (const item of items) {
+                const cmd = item[1].trim();
+                if (cmd) commands.push(cmd.toLowerCase());
             }
-        } catch (e) {
-            console.error(`Error al cargar plugin: ${file}`, e.message);
         }
     }
     return commands;
@@ -32,7 +31,9 @@ function getCommandsFromMainJS(filePath) {
     const content = fs.readFileSync(filePath, "utf-8");
     const regex = /case\s+["'`](.*?)["'`]\s*:/g;
     const matches = [...content.matchAll(regex)];
-    return matches.map(match => match[1].toLowerCase());
+    return matches
+        .map(match => match[1].trim().toLowerCase())
+        .filter(cmd => cmd); // Elimina los vacíos como case ""
 }
 
 module.exports = {
@@ -44,7 +45,7 @@ module.exports = {
         const pluginsPath = path.join(__dirname);
         const mainJSPath = path.join(__dirname, "..", "main.js");
 
-        const pluginCommands = getCommandsFromPlugins(pluginsPath);
+        const pluginCommands = getCommandsFromPluginsAsText(pluginsPath);
         const mainJSCommands = getCommandsFromMainJS(mainJSPath);
         const validCommands = [...new Set([...pluginCommands, ...mainJSCommands])];
 
