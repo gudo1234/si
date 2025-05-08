@@ -71,7 +71,8 @@ const videoUrls = [
     'https://files.catbox.moe/rdyj5q.mp4',
     'https://files.catbox.moe/693ws4.mp4'
   ];
-  
+  const chatId = msg.key.remoteJid;
+  const user = msg.pushName || 'Usuario';
   const red = await global.getRandomRed();
   const im = await global.getRandomIcon();
   const jpg = videoUrls[Math.floor(Math.random() * videoUrls.length)];
