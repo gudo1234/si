@@ -5,14 +5,14 @@ const Starlights = require('@StarlightsTeam/Scraper');
 const handler = async (msg, { conn, text, usedPrefix, command }) => {
   if (!text) {
     await conn.sendMessage2(msg.key.remoteJid, {
-      text: `Por favor, ingrese la búsqueda de un video *porno* de xnxx.\n\n> Ejemplo de uso: ${usedPrefix + command} Con mi prima`
+      text: `${e} Por favor, ingrese la búsqueda de un video *porno* de xnxx.\n\n> Ejemplo de uso: ${usedPrefix + command} Con mi prima`
     }, msg);
     return;
   }
 
   if (/^https?:\/\/[^ ]+$/.test(text)) {
     await conn.sendMessage2(msg.key.remoteJid, {
-      text: `Solo se permite ingresar texto para realizar una búsqueda.\n\nSi deseas descargar directamente, utiliza el comando *${usedPrefix}xnxxdl* https://www.xnxx.es/video-1331hhfa/rubia_de_tetas_grandes_es_golpeada_y_un_bocado_de_semen`
+      text: `${e} Solo se permite ingresar texto para realizar una búsqueda.\n\nSi deseas descargar directamente, utiliza el comando *${usedPrefix}xnxxdl* https://www.xnxx.es/video-1331hhfa/rubia_de_tetas_grandes_es_golpeada_y_un_bocado_de_semen`
     }, msg);
     return;
   }
