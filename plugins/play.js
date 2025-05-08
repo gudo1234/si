@@ -290,7 +290,7 @@ const formatos = [
       title: user,
       body: textbot,
       thumbnailUrl: red,
-      thumbnail: thumbnail,
+      thumbnail: im,
       sourceUrl: red,
       mediaType: 1,
       renderLargerThumbnail: true
