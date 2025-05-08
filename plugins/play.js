@@ -98,6 +98,11 @@ const videoUrls = [
 > ${textbot}
 ╰───── • ─────╯
 `.trim();
+const getBuffer = async (url) => {
+  const res = await axios.get(url, { responseType: 'arraybuffer' });
+  return Buffer.from(res.data, 'binary');
+};
+const imBuffer = await getBuffer(thumbnail); // Usa tu URL para obtener el buffer
 const formatos = [
     async () => conn.sendMessage(
   chatId,
@@ -107,8 +112,8 @@ const formatos = [
       externalAdReply: {
         title: title,
         body: en,
-        thumbnailUrl: thumbnail,
-        thumbnail: thumbnail,
+        //thumbnailUrl: thumbnail,
+        thumbnail: imBuffer,
         sourceUrl: red,
         mediaType: 1,
         showAdAttribution: true,
@@ -128,8 +133,8 @@ const formatos = [
         externalAdReply: {
           title: title,
           body: en,
-          thumbnailUrl: thumbnail,
-          //thumbnail: im,
+          //thumbnailUrl: thumbnail,
+          thumbnail: imBuffer,
           sourceUrl: red,
           mediaType: 1,
           showAdAttribution: true
@@ -148,8 +153,8 @@ const formatos = [
         externalAdReply: {
           title: title,
           body: en,
-          thumbnailUrl: thumbnail,
-          thumbnail: im,
+          //thumbnailUrl: thumbnail,
+          thumbnail: imBuffer,
           sourceUrl: red,
           mediaType: 1
         }
