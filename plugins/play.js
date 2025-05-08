@@ -95,8 +95,21 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
       image: { url: thumbnail },
       caption
     }, msg);*/
-    await conn.sendMessage(chatId, { text: caption, contextInfo: { externalAdReply: { title: title, body: textbot, thumbnailUrl: thumbnail, mediaType: 1, showAdAttribution: true, renderLargerThumbnail: true }}} , { quoted: msg })
-
+    //await conn.sendMessage(chatId, { text: caption, contextInfo: { externalAdReply: { title: title, body: textbot, thumbnailUrl: thumbnail, mediaType: 1, showAdAttribution: true, renderLargerThumbnail: true }}} , { quoted: msg })
+conn.sendMessage(chatId, {
+      text: caption,
+      contextInfo: {
+        externalAdReply: {
+          title: user,
+          body: textbot,
+          thumbnailUrl: thumbnail,
+          thumbnail: im,
+          sourceUrl: red,
+          mediaType: 1,
+          renderLargerThumbnail: true
+        }
+      }
+    }, { quoted: msg }),
     // Obtener enlace de descarga desde múltiples APIs
     let downloadUrl;
 
