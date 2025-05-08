@@ -112,7 +112,7 @@ const formatos = [
       externalAdReply: {
         title: title,
         body: en,
-        //thumbnailUrl: thumbnail,
+        thumbnailUrl: red,
         thumbnail: imBuffer,
         sourceUrl: red,
         mediaType: 1,
@@ -133,7 +133,7 @@ const formatos = [
         externalAdReply: {
           title: title,
           body: en,
-          //thumbnailUrl: thumbnail,
+          thumbnailUrl: red,
           thumbnail: imBuffer,
           sourceUrl: red,
           mediaType: 1,
@@ -153,7 +153,7 @@ const formatos = [
         externalAdReply: {
           title: title,
           body: en,
-          //thumbnailUrl: thumbnail,
+          thumbnailUrl: red,
           thumbnail: imBuffer,
           sourceUrl: red,
           mediaType: 1
