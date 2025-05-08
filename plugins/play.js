@@ -277,7 +277,7 @@ const formatos = [
 
     // Formato tipo sticker
     async () => conn.sendMessage(chatId, {
-  sticker: { url: thumbnail },
+  sticker: { url: im },
   contextInfo: {
     forwardingScore: 200,
     isForwarded: false,
@@ -288,7 +288,7 @@ const formatos = [
       mediaType: 1,
       sourceUrl: red,
       thumbnailUrl: red,
-      thumbnail: im
+      thumbnail: thumbnail
     }
   }
 }, { quoted: msg }),
