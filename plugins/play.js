@@ -224,6 +224,11 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
     const isVideo = videoCommands.includes(command);
     const isVideoDoc = docVideoCommands.includes(command);
 //🟢🟢
+const videoUrls = [
+    'https://files.catbox.moe/rdyj5q.mp4',
+    'https://files.catbox.moe/693ws4.mp4'
+  ];
+const jpg = videoUrls[Math.floor(Math.random() * videoUrls.length)];
 const chatId = msg.key.remoteJid;
 const user = msg.pushName || 'Usuario';
 const im = await global.getRandomIcon();
@@ -317,10 +322,24 @@ const formatos = [
 }, { quoted: msg }),
 
     // Formato tipo anuncio tipo "imagen"
-    async () => await conn.sendMessage2(chatId, {
-      image: { url: thumbnail },
-      caption
-    }, msg)
+    async () => await conn.sendMessage(chatId, {
+      video: { url: jpg },
+      gifPlayback: true,
+      caption: caption,
+      contextInfo: {
+        forwardingScore: 0,
+        isForwarded: true,
+        externalAdReply: {
+          title: user,
+          body: textbot,
+          thumbnailUrl: red,
+          thumbnail: im,
+          sourceUrl: red,
+          mediaType: 1,
+          showAdAttribution: true
+        }
+      }
+    }, { quoted: msg })
   ];
   const randomFormato = formatos[Math.floor(Math.random() * formatos.length)];
   await randomFormato();
