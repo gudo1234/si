@@ -91,10 +91,11 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
 `.trim();
 
     // Enviar detalles
-    await conn.sendMessage2(chatId, {
+    /*await conn.sendMessage2(chatId, {
       image: { url: thumbnail },
       caption
-    }, msg);
+    }, msg);*/
+    await conn.sendMessage(chatId, { text: caption, contextInfo: { externalAdReply: { title: title, body: textbot, thumbnailUrl: thumbnail, mediaType: 1, showAdAttribution: true, renderLargerThumbnail: true }}} , { quoted: msg })
 
     // Obtener enlace de descarga desde múltiples APIs
     let downloadUrl;
