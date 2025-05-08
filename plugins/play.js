@@ -284,7 +284,7 @@ const formatos = [
     externalAdReply: {
       showAdAttribution: false,
       title: enviando,
-      body: textbot,
+      body: title,
       mediaType: 1,
       sourceUrl: red,
       thumbnailUrl: red,
