@@ -267,7 +267,7 @@ const formatos = [
           title: enviando,
           body: textbot,
           thumbnailUrl: red,
-          thumbnail: thumbnail,
+          thumbnail: im,
           sourceUrl: red,
           mediaType: 1,
           renderLargerThumbnail: true
@@ -277,7 +277,7 @@ const formatos = [
 
     // Formato tipo sticker
     async () => conn.sendMessage(chatId, {
-  sticker: { url: im },
+  sticker: { url: thumbnail },
   contextInfo: {
     forwardingScore: 200,
     isForwarded: false,
@@ -288,7 +288,7 @@ const formatos = [
       mediaType: 1,
       sourceUrl: red,
       thumbnailUrl: red,
-      thumbnail: thumbnail
+      thumbnail: im
     }
   }
 }, { quoted: msg }),
@@ -306,7 +306,7 @@ const formatos = [
           title: enviando,
           body: textbot,
           thumbnailUrl: red,
-          thumbnail: thumbnail,
+          thumbnail: im,
           sourceUrl: red,
           mediaType: 1
         }
