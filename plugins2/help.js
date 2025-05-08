@@ -75,6 +75,8 @@ const chatId = msg.key.remoteJid;
 ⟢ ${usedPrefix}tiktok / ${usedPrefix}tt
 ⟢ ${usedPrefix}tiktokvid
 ⟢ ${usedPrefix}facebook / ${usedPrefix}fb
+⟢ ${usedPrefix}xnxxdl
+⟢ ${usedPrefix}xvideosdl
 ⟢ ${usedPrefix}porno
 
 〔 Stickers & Multimedia 〕
