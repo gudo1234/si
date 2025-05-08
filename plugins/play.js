@@ -76,6 +76,12 @@ const videoUrls = [
   const red = await global.getRandomRed();
   const im = await global.getRandomIcon();
   const jpg = videoUrls[Math.floor(Math.random() * videoUrls.length)];
+    const en = `${
+  isAudioDoc ? '📂 Enviando audio como documento...' :
+  isVideo ? '🎞️ Enviando video...' :
+  isVideoDoc ? '📂 Enviando video como documento...' :
+  '🔊 Enviando audio...'
+    }`
     const caption = `
 ╭───── • ─────╮
   𖤐 \`YOUTUBE EXTRACTOR\` 𖤐
@@ -89,12 +95,7 @@ const videoUrls = [
 ✦ *🔗 Link:* ${url}
 
 ╭───── • ─────╮
-> ${
-  isAudioDoc ? '📂 Enviando audio como documento...' :
-  isVideo ? '🎞️ Enviando video...' :
-  isVideoDoc ? '📂 Enviando video como documento...' :
-  '🔊 Enviando audio...'
-}
+> ${textbot}
 ╰───── • ─────╯
 `.trim();
 
@@ -103,22 +104,25 @@ const videoUrls = [
       image: { url: thumbnail },
       caption
     }, msg);*/
-    //await conn.sendMessage(chatId, { text: caption, contextInfo: { externalAdReply: { title: title, body: textbot, thumbnailUrl: thumbnail, sourceUrl: red, mediaType: 1, showAdAttribution: true, renderLargerThumbnail: true }}} , { quoted: msg })
 const formatos = [
-    async () => conn.sendMessage(chatId, {
-      text: caption,
-      contextInfo: {
-        externalAdReply: {
-          title: title,
-          body: textbot,
-          thumbnailUrl: thumbnail,
-          //thumbnail: im,
-          sourceUrl: red,
-          mediaType: 1,
-          renderLargerThumbnail: true
-        }
+    async () => conn.sendMessage(
+  chatId,
+  {
+    text: caption,
+    contextInfo: {
+      externalAdReply: {
+        title: title,
+        body: en,
+        thumbnailUrl: thumbnail,
+        sourceUrl: red,
+        mediaType: 1,
+        showAdAttribution: true,
+        renderLargerThumbnail: true
       }
-    }, { quoted: msg }),
+    }
+  },
+  { quoted: msg }
+);,
 
     async () => conn.sendMessage(chatId, {
       video: { url: jpg },
@@ -129,7 +133,7 @@ const formatos = [
         isForwarded: true,
         externalAdReply: {
           title: title,
-          body: textbot,
+          body: en,
           thumbnailUrl: thumbnail,
           //thumbnail: im,
           sourceUrl: red,
@@ -149,7 +153,7 @@ const formatos = [
         },
         externalAdReply: {
           title: title,
-          body: textbot,
+          body: en,
           thumbnailUrl: thumbnail,
           //thumbnail: im,
           sourceUrl: red,
