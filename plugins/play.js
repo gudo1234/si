@@ -67,8 +67,14 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
     const isVideo = videoCommands.includes(command);
     const isVideoDoc = docVideoCommands.includes(command);
 //🟢
-const red = await global.getRandomRed();
+const videoUrls = [
+    'https://files.catbox.moe/rdyj5q.mp4',
+    'https://files.catbox.moe/693ws4.mp4'
+  ];
+  
+  const red = await global.getRandomRed();
   const im = await global.getRandomIcon();
+  const jpg = videoUrls[Math.floor(Math.random() * videoUrls.length)];
     const caption = `
 ╭───── • ─────╮
   𖤐 \`YOUTUBE EXTRACTOR\` 𖤐
@@ -99,16 +105,20 @@ const red = await global.getRandomRed();
     }, msg);*/
     //await conn.sendMessage(chatId, { text: caption, contextInfo: { externalAdReply: { title: title, body: textbot, thumbnailUrl: thumbnail, sourceUrl: red, mediaType: 1, showAdAttribution: true, renderLargerThumbnail: true }}} , { quoted: msg })
 await conn.sendMessage(chatId, {
-      text: caption,
+      video: { url: jpg },
+      gifPlayback: true,
+      caption: caption,
       contextInfo: {
+        forwardingScore: 0,
+        isForwarded: true,
         externalAdReply: {
           title: user,
           body: textbot,
-          thumbnailUrl: thumbnail,
-          //thumbnail: im,
+          thumbnailUrl: red,
+          thumbnail: im,
           sourceUrl: red,
           mediaType: 1,
-          renderLargerThumbnail: true
+          showAdAttribution: true
         }
       }
     }, { quoted: msg })
