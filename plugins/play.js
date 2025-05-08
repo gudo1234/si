@@ -158,7 +158,6 @@ const { youtubedl, youtubedlv2 } = require("@bochilteam/scraper");
 const yts = require('yt-search');
 const axios = require('axios');
 const fs = require("fs");
-const fetch = require("node-fetch");
 const path = require("path");
 
 const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
