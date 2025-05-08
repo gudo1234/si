@@ -66,13 +66,27 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
     const isAudioDoc = docAudioCommands.includes(command);
     const isVideo = videoCommands.includes(command);
     const isVideoDoc = docVideoCommands.includes(command);
-
+//🟢
+const videoUrls = [
+    'https://files.catbox.moe/rdyj5q.mp4',
+    'https://files.catbox.moe/693ws4.mp4'
+  ];
+  const chatId = msg.key.remoteJid;
+  const user = msg.pushName || 'Usuario';
+  const red = await global.getRandomRed();
+  const im = await global.getRandomIcon();
+  const jpg = videoUrls[Math.floor(Math.random() * videoUrls.length)];
+    const en = `${
+  isAudioDoc ? '📂 Enviando audio como documento...' :
+  isVideo ? '🎞️ Enviando video...' :
+  isVideoDoc ? '📂 Enviando video como documento...' :
+  '🔊 Enviando audio...'
+    }`
     const caption = `
 ╭───── • ─────╮
   𖤐 \`YOUTUBE EXTRACTOR\` 𖤐
 ╰───── • ─────╯
 
-✦ *🎶 Título:* ${title}
 ✦ *📺 Canal:* ${author?.name || 'Desconocido'}
 ✦ *⏱️ Duración:* ${timestamp || 'N/A'}
 ✦ *👀 Vistas:* ${views?.toLocaleString() || 'N/A'}
@@ -81,23 +95,77 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
 ✦ *🔗 Link:* ${url}
 
 ╭───── • ─────╮
-> ${
-  isAudioDoc ? '📂 Enviando audio como documento...' :
-  isVideo ? '🎞️ Enviando video...' :
-  isVideoDoc ? '📂 Enviando video como documento...' :
-  '🔊 Enviando audio...'
-}
+> ${textbot}
 ╰───── • ─────╯
 `.trim();
+const getBuffer = async (url) => {
+  const res = await axios.get(url, { responseType: 'arraybuffer' });
+  return Buffer.from(res.data, 'binary');
+};
+const imBuffer = await getBuffer(thumbnail); // Usa tu URL para obtener el buffer
+const formatos = [
+    async () => conn.sendMessage(
+  chatId,
+  {
+    text: caption,
+    contextInfo: {
+      externalAdReply: {
+        title: title,
+        body: en,
+        thumbnailUrl: red,
+        thumbnail: imBuffer,
+        sourceUrl: red,
+        mediaType: 1,
+        showAdAttribution: true,
+        renderLargerThumbnail: true
+      }
+    }
+  },
+  { quoted: msg }),
 
-    // Enviar detalles
-    await conn.sendMessage2(chatId, {
-      image: { url: thumbnail },
-      caption
-    }, msg);
+    async () => conn.sendMessage(chatId, {
+      video: { url: jpg },
+      gifPlayback: true,
+      caption: caption,
+      contextInfo: {
+        forwardingScore: 0,
+        isForwarded: true,
+        externalAdReply: {
+          title: title,
+          body: en,
+          thumbnailUrl: red,
+          thumbnail: imBuffer,
+          sourceUrl: red,
+          mediaType: 1,
+          showAdAttribution: true
+        }
+      }
+    }, { quoted: msg }),
 
+    async () => conn.sendMessage(chatId, {
+      text: caption,
+      contextInfo: {
+        forwardingScore: 0,
+        isForwarded: true,
+        businessMessageForwardInfo: {
+          businessOwnerJid: '50492280729@s.whatsapp.net'
+        },
+        externalAdReply: {
+          title: title,
+          body: en,
+          thumbnailUrl: red,
+          thumbnail: imBuffer,
+          sourceUrl: red,
+          mediaType: 1
+        }
+      }
+    }, { quoted: msg })
+  ];
+
+  const randomFormato = formatos[Math.floor(Math.random() * formatos.length)];
+  await randomFormato();
     // Obtener enlace de descarga desde múltiples APIs
-    let downloadUrl;
+  
 
     try {
       const api1 = await axios.get(`https://api.siputzx.my.id/api/d/ytmp4?url=${url}`);
