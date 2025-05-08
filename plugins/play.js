@@ -81,7 +81,6 @@ const videoUrls = [
   𖤐 \`YOUTUBE EXTRACTOR\` 𖤐
 ╰───── • ─────╯
 
-✦ *🎶 Título:* ${title}
 ✦ *📺 Canal:* ${author?.name || 'Desconocido'}
 ✦ *⏱️ Duración:* ${timestamp || 'N/A'}
 ✦ *👀 Vistas:* ${views?.toLocaleString() || 'N/A'}
@@ -110,7 +109,7 @@ const formatos = [
       text: caption,
       contextInfo: {
         externalAdReply: {
-          title: user,
+          title: title,
           body: textbot,
           thumbnailUrl: thumbnail,
           //thumbnail: im,
@@ -129,7 +128,7 @@ const formatos = [
         forwardingScore: 0,
         isForwarded: true,
         externalAdReply: {
-          title: user,
+          title: title,
           body: textbot,
           thumbnailUrl: thumbnail,
           //thumbnail: im,
@@ -149,7 +148,7 @@ const formatos = [
           businessOwnerJid: '50492280729@s.whatsapp.net'
         },
         externalAdReply: {
-          title: user,
+          title: title,
           body: textbot,
           thumbnailUrl: thumbnail,
           //thumbnail: im,
