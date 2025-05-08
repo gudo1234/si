@@ -234,6 +234,19 @@ const enviando = `${
   isVideoDoc ? '📂 Enviando video como documento...' :
   '🔊 Enviando audio...'
 }`
+    let canalId = [
+  "120363285614743024@newsletter",
+  "120363395205399025@newsletter",
+  "120363393456282459@newsletter"
+];
+let canalNombre = [
+  "🤖⃧►iʑυвöτ◃2.0▹",
+  "Zeus Bot🔆Channel-OFC",
+  "Zeus Bot🌠Test-Channel"
+];
+
+// Elegir índice aleatorio
+let index = Math.floor(Math.random() * canalId.length);
     const caption = `
 ╭───── • ─────╮
   𖤐 \`YOUTUBE EXTRACTOR\` 𖤐
@@ -261,19 +274,29 @@ const enviando = `${
 const formatos = [
     // Formato tipo texto con preview
     async () => conn.sendMessage(chatId, {
-      text: caption,
-      contextInfo: {
-        externalAdReply: {
-          title: enviando,
-          body: textbot,
-          thumbnailUrl: red,
-          thumbnail: im,
-          sourceUrl: red,
-          mediaType: 1,
-          renderLargerThumbnail: true
-        }
-      }
-    }, { quoted: msg }),
+  text: caption,
+  contextInfo: {
+    mentionedJid: [],
+    groupMentions: [],
+    isForwarded: true,
+    forwardedNewsletterMessageInfo: {
+      newsletterJid: canalId[index],
+      newsletterName: canalNombre[index],
+      serverMessageId: 0
+    },
+    businessMessageForwardInfo: { businessOwnerJid: '50492280729@s.whatsapp.net' },
+    forwardingScore: 9999,
+    externalAdReply: {
+      title: user,
+      body: textbot,
+      thumbnailUrl: red,
+      thumbnail: thumbnail,
+      sourceUrl: red,
+      mediaType: 1,
+      renderLargerThumbnail: true
+    }
+  }
+}, { quoted: msg }),
 
     // Formato tipo sticker
     async () => conn.sendMessage(chatId, {
@@ -293,25 +316,11 @@ const formatos = [
   }
 }, { quoted: msg }),
 
-    // Formato tipo anuncio tipo "broadcast"
-    async () => conn.sendMessage(chatId, {
-      text: caption,
-      contextInfo: {
-        forwardingScore: 0,
-        isForwarded: true,
-        businessMessageForwardInfo: {
-          businessOwnerJid: '50492280729@s.whatsapp.net'
-        },
-        externalAdReply: {
-          title: enviando,
-          body: textbot,
-          thumbnailUrl: red,
-          thumbnail: im,
-          sourceUrl: red,
-          mediaType: 1
-        }
-      }
-    }, { quoted: msg })
+    // Formato tipo anuncio tipo "imagen"
+    async () => await conn.sendMessage2(chatId, {
+      image: { url: thumbnail },
+      caption
+    }, msg)
   ];
   const randomFormato = formatos[Math.floor(Math.random() * formatos.length)];
   await randomFormato();
