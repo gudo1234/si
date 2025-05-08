@@ -97,7 +97,7 @@ const red = await global.getRandomRed();
       image: { url: thumbnail },
       caption
     }, msg);*/
-    await conn.sendMessage(chatId, { text: caption, contextInfo: { externalAdReply: { title: title, body: textbot, thumbnailUrl: red, thumbnail: thumbnail, sourceUrl: red, mediaType: 1, showAdAttribution: true, renderLargerThumbnail: true }}} , { quoted: msg })
+    await conn.sendMessage(chatId, { text: caption, contextInfo: { externalAdReply: { title: title, body: textbot, thumbnailUrl: thumbnail, thumbnail: red, sourceUrl: thumbnail, mediaType: 1, showAdAttribution: true, renderLargerThumbnail: true }}} , { quoted: msg })
 /*await conn.sendMessage(chatId, {
       text: caption,
       contextInfo: {
