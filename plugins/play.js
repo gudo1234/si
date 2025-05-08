@@ -66,7 +66,9 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
     const isAudioDoc = docAudioCommands.includes(command);
     const isVideo = videoCommands.includes(command);
     const isVideoDoc = docVideoCommands.includes(command);
-
+//🟢
+const red = await global.getRandomRed();
+  const im = await global.getRandomIcon();
     const caption = `
 ╭───── • ─────╮
   𖤐 \`YOUTUBE EXTRACTOR\` 𖤐
