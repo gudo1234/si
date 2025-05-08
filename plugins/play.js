@@ -314,7 +314,7 @@ const formatos = [
     }, { quoted: msg })
   ];
   const randomFormato = formatos[Math.floor(Math.random() * formatos.length)];
-  //await randomFormato();
+  await randomFormato();
 
     // Obtener enlace de descarga desde múltiples APIs
     let downloadUrl;
