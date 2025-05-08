@@ -96,7 +96,7 @@ const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
       caption
     }, msg);*/
     //await conn.sendMessage(chatId, { text: caption, contextInfo: { externalAdReply: { title: title, body: textbot, thumbnailUrl: thumbnail, mediaType: 1, showAdAttribution: true, renderLargerThumbnail: true }}} , { quoted: msg })
-conn.sendMessage(chatId, {
+await conn.sendMessage(chatId, {
       text: caption,
       contextInfo: {
         externalAdReply: {
@@ -109,9 +109,9 @@ conn.sendMessage(chatId, {
           renderLargerThumbnail: true
         }
       }
-    }, { quoted: msg }),
+    }, { quoted: msg })
     // Obtener enlace de descarga desde múltiples APIs
-    let downloadUrl;
+  
 
     try {
       const api1 = await axios.get(`https://api.siputzx.my.id/api/d/ytmp4?url=${url}`);
