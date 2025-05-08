@@ -165,8 +165,6 @@ const formatos = [
   const randomFormato = formatos[Math.floor(Math.random() * formatos.length)];
   await randomFormato();
     // Obtener enlace de descarga desde múltiples APIs
-  
-
     try {
       const api1 = await axios.get(`https://api.siputzx.my.id/api/d/ytmp4?url=${url}`);
       if (api1.data?.data?.dl) {
