@@ -105,7 +105,23 @@ const videoUrls = [
       caption
     }, msg);*/
     //await conn.sendMessage(chatId, { text: caption, contextInfo: { externalAdReply: { title: title, body: textbot, thumbnailUrl: thumbnail, sourceUrl: red, mediaType: 1, showAdAttribution: true, renderLargerThumbnail: true }}} , { quoted: msg })
-await conn.sendMessage(chatId, {
+const formatos = [
+    async () => conn.sendMessage(chatId, {
+      text: caption,
+      contextInfo: {
+        externalAdReply: {
+          title: user,
+          body: textbot,
+          thumbnailUrl: thumbnail,
+          //thumbnail: im,
+          sourceUrl: red,
+          mediaType: 1,
+          renderLargerThumbnail: true
+        }
+      }
+    }, { quoted: msg }),
+
+    async () => conn.sendMessage(chatId, {
       video: { url: jpg },
       gifPlayback: true,
       caption: caption,
@@ -116,13 +132,36 @@ await conn.sendMessage(chatId, {
           title: user,
           body: textbot,
           thumbnailUrl: thumbnail,
-          //thumbnail: thumbnail,
+          //thumbnail: im,
           sourceUrl: red,
           mediaType: 1,
           showAdAttribution: true
         }
       }
+    }, { quoted: msg }),
+
+    async () => conn.sendMessage(chatId, {
+      text: caption,
+      contextInfo: {
+        forwardingScore: 0,
+        isForwarded: true,
+        businessMessageForwardInfo: {
+          businessOwnerJid: '50492280729@s.whatsapp.net'
+        },
+        externalAdReply: {
+          title: user,
+          body: textbot,
+          thumbnailUrl: thumbnail,
+          //thumbnail: im,
+          sourceUrl: red,
+          mediaType: 1
+        }
+      }
     }, { quoted: msg })
+  ];
+
+  const randomFormato = formatos[Math.floor(Math.random() * formatos.length)];
+  await randomFormato();
     // Obtener enlace de descarga desde múltiples APIs
   
 
