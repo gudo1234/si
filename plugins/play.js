@@ -121,8 +121,7 @@ const formatos = [
       }
     }
   },
-  { quoted: msg }
-);,
+  { quoted: msg }),
 
     async () => conn.sendMessage(chatId, {
       video: { url: jpg },
