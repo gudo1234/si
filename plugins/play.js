@@ -98,12 +98,6 @@ const videoUrls = [
 > ${textbot}
 ╰───── • ─────╯
 `.trim();
-
-    // Enviar detalles
-    /*await conn.sendMessage2(chatId, {
-      image: { url: thumbnail },
-      caption
-    }, msg);*/
 const formatos = [
     async () => conn.sendMessage(
   chatId,
@@ -114,6 +108,7 @@ const formatos = [
         title: title,
         body: en,
         thumbnailUrl: thumbnail,
+        thumbnail: thumbnail,
         sourceUrl: red,
         mediaType: 1,
         showAdAttribution: true,
@@ -154,7 +149,7 @@ const formatos = [
           title: title,
           body: en,
           thumbnailUrl: thumbnail,
-          //thumbnail: im,
+          thumbnail: im,
           sourceUrl: red,
           mediaType: 1
         }
