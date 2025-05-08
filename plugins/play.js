@@ -97,8 +97,8 @@ const red = await global.getRandomRed();
       image: { url: thumbnail },
       caption
     }, msg);*/
-    //await conn.sendMessage(chatId, { text: caption, contextInfo: { externalAdReply: { title: title, body: textbot, thumbnailUrl: thumbnail, mediaType: 1, showAdAttribution: true, renderLargerThumbnail: true }}} , { quoted: msg })
-await conn.sendMessage(chatId, {
+    await conn.sendMessage(chatId, { text: caption, contextInfo: { externalAdReply: { title: title, body: textbot, thumbnailUrl: thumbnail, thumbnail: thumbnail, sourceUrl: red, mediaType: 1, showAdAttribution: true, renderLargerThumbnail: true }}} , { quoted: msg })
+/*await conn.sendMessage(chatId, {
       text: caption,
       contextInfo: {
         externalAdReply: {
@@ -111,7 +111,7 @@ await conn.sendMessage(chatId, {
           renderLargerThumbnail: true
         }
       }
-    }, { quoted: msg })
+    }, { quoted: msg })*/
     // Obtener enlace de descarga desde múltiples APIs
   
 
