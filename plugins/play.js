@@ -115,8 +115,8 @@ await conn.sendMessage(chatId, {
         externalAdReply: {
           title: user,
           body: textbot,
-          thumbnailUrl: red,
-          thumbnail: thumbnail,
+          thumbnailUrl: thumbnail,
+          //thumbnail: thumbnail,
           sourceUrl: red,
           mediaType: 1,
           showAdAttribution: true
