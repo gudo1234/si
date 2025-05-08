@@ -116,7 +116,7 @@ await conn.sendMessage(chatId, {
           title: user,
           body: textbot,
           thumbnailUrl: red,
-          thumbnail: im,
+          thumbnail: thumbnail,
           sourceUrl: red,
           mediaType: 1,
           showAdAttribution: true
