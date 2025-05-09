@@ -3,7 +3,7 @@ const { igdl } = require("ruhend-scraper");
 const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}*`
+      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* https://www.facebook.com/share/r/15PTjPaDeh/` 
     }, msg);
   }
 await conn.sendMessage(msg.key.remoteJid, {
