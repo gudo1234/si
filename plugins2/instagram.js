@@ -1,65 +1,34 @@
-const fs = require("fs");
-const path = require("path");
-const axios = require("axios");
-
-const handler = async (msg, { conn, text, command }) => {
-  // Obtener ID del subbot y su prefijo personalizado
-  const rawID = conn.user?.id || "";
-  const subbotID = rawID.split(":")[0] + "@s.whatsapp.net";
-
-  const prefixPath = path.resolve("prefixes.json");
-  let prefixes = {};
-  if (fs.existsSync(prefixPath)) {
-    prefixes = JSON.parse(fs.readFileSync(prefixPath, "utf-8"));
-  }
-  const usedPrefix = prefixes[subbotID] || ".";
-
+const { igdl } = require("ruhend-scraper");
+const handler = async (msg, { conn, text, usedPrefix, command}) => {
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} Ejemplo de uso:\n${usedPrefix + command} https://www.instagram.com/p/CCoI4DQBGVQ/`
-    }, msg );
+      text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* https://www.instagram.com/reel/DJRyQeGslC9/?igsh=MjF0aHl1ZDlwYmVj`
+    }, msg);
   }
-
-  try {
-    // ⏳ Reacción mientras se procesa
+await conn.sendMessage(msg.key.remoteJid, {
+            react: { text: "🕒", key: msg.key} 
+        });
+try {
     await conn.sendMessage(msg.key.remoteJid, {
-      react: { text: "⏳", key: msg.key }
-    });
+            react: { text: "🕒", key: msg.key} 
+        });
+    const res = await igdl(text);
+    const data = res.data;
 
-    const apiUrl = `https://api.dorratz.com/igdl?url=${text}`;
-    const response = await axios.get(apiUrl);
-    const { data } = response.data;
-
-    if (!data || data.length === 0) {
-      return await conn.sendMessage2(msg.key.remoteJid, {
-        text: `${e} No se pudo obtener el video de Instagram.`
-      }, msg );
-    }
-
-    const caption = `🎬 *Video de Instagram*`;
-
-    for (let item of data) {
-      await conn.sendMessage(msg.key.remoteJid, {
-        video: { url: item.url },
-        caption
-      }, { quoted: msg });
-    }
-
-    await conn.sendMessage(msg.key.remoteJid, {
-      react: { text: "✅", key: msg.key }
-    });
-
-  } catch (error) {
-    console.error("❌ Error en instagram:", error);
+    for (let media of data) {
     await conn.sendMessage2(msg.key.remoteJid, {
-      text: `${e} Ocurrió un error al procesar el enlace de Instagram.`
-    }, msg );
-
+  video: { url: media.url },
+  caption: `${e}Video de Instagram`
+}, msg);
     await conn.sendMessage(msg.key.remoteJid, {
-      react: { text: "❌", key: msg.key }
-    });
-  }
-};
-
-handler.command = ["instagram", "ig"];
+            react: { text: "✅", key: msg.key} 
+        });
+    }
+} catch (err) {
+    console.error('Error al descargar el video:', err);
+    await conn.sendMessage2(msg.key.remoteJid, {
+      text: `${e} Ocurrió un error al intentar descargar el video.`
+    }, msg );
+  }}
+handler.command = ['ig', 'instagram']
 module.exports = handler;
