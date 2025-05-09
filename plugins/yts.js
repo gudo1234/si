@@ -67,7 +67,6 @@ _______________`
     }, msg)
 
     tempSearchResults[sentMsg.key.id] = {
-      sender: msg.sender,
       videos
     }
 
@@ -91,7 +90,7 @@ const before = async (msg, { conn }) => {
 
   const quotedId = msg.quoted.id
   const data = tempSearchResults[quotedId]
-  if (!data || data.sender !== msg.sender) return
+  if (!data) return
 
   const text = msg.text.trim().toLowerCase()
   const match = text.match(/^(?:(a|v|audio|video|d|documento))\s*#?\s*(\d+)\s*(a|v|audio|video)?$/i)
