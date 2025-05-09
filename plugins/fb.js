@@ -43,7 +43,6 @@ await conn.sendMessage(msg.key.remoteJid, {
 
   let video = data.url;
   try {
-  //await conn.sendFile(m.chat, video, `thumbnail.mp4`, `${m.pushName}`, m, null, rcanal)
   await conn.sendMessage2(msg.key.remoteJid, {
   video: { url: video },
   caption: `${e}Video de Facebook`
