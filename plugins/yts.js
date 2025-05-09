@@ -24,8 +24,6 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
       }, msg)
     }
 
-    tempSearchResults[msg.sender] = videos
-
     let list = `╭───── • ─────╮
 ✩ \`Youtube Search\` ✩
 
@@ -68,7 +66,10 @@ _______________`
       }
     }, msg)
 
-    tempSearchResults[msg.sender]._msg = sentMsg
+    tempSearchResults[sentMsg.key.id] = {
+      sender: msg.sender,
+      videos
+    }
 
     await conn.sendMessage(msg.key.remoteJid, {
       react: { text: "✅", key: msg.key }
@@ -86,7 +87,11 @@ _______________`
 }
 
 const before = async (msg, { conn }) => {
-  if (!msg.quoted || !msg.quoted.text || !tempSearchResults[msg.sender]) return
+  if (!msg.quoted || !msg.quoted.id || !msg.text) return
+
+  const quotedId = msg.quoted.id
+  const data = tempSearchResults[quotedId]
+  if (!data || data.sender !== msg.sender) return
 
   const text = msg.text.trim().toLowerCase()
   const match = text.match(/^(?:(a|v|audio|video|d|documento))\s*#?\s*(\d+)\s*(a|v|audio|video)?$/i)
@@ -96,7 +101,7 @@ const before = async (msg, { conn }) => {
   const type1 = (cmd1 || '').toLowerCase()
   const type2 = (cmd2 || '').toLowerCase()
   const index = parseInt(numStr) - 1
-  const videos = tempSearchResults[msg.sender]
+  const videos = data.videos
   if (!videos || !videos[index]) {
     return await conn.sendMessage2(msg.key.remoteJid, {
       text: '❌ Número inválido.'
@@ -106,7 +111,7 @@ const before = async (msg, { conn }) => {
   const video = videos[index]
   const url = video.url
   const title = video.title
-  const quotedMsg = tempSearchResults[msg.sender]._msg || msg.quoted
+  const quotedMsg = msg.quoted
 
   let format = 'audio'
   let asDocument = false
