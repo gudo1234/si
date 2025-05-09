@@ -1,5 +1,5 @@
 const Starlights = require("@StarlightsTeam/Scraper");
-const handler = async (msg, { conn, text, usedPrefix, command, arg }) => {
+const handler = async (msg, { conn, text, usedPrefix, command, args }) => {
   if (!text) {
     return await conn.sendMessage2(msg.key.remoteJid, {
       text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* https://www.instagram.com/reel/DJRyQeGslC9/?igsh=MjF0aHl1ZDlwYmVj`
