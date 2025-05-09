@@ -14,7 +14,7 @@ let { dl_url } = await Starlights.igdl(args[0])
 await conn.sendMessage2(msg.key.remoteJid, {
       video: { url: dl_url },
       mimetype: 'video/mp4',
-      fileName: listo.mp4,
+      //fileName: listo.mp4,
       caption: listo
     }, msg );
 await conn.sendMessage(msg.key.remoteJid, {
