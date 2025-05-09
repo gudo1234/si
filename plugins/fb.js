@@ -12,7 +12,7 @@ await conn.sendMessage(msg.key.remoteJid, {
 
   let res;
   try {
-    res = await igdl(args[0]);
+    res = await igdl(text);
   } catch (e) {
     return await conn.sendMessage2(msg.key.remoteJid, {
       text: `${e} Error al obtener los datos, verifica el enlace`
