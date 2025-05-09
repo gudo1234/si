@@ -1,6 +1,6 @@
-const Starlights = require("@StarlightsTeam/Scraper");
-const handler = async (msg, { conn, text, usedPrefix, command}) => {
-  if (!text) {
+const { igdl } = require("ruhend-scraper");
+const handler = async (msg, { conn, args, usedPrefix, command}) => {
+  if (!args) {
     return await conn.sendMessage2(msg.key.remoteJid, {
       text: `${e} Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix + command}* https://www.instagram.com/reel/DJRyQeGslC9/?igsh=MjF0aHl1ZDlwYmVj`
     }, msg);
@@ -9,15 +9,22 @@ await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "🕒", key: msg.key} 
         });
 try {
-let { dl_url } = await Starlights.igdl(text)
-//await conn.sendFile(m.chat, dl_url, 'igdl.mp4', listo, m, null, rcanal)
-await conn.sendMessage2(msg.key.remoteJid, {
-  video: { url: dl_url },
+    await conn.sendMessage(msg.key.remoteJid, {
+            react: { text: "🕒", key: msg.key} 
+        });
+    const res = await igdl(args[0]);
+    const data = res.data;
+
+    for (let media of data) {
+      //await conn.sendFile(m.chat, media.url, 'instagram.mp4', `${m.pushName}`, m, null, rcanal);
+    await conn.sendMessage2(msg.key.remoteJid, {
+  video: { url: media.url },
   caption: `${e}Video de Instagram`
 }, msg);
-await conn.sendMessage(msg.key.remoteJid, {
+    await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "✅", key: msg.key} 
         });
+    }
 } catch (err) {
     console.error('Error al descargar el video:', err);
     await conn.sendMessage2(msg.key.remoteJid, {
