@@ -16,7 +16,6 @@ try {
     const data = res.data;
 
     for (let media of data) {
-      //await conn.sendFile(m.chat, media.url, 'instagram.mp4', `${m.pushName}`, m, null, rcanal);
     await conn.sendMessage2(msg.key.remoteJid, {
   video: { url: media.url },
   caption: `${e}Video de Instagram`
