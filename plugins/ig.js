@@ -12,7 +12,7 @@ try {
     await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "🕒", key: msg.key} 
         });
-    const res = await igdl(args[0]);
+    const res = await igdl(text);
     const data = res.data;
 
     for (let media of data) {
