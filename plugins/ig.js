@@ -13,9 +13,9 @@ let { dl_url } = await Starlights.igdl(args[0])
 //await conn.sendFile(m.chat, dl_url, 'igdl.mp4', listo, m, null, rcanal)
 await conn.sendMessage2(msg.key.remoteJid, {
       video: { url: dl_url },
-      mimetype: 'video/mp4',
+      mimetype: 'igdl.mp4'
       //fileName: listo.mp4,
-      caption: listo
+      //caption: listo
     }, msg );
 await conn.sendMessage(msg.key.remoteJid, {
             react: { text: "✅", key: msg.key} 
