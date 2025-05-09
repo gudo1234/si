@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
-const yts = require("yt-search");
 const axios = require("axios");
+const yts = require("yt-search");
 
 const tempSearchResults = {}
 
@@ -50,7 +50,9 @@ const handler = async (msg, { conn, text, usedPrefix, command }) => {
 _______________`
     }
 
-    const thumb = await (await fetch(videos[0].thumbnail)).buffer()
+    const thumbRes = await axios.get(videos[0].thumbnail, { responseType: 'arraybuffer' })
+    const thumb = Buffer.from(thumbRes.data, 'binary')
+
     const sentMsg = await conn.sendMessage2(msg.key.remoteJid, {
       text: list,
       contextInfo: {
@@ -132,14 +134,14 @@ const before = async (msg, { conn }) => {
     }
 
     if (format === 'audio') {
-      const res = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`)
-      const json = await res.json()
+      const res = await axios.get(`https://api.vreden.my.id/api/ytmp3?url=${url}`)
+      const json = res.data
       const download = json?.result?.download?.url
       if (!download) throw new Error('No se pudo obtener el audio.')
       await send(asDocument ? 'document' : 'audio', download, `${title}.mp3`, 'audio/mpeg')
     } else {
-      const res = await fetch(`https://api.neoxr.eu/api/youtube?url=${url}&type=video&quality=360p&apikey=GataDios`)
-      const json = await res.json()
+      const res = await axios.get(`https://api.neoxr.eu/api/youtube?url=${url}&type=video&quality=360p&apikey=GataDios`)
+      const json = res.data
       const download = json?.data?.url
       if (!download) throw new Error('No se pudo obtener el video.')
       await send(asDocument ? 'document' : 'video', download, `${title}.mp4`, 'video/mp4')
@@ -153,5 +155,6 @@ const before = async (msg, { conn }) => {
   }
 }
 
+handler.before = before
 handler.command = ['yts', 'ytsearch']
-module.exports = handler;
+module.exports = handler
